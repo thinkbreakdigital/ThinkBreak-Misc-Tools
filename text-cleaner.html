@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Text Cleaner</title>
+  <meta name="theme-color" content="#FAFAF7" id="theme-color-meta">
+  <style>
+    :root {
+      --bg: #fafaf7;
+      --surface: #ffffff;
+      --surface2: #f3f2ee;
+      --border: #e4e2dc;
+      --border-hover: #cccac2;
+      --text: #1a1a18;
+      --text-mid: #5c5b56;
+      --text-dim: #9c9a94;
+      --accent: #2d2e5a;
+      --accent-dim: #e8f0eb;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-soft: 0 10px 30px rgba(26, 26, 24, 0.04);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      padding:
+        env(safe-area-inset-top)
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    body.dark {
+      background: #111110;
+      color: #f0efe8;
+    }
+
+    body.dark .wrap {
+      color: #f0efe8;
+    }
+
+    body.dark .thinkbreak-label,
+    body.dark .section-label,
+    body.dark .field-help {
+      color: #5c5b54;
+    }
+
+    body.dark .thinkbreak-title,
+    body.dark .output-card,
+    body.dark .control-group {
+      color: #f0efe8;
+    }
+
+    body.dark input,
+    body.dark select,
+    body.dark textarea,
+    body.dark .output-card,
+    body.dark .control-group {
+      background: #252522;
+      border-color: #2e2e2b;
+      color: #f0efe8;
+    }
+
+    body.dark input::placeholder,
+    body.dark textarea::placeholder {
+      color: #5c5b54;
+    }
+
+    body.dark input:focus,
+    body.dark select:focus,
+    body.dark textarea:focus {
+      border-color: #7eb88a;
+    }
+
+    body.dark #theme-btn {
+      background: #1c1c1a;
+      border-color: #2e2e2b;
+      color: #f0efe8;
+    }
+
+    body.dark #theme-btn:hover,
+    body.dark #theme-btn:focus-visible {
+      border-color: #3d3d39;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 20px 80px;
+      animation: fadeUp 0.4s ease-out both;
+    }
+
+    #theme-btn {
+      position: fixed;
+      top: calc(14px + env(safe-area-inset-top));
+      right: calc(14px + env(safe-area-inset-right));
+      z-index: 999;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    #theme-btn:hover,
+    #theme-btn:focus-visible {
+      border-color: var(--border-hover);
+      outline: none;
+    }
+
+    .thinkbreak-header {
+      margin-bottom: 36px;
+      padding-right: 56px;
+    }
+
+    .thinkbreak-label,
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .thinkbreak-label {
+      margin-bottom: 8px;
+    }
+
+    .thinkbreak-title {
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .thinkbreak-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      max-width: 58ch;
+    }
+
+    .tool-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .field-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .section-label {
+      margin-bottom: 10px;
+    }
+
+    .field-help {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-dim);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+      color: var(--text);
+      font: inherit;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--text-dim);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea {
+      min-height: 240px;
+      resize: vertical;
+      line-height: 1.7;
+      tab-size: 2;
+    }
+
+    .controls-row {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+
+    .control-group {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .toggle-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      transition: color 0.18s ease;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      width: 38px;
+      height: 22px;
+      flex: 0 0 auto;
+    }
+
+    .toggle-switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .toggle-track {
+      width: 38px;
+      height: 22px;
+      border-radius: 999px;
+      background: #d9d7cf;
+      border: 1px solid #cfccc4;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+      transition: transform 0.18s ease;
+      pointer-events: none;
+    }
+
+    .toggle-switch input:checked + .toggle-track {
+      background: #1f211e;
+      border-color: #1f211e;
+    }
+
+    .toggle-switch input:checked + .toggle-track + .toggle-thumb {
+      transform: translateX(16px);
+    }
+
+    .toggle-switch input:focus-visible + .toggle-track {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    body.dark .toggle-label {
+      color: #6e6d67;
+    }
+
+    body.dark .toggle-track {
+      background: #2b2b28;
+      border-color: #3a3a35;
+    }
+
+    body.dark .toggle-thumb {
+      background: #f0efe8;
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    body.dark .toggle-switch input:checked + .toggle-track {
+      background: #f0efe8;
+      border-color: #f0efe8;
+    }
+
+    body.dark .toggle-switch input:checked + .toggle-track + .toggle-thumb {
+      background: #111110;
+      border-color: rgba(17, 17, 16, 0.16);
+    }
+
+    body.dark .toggle-row:has(input:checked) .toggle-label {
+      color: #f0efe8;
+    }
+
+    .toggle-row:has(input:checked) .toggle-label {
+      color: var(--text);
+    }
+
+    .output-card {
+      min-height: 240px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (min-width: 700px) {
+      .controls-row {
+        grid-template-columns: 1.15fr 1fr;
+        align-items: start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        padding: 44px 16px 64px;
+      }
+
+      .thinkbreak-header {
+        padding-right: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="theme-btn" type="button" aria-label="Toggle theme">
+    <svg
+      id="theme-icon-sun"
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      hidden
+    >
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <svg
+      id="theme-icon-moon"
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
+
+  <main class="wrap">
+    <header class="thinkbreak-header">
+      <div class="thinkbreak-label">thinkbreak</div>
+      <h1 class="thinkbreak-title">Text Cleaner</h1>
+      <p class="thinkbreak-sub">
+        Clean up pasted text, standardize formatting, and convert it into
+        consistent output for filenames, labels, and general use.
+      </p>
+    </header>
+
+    <section class="tool-grid" aria-label="Text cleaner layout">
+      <div class="field-stack">
+        <div>
+          <div class="section-label">Input</div>
+          <p class="field-help">Paste text to clean and transform.</p>
+        </div>
+        <textarea id="input-text" placeholder="Paste text here..."></textarea>
+      </div>
+
+      <div class="controls-row">
+        <section class="control-group" aria-labelledby="formatting-options">
+          <div class="section-label" id="formatting-options">Options</div>
+          <div class="option-list">
+            <label class="toggle-row" for="trim-whitespace">
+              <span class="toggle-label">Trim whitespace</span>
+              <span class="toggle-switch">
+                <input id="trim-whitespace" type="checkbox">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-thumb" aria-hidden="true"></span>
+              </span>
+            </label>
+
+            <label class="toggle-row" for="collapse-blank-lines">
+              <span class="toggle-label">Collapse blank lines</span>
+              <span class="toggle-switch">
+                <input id="collapse-blank-lines" type="checkbox">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-thumb" aria-hidden="true"></span>
+              </span>
+            </label>
+
+            <label class="toggle-row" for="strip-punctuation">
+              <span class="toggle-label">Strip punctuation</span>
+              <span class="toggle-switch">
+                <input id="strip-punctuation" type="checkbox">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-thumb" aria-hidden="true"></span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <section class="control-group" aria-labelledby="case-transform">
+          <div class="section-label" id="case-transform">Transformation</div>
+          <select id="case-mode" aria-label="Case transformation">
+            <option value="none">No change</option>
+            <option value="sentence">Sentence case</option>
+            <option value="title">Title Case</option>
+            <option value="lower">lowercase</option>
+            <option value="upper">UPPERCASE</option>
+            <option value="camel">camelCase</option>
+            <option value="pascal">PascalCase</option>
+            <option value="spongebob">SpOnGeBoB cAsE</option>
+          </select>
+        </section>
+      </div>
+
+      <div class="field-stack">
+        <div>
+          <div class="section-label">Output</div>
+          <p class="field-help">The cleaned result will appear here.</p>
+        </div>
+        <div class="output-card" id="output-text"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const THEME_DARK = "#111110";
+    const THEME_LIGHT = "#FAFAF7";
+
+    // Cache the DOM elements the tool needs so event handlers and render logic
+    // can read user input and update the output efficiently.
+    function getElements() {
+      return {
+        body: document.body,
+        themeButton: document.getElementById("theme-btn"),
+        themeColorMeta: document.getElementById("theme-color-meta"),
+        sunIcon: document.getElementById("theme-icon-sun"),
+        moonIcon: document.getElementById("theme-icon-moon"),
+        inputText: document.getElementById("input-text"),
+        trimWhitespace: document.getElementById("trim-whitespace"),
+        collapseBlankLines: document.getElementById("collapse-blank-lines"),
+        stripPunctuation: document.getElementById("strip-punctuation"),
+        caseMode: document.getElementById("case-mode"),
+        outputText: document.getElementById("output-text")
+      };
+    }
+
+    // Return the current UI state, including the pasted text and selected
+    // formatting options, in one predictable object.
+    function getOptions() {}
+
+    // Attach all input, change, and button listeners so the tool reacts
+    // immediately when the user edits text or changes a control.
+    function bindEvents() {
+      const elements = getElements();
+
+      if (elements.themeButton) {
+        elements.themeButton.addEventListener("click", toggleTheme);
+      }
+    }
+
+    // Run the full cleaning pipeline from raw input to final rendered output.
+    function updateOutput() {}
+
+    // Apply all text cleaning and formatting steps in the correct order and
+    // return the finished result as a string.
+    function cleanText(input, options) {}
+
+    // Normalize line endings so Windows, Mac, and Unix pasted text all use the
+    // same newline character before other processing begins.
+    function normalizeLineBreaks(text) {}
+
+    // Trim the full input, trim each line, and collapse repeated spaces or tabs
+    // so the text becomes more consistent without changing its meaning.
+    function normalizeWhitespace(text) {}
+
+    // Reduce multiple empty lines to a cleaner single blank-line rhythm when
+    // the related cleanup toggle is enabled.
+    function collapseBlankLines(text) {}
+
+    // Remove punctuation characters that should not survive standardized output
+    // when the punctuation cleanup toggle is enabled.
+    function stripPunctuation(text) {}
+
+    // Split the input into word and separator tokens so formatting modes can
+    // preserve separators when needed or remove them for identifier formats.
+    function tokenizeText(text) {}
+
+    // Decide whether a token should be treated as a separator such as a space,
+    // dash, underscore, comma, tab, or line break.
+    function isSeparator(token) {}
+
+    // Route the cleaned text or token list through the selected transformation
+    // mode and return the transformed output.
+    function applyTransformation(text, options) {}
+
+    // Convert text to sentence case using practical sentence boundaries while
+    // preserving separator structure where appropriate.
+    function toSentenceCase(text) {}
+
+    // Convert each detected word to title case while preserving the original
+    // separators exactly where they appeared in the input.
+    function toTitleCase(text) {}
+
+    // Convert separated words into camelCase by removing separators, lowercasing
+    // the first word, and capitalizing each following word.
+    function toCamelCase(text) {}
+
+    // Convert separated words into PascalCase by removing separators and
+    // capitalizing each detected word.
+    function toPascalCase(text) {}
+
+    // Alternate uppercase and lowercase across letters only while leaving spaces,
+    // punctuation, and other separators untouched.
+    function toSpongebobCase(text) {}
+
+    // Capitalize the first letter of a word and lowercase the remaining letters
+    // so word-level formatting stays consistent across modes.
+    function capitalizeWord(word) {}
+
+    // Lowercase a word before identifier-style transformations so casing starts
+    // from a predictable normalized baseline.
+    function normalizeWord(word) {}
+
+    // Copy the cleaned output to the clipboard when the user presses a copy
+    // button, if that control is included in the final UI.
+    function copyOutput() {}
+
+    // Check the system color scheme so the page can default to the user's device
+    // preference when no manual theme selection has been saved yet.
+    function getPreferredTheme() {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    // Apply the active theme class to the page, update the browser theme color,
+    // and swap the visible theme icon to match the current mode.
+    function applyTheme(theme) {
+      const elements = getElements();
+      const isDark = theme === "dark";
+
+      elements.body.classList.toggle("dark", isDark);
+      elements.sunIcon.style.display = isDark ? "block" : "none";
+      elements.moonIcon.style.display = isDark ? "none" : "block";
+      elements.themeColorMeta.setAttribute(
+        "content",
+        isDark ? THEME_DARK : THEME_LIGHT
+      );
+    }
+
+    // Switch between light and dark mode when the theme button is pressed and
+    // update the page immediately for the current session.
+    function toggleTheme() {
+      const nextTheme = document.body.classList.contains("dark") ? "light" : "dark";
+      applyTheme(nextTheme);
+    }
+
+    // Decide which theme should be used on first load by following the current
+    // system color scheme until the user toggles it manually.
+    function initializeTheme() {
+      applyTheme(getPreferredTheme());
+    }
+
+    // Set up the tool once the page is ready so the UI can initialize with the
+    // correct listeners and first render.
+    function init() {
+      initializeTheme();
+      bindEvents();
+    }
+
+    init();
+  </script>
+</body>
+</html>

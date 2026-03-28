@@ -61,11 +61,6 @@ Prefer the simplest possible implementation.
 \- inline \`\<style\>\`  
 \- inline \`\<script\>\`
 
-If separation is useful, the acceptable fallback is:  
-\- \`index.html\`  
-\- \`styles.css\`  
-\- \`script.js\`
-
 Do not introduce frameworks, bundlers, or package managers unless specifically requested.
 
 Avoid React, Vue, build pipelines, TypeScript, or npm-based tooling for these utilities unless there is a clear reason and the user asked for it.
@@ -113,6 +108,10 @@ Keep the UI minimal.
 \- keyboard-friendly where reasonable
 
 Use plain language in labels and helper text.
+
+Displayed descriptions and helper text should include only the user-facing explanation requested for that tool.
+
+Do not add extra on-page copy that explains repository rules, privacy posture, implementation details, or feature badges unless explicitly requested.
 
 \---
 
@@ -325,6 +324,8 @@ Tool descriptions should explain:
 * what goes in  
 * what comes out  
 * nothing more than necessary
+
+Do not add extra descriptive UI copy such as "local only", "dark mode", "no signup", or similar feature/rule summaries unless the user explicitly asks for those to appear on the page.
 
 ---
 

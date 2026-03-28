@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>KIN-019 — Markdown Download — Kin</title>
+  <meta name="description" content="Write or paste text and download it as a .md file. Free, offline, no accounts.">
+  <meta name="theme-color" content="#FAFAF7" id="theme-color-meta">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Markdown Download">
+  <link rel="apple-touch-icon" id="apple-touch-icon">
+  <link rel="manifest" id="manifest-link">
+  <style>
+    :root {
+      --bg:          #FAFAF7;
+      --surface:     #FFFFFF;
+      --surface2:    #F3F2EE;
+      --border:      #E4E2DC;
+      --border-hover:#CCCAC2;
+      --text:        #1A1A18;
+      --text-mid:    #5C5B56;
+      --text-dim:    #9C9A94;
+      --accent:      #2D5A3D;
+      --accent-dim:  #E8F0EB;
+      --radius:      12px;
+      --radius-sm:   8px;
+    }
+
+    body.dark { background: #111110 !important; color: #f0efe8 !important; }
+    body.dark .wrap { color: #f0efe8 !important; }
+    body.dark .kin-label { color: #5c5b54 !important; }
+    body.dark .kin-title { color: #f0efe8 !important; }
+    body.dark .kin-sub { color: #9c9a90 !important; }
+    body.dark .section-label { color: #5c5b54 !important; }
+    body.dark .filename-ext { color: #5c5b54 !important; }
+    body.dark input,
+    body.dark textarea {
+      background: #252522 !important;
+      border-color: #2e2e2b !important;
+      color: #f0efe8 !important;
+    }
+    body.dark input::placeholder,
+    body.dark textarea::placeholder { color: #5c5b54 !important; }
+    body.dark input:focus,
+    body.dark textarea:focus { border-color: #7eb88a !important; }
+    body.dark .btn-primary {
+      background: #f0efe8 !important;
+      color: #111110 !important;
+    }
+    body.dark .btn-ghost {
+      border-color: #2e2e2b !important;
+      color: #9c9a90 !important;
+    }
+    body.dark .btn-ghost:hover {
+      border-color: #3d3d39 !important;
+      color: #f0efe8 !important;
+    }
+    body.dark .meta { color: #5c5b54 !important; }
+    body.dark .toast {
+      background: #1c1c1a !important;
+      border-color: #2e2e2b !important;
+      color: #f0efe8 !important;
+    }
+    body.dark #theme-btn {
+      background: #1c1c1a !important;
+      border-color: #2e2e2b !important;
+      color: #f0efe8 !important;
+    }
+    body.dark #theme-btn:hover { border-color: #3d3d39 !important; }
+    body.dark .kin-footer { border-top-color: #2e2e2b !important; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 52px 20px 80px;
+      animation: fadeUp 0.4s ease-out both;
+    }
+
+    #theme-btn {
+      position: fixed;
+      top: calc(14px + env(safe-area-inset-top));
+      right: calc(14px + env(safe-area-inset-right));
+      z-index: 999;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    #theme-btn:hover { border-color: var(--border-hover); }
+
+    .kin-header { margin-bottom: 36px; }
+
+    .kin-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .kin-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(26px, 6vw, 36px);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .kin-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+
+    .filename-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .filename-row input { flex: 1; }
+
+    .filename-ext {
+      font-size: 14px;
+      color: var(--text-dim);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    input, select, textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      padding: 10px 12px;
+      width: 100%;
+      min-height: 44px;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea {
+      min-height: 320px;
+      resize: vertical;
+      line-height: 1.7;
+      font-size: 16px;
+      font-family: 'DM Sans', monospace;
+      tab-size: 2;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      min-height: 44px;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.82; }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-mid);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 18px;
+      min-height: 44px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+
+    .meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .kin-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+  </style>
+<link rel="canonical" href="https://markdown-dl.kintools.net/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://markdown-dl.kintools.net/">
+<meta property="og:title" content="KIN-019 — Markdown Download — Kin">
+<meta property="og:description" content="Write markdown and download it as a .md file. Word count, character count, dark mode. Free, offline, no accounts.">
+<meta property="og:image" content="https://kintools.net/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Kin Tools">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KIN-019 — Markdown Download — Kin">
+<meta name="twitter:description" content="Write markdown and download it as a .md file. Word count, character count, dark mode. Free, offline, no accounts.">
+<meta name="twitter:image" content="https://kintools.net/og-image.png">
+</head>
+<body>
+
+  <button id="theme-btn" aria-label="Toggle theme">
+    <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <div class="wrap">
+
+    <div class="kin-header">
+      <div class="kin-label">Kin</div>
+      <h1 class="kin-title">Markdown Download</h1>
+      <p class="kin-sub">Write or paste text and download it as a .md file.</p>
+    </div>
+
+    <div class="section-label">Filename</div>
+    <div class="filename-row">
+      <input type="text" id="filename" placeholder="untitled" autocomplete="off" spellcheck="false">
+      <span class="filename-ext">.md</span>
+    </div>
+
+    <div class="section-label">Content</div>
+    <textarea id="content" placeholder="Write or paste your markdown here..."></textarea>
+
+    <div class="meta">
+      <span id="word-count">0 words</span>
+      <span id="char-count">0 characters</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="download-btn" disabled>Download .md</button>
+      <button class="btn-ghost" id="copy-btn">Copy text</button>
+      <button class="btn-ghost" id="clear-btn">Clear</button>
+    </div>
+
+    <footer class="kin-footer">
+  KIN-019 · v1.0 · <a href="https://kintools.net/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Kin Tools</a> · by Darren
+    
+  <div style="text-align:center;margin-top:8px"><span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;background:rgba(46,160,67,0.1);border:1px solid rgba(46,160,67,0.25);font-size:10px;font-weight:600;letter-spacing:0.08em;color:#2ea043;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif"><svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 0.5L0.5 2.25V5.25C0.5 7.75 2.25 10.05 4.5 10.5C6.75 10.05 8.5 7.75 8.5 5.25V2.25L4.5 0.5Z" fill="#2ea043" fill-opacity="0.15" stroke="#2ea043" stroke-width="0.75"/><path d="M2.5 5.5L3.75 6.75L6.5 4" stroke="#2ea043" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>Local Only · Verified</span></div>
+
+  <div style="margin-top:10px"><button id="kin-bug-btn" style="background:none;border:none;padding:0;color:inherit;font:inherit;opacity:0.4;font-size:11px;cursor:pointer;letter-spacing:0.04em;text-decoration:underline;text-underline-offset:3px;">Report a bug</button></div>
+</footer>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const THEME_DARK  = '#111110';
+    const THEME_LIGHT = '#FAFAF7';
+    const CACHE_NAME  = 'kin019-v1';
+    const TOOL_NAME   = 'Markdown Download';
+
+    const themeBtn = document.getElementById('theme-btn');
+    const sunIcon  = document.getElementById('theme-icon-sun');
+    const moonIcon = document.getElementById('theme-icon-moon');
+
+    // Apple-touch-icon: green gradient, "MD" initials
+    (function () {
+      try {
+        var sz = 180;
+        var c = document.createElement('canvas');
+        c.width = c.height = sz;
+        var ctx = c.getContext('2d');
+        var g = ctx.createLinearGradient(0, 0, sz, sz);
+        g.addColorStop(0, '#202028');
+        g.addColorStop(1, '#0e0e14');
+        ctx.fillStyle = g;
+        var r = sz * 0.18;
+        ctx.beginPath();
+        ctx.moveTo(r, 0); ctx.lineTo(sz - r, 0);
+        ctx.quadraticCurveTo(sz, 0, sz, r);
+        ctx.lineTo(sz, sz - r);
+        ctx.quadraticCurveTo(sz, sz, sz - r, sz);
+        ctx.lineTo(r, sz);
+        ctx.quadraticCurveTo(0, sz, 0, sz - r);
+        ctx.lineTo(0, r);
+        ctx.quadraticCurveTo(0, 0, r, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle='rgba(245,240,232,0.92)';ctx.lineWidth=sz*0.028;ctx.lineJoin='round';ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(sz*0.345,sz*0.21);ctx.lineTo(sz*0.58,sz*0.21);ctx.lineTo(sz*0.69,sz*0.32);ctx.lineTo(sz*0.69,sz*0.68);ctx.lineTo(sz*0.345,sz*0.68);ctx.closePath();ctx.stroke();
+        ctx.beginPath();ctx.moveTo(sz*0.58,sz*0.21);ctx.lineTo(sz*0.58,sz*0.32);ctx.lineTo(sz*0.69,sz*0.32);ctx.stroke();
+        ctx.lineWidth=sz*0.039;
+        ctx.beginPath();ctx.moveTo(sz*0.5,sz*0.37);ctx.lineTo(sz*0.5,sz*0.58);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(sz*0.385,sz*0.515);ctx.lineTo(sz*0.5,sz*0.635);ctx.lineTo(sz*0.615,sz*0.515);ctx.stroke();
+        var el = document.getElementById('apple-touch-icon');
+        if (el) el.href = c.toDataURL('image/png');
+      } catch (e) {}
+    })();
+
+    // Blob manifest with canvas PNG icons
+    (function () {
+      try {
+        function makeIcon(sz) {
+          var c = document.createElement('canvas');
+          c.width = c.height = sz;
+          var ctx = c.getContext('2d');
+          var g = ctx.createLinearGradient(0, 0, sz, sz);
+          g.addColorStop(0, '#202028');
+          g.addColorStop(1, '#0e0e14');
+          ctx.fillStyle = g;
+          var r = sz * 0.18;
+          ctx.beginPath();
+          ctx.moveTo(r, 0); ctx.lineTo(sz - r, 0);
+          ctx.quadraticCurveTo(sz, 0, sz, r);
+          ctx.lineTo(sz, sz - r);
+          ctx.quadraticCurveTo(sz, sz, sz - r, sz);
+          ctx.lineTo(r, sz);
+          ctx.quadraticCurveTo(0, sz, 0, sz - r);
+          ctx.lineTo(0, r);
+          ctx.quadraticCurveTo(0, 0, r, 0);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle='rgba(245,240,232,0.92)';ctx.lineWidth=sz*0.028;ctx.lineJoin='round';ctx.lineCap='round';
+          ctx.beginPath();ctx.moveTo(sz*0.345,sz*0.21);ctx.lineTo(sz*0.58,sz*0.21);ctx.lineTo(sz*0.69,sz*0.32);ctx.lineTo(sz*0.69,sz*0.68);ctx.lineTo(sz*0.345,sz*0.68);ctx.closePath();ctx.stroke();
+          ctx.beginPath();ctx.moveTo(sz*0.58,sz*0.21);ctx.lineTo(sz*0.58,sz*0.32);ctx.lineTo(sz*0.69,sz*0.32);ctx.stroke();
+          ctx.lineWidth=sz*0.039;
+          ctx.beginPath();ctx.moveTo(sz*0.5,sz*0.37);ctx.lineTo(sz*0.5,sz*0.58);ctx.stroke();
+          ctx.beginPath();ctx.moveTo(sz*0.385,sz*0.515);ctx.lineTo(sz*0.5,sz*0.635);ctx.lineTo(sz*0.615,sz*0.515);ctx.stroke();
+          return c.toDataURL('image/png');
+        }
+        var manifest = {
+          name: TOOL_NAME + ' — Kin',
+          short_name: TOOL_NAME,
+          description: 'Write or paste text and download as .md. Free, offline, no accounts.',
+          start_url: './',
+          display: 'standalone',
+          background_color: THEME_LIGHT,
+          theme_color: THEME_LIGHT,
+          icons: [
+            { src: makeIcon(192), sizes: '192x192', type: 'image/png' },
+            { src: makeIcon(512), sizes: '512x512', type: 'image/png' }
+          ]
+        };
+        var blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        document.getElementById('manifest-link').href = URL.createObjectURL(blob);
+      } catch (e) {}
+    })();
+
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark', dark);
+      sunIcon.style.display  = dark ? 'block' : 'none';
+      moonIcon.style.display = dark ? 'none'  : 'block';
+      document.getElementById('theme-color-meta').setAttribute('content', dark ? THEME_DARK : THEME_LIGHT);
+      try { localStorage.setItem('kin019-theme', dark ? 'dark' : 'light'); } catch(e) {}
+    }
+
+    var isDark = false;
+    try {
+      if (localStorage.getItem('kin019-theme') === 'dark') isDark = true;
+    } catch(e) {}
+    applyTheme(isDark);
+
+    themeBtn.addEventListener('click', function () {
+      isDark = !isDark;
+      applyTheme(isDark);
+    });
+
+    var content     = document.getElementById('content');
+    var filename    = document.getElementById('filename');
+    var downloadBtn = document.getElementById('download-btn');
+    var copyBtn     = document.getElementById('copy-btn');
+    var clearBtn    = document.getElementById('clear-btn');
+    var wordCount   = document.getElementById('word-count');
+    var charCount   = document.getElementById('char-count');
+    var toast       = document.getElementById('toast');
+
+    var toastTimer;
+    function showToast(msg) {
+      clearTimeout(toastTimer);
+      toast.textContent = msg;
+      toast.classList.add('show');
+      toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2000);
+    }
+
+    function updateCounts() {
+      var text  = content.value;
+      var words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+      var chars = text.length;
+      wordCount.textContent = words + ' word' + (words !== 1 ? 's' : '');
+      charCount.textContent = chars + ' character' + (chars !== 1 ? 's' : '');
+      downloadBtn.disabled  = text.trim() === '';
+    }
+
+    content.addEventListener('input', updateCounts);
+
+    content.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        var start = content.selectionStart;
+        var end   = content.selectionEnd;
+        content.value = content.value.substring(0, start) + '  ' + content.value.substring(end);
+        content.selectionStart = content.selectionEnd = start + 2;
+        updateCounts();
+      }
+    });
+
+    downloadBtn.addEventListener('click', function () {
+      var text = content.value;
+      if (!text.trim()) return;
+      var name = (filename.value.trim() || 'untitled') + '.md';
+      var blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Downloaded ' + name);
+    });
+
+    copyBtn.addEventListener('click', function () {
+      if (!content.value.trim()) { showToast('Nothing to copy'); return; }
+      navigator.clipboard.writeText(content.value).then(function () {
+        showToast('Copied to clipboard');
+      }).catch(function () {
+        content.select();
+        document.execCommand('copy');
+        showToast('Copied to clipboard');
+      });
+    });
+
+    clearBtn.addEventListener('click', function () {
+      if (!content.value.trim()) return;
+      content.value  = '';
+      filename.value = '';
+      updateCounts();
+      content.focus();
+      showToast('Cleared');
+    });
+
+    if ('serviceWorker' in navigator) {
+      var swCode = 'const CACHE="' + CACHE_NAME + '";' +
+        'self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll([self.location.href])));});' +
+        'self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));});' +
+        'self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const clone=res.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));return res;})));});';
+      var swBlob = new Blob([swCode], { type: 'text/javascript' });
+      navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+    }
+  </script>
+
+
+  <!-- ── Bug report ──────────────────────────────────────────────── -->
+  <style>
+    #kin-bug-backdrop {
+      display: none; position: fixed; inset: 0; z-index: 901;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(2px);
+    }
+    #kin-bug-sheet {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 902;
+      background: #17171f;
+      border-radius: 20px 20px 0 0;
+      border: 1px solid rgba(255,255,255,0.08); border-bottom: none;
+      padding: 0 20px 40px;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    #kin-bug-sheet.open { transform: translateY(0); }
+    #kin-bug-backdrop.open { display: block; }
+    .kin-br-handle { display: flex; justify-content: center; padding: 12px 0 4px; }
+    .kin-br-handle div { width: 36px; height: 4px; border-radius: 99px; background: rgba(255,255,255,0.15); }
+    .kin-br-head { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 20px; }
+    .kin-br-head h2 { color: #fff; font-size: 16px; font-weight: 600; margin: 0; }
+    .kin-br-head p  { color: rgba(255,255,255,0.35); font-size: 11px; margin: 3px 0 0; letter-spacing: 0.04em; }
+    .kin-br-close {
+      width: 30px !important; height: 30px !important; border-radius: 50%;
+      background: rgba(255,255,255,0.07); border: none;
+      color: rgba(255,255,255,0.5); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex: none !important; min-height: 0 !important;
+    }
+    .kin-br-label { display: block; color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 7px; }
+    .kin-br-field { margin-bottom: 14px; }
+    .kin-br-select-wrap { position: relative; }
+    .kin-br-select-wrap select {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      padding: 10px 36px 10px 12px; color: #fff; font-size: 13px;
+      appearance: none; cursor: pointer; outline: none; font-family: inherit;
+    }
+    .kin-br-select-wrap::after {
+      content: ''; position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+      border: 5px solid transparent; border-top-color: rgba(255,255,255,0.4); margin-top: 3px;
+    }
+    .kin-br-ta {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      padding: 10px 12px; color: #fff; font-size: 13px; font-family: inherit;
+      resize: none; outline: none; box-sizing: border-box;
+    }
+    .kin-br-ta::placeholder { color: rgba(255,255,255,0.25); }
+    .kin-br-anon { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .kin-br-anon-text div:first-child { color: #fff; font-size: 13px; }
+    .kin-br-anon-text div:last-child  { color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 2px; }
+    .kin-br-toggle {
+      width: 44px !important; height: 26px !important; border-radius: 99px;
+      background: #5b5ef4; border: none; cursor: pointer;
+      position: relative; transition: background 0.2s; flex: none !important; min-height: 0 !important;
+    }
+    .kin-br-toggle::after {
+      content: ''; position: absolute; top: 3px; left: calc(100% - 23px);
+      width: 20px; height: 20px; border-radius: 50%; background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3); transition: left 0.2s;
+    }
+    .kin-br-toggle.off { background: rgba(255,255,255,0.1); }
+    .kin-br-toggle.off::after { left: 3px; }
+    .kin-br-extras { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .kin-br-input {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 13px;
+      font-family: inherit; outline: none; width: 100%; box-sizing: border-box;
+    }
+    .kin-br-input::placeholder { color: rgba(255,255,255,0.25); }
+    .kin-br-submit {
+      width: 100%; padding: 13px; border-radius: 12px;
+      background: #5b5ef4; border: none; color: #fff;
+      font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+    .kin-br-success { text-align: center; padding: 28px 0 8px; }
+    .kin-br-success svg { display: block; margin: 0 auto 16px; }
+    .kin-br-success h3 { color: #fff; font-size: 17px; font-weight: 600; margin: 0 0 8px; }
+    .kin-br-success p  { color: rgba(255,255,255,0.4); font-size: 13px; line-height: 1.5; margin: 0 0 28px; }
+    .kin-br-done {
+      padding: 11px 32px; border-radius: 10px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7); font-size: 13px; cursor: pointer; font-family: inherit;
+    }
+  </style>
+
+  <!-- Backdrop -->
+  <div id="kin-bug-backdrop"></div>
+
+  <!-- Bug report sheet -->
+  <div id="kin-bug-sheet">
+    <div id="kin-br-form-view">
+      <div class="kin-br-handle"><div></div></div>
+      <div class="kin-br-head">
+        <div>
+          <h2>Report an issue</h2>
+          <p>KIN-019 — Markdown Download</p>
+        </div>
+        <button class="kin-br-close" id="kin-bug-close" aria-label="Close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="kin-br-form">
+        <div class="kin-br-field">
+          <label class="kin-br-label">Type</label>
+          <div class="kin-br-select-wrap">
+            <select name="type">
+              <option value="bug">🐛 Bug — something isn't working</option>
+              <option value="suggestion">💡 Suggestion — an idea or request</option>
+              <option value="other">💬 Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="kin-br-field">
+          <label class="kin-br-label">What happened?</label>
+          <textarea class="kin-br-ta" name="description" rows="3" placeholder="Describe the issue or idea…" required></textarea>
+        </div>
+        <div class="kin-br-anon">
+          <div class="kin-br-anon-text">
+            <div>Send anonymously</div>
+            <div>No name or email needed</div>
+          </div>
+          <button type="button" class="kin-br-toggle" id="kin-br-anon-toggle" aria-pressed="true"></button>
+        </div>
+        <div class="kin-br-extras" id="kin-br-extras" style="display:none">
+          <input class="kin-br-input" type="text" name="name" placeholder="Your name (optional)">
+        </div>
+        <button type="submit" class="kin-br-submit">Send report</button>
+      </form>
+    </div>
+    <div id="kin-br-success-view" style="display:none">
+      <div class="kin-br-handle"><div></div></div>
+      <div class="kin-br-success">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#2ea043" stroke-width="1.5"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#2ea043" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Thanks for the report</h3>
+        <p>We'll take a look. Your feedback<br>helps make Kin better for everyone.</p>
+        <button class="kin-br-done" id="kin-br-done">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    var btn      = document.getElementById('kin-bug-btn');
+    var backdrop = document.getElementById('kin-bug-backdrop');
+    var sheet    = document.getElementById('kin-bug-sheet');
+    var closeBtn = document.getElementById('kin-bug-close');
+    var doneBtn  = document.getElementById('kin-br-done');
+    var form     = document.getElementById('kin-br-form');
+    var formView = document.getElementById('kin-br-form-view');
+    var successView = document.getElementById('kin-br-success-view');
+    var anonToggle = document.getElementById('kin-br-anon-toggle');
+    var extras   = document.getElementById('kin-br-extras');
+    var anon     = true;
+
+    function openSheet() {
+      backdrop.classList.add('open');
+      sheet.style.display = 'block';
+      requestAnimationFrame(function() { sheet.classList.add('open'); });
+    }
+    function closeSheet() {
+      sheet.classList.remove('open');
+      setTimeout(function() {
+        sheet.style.display = 'none';
+        backdrop.classList.remove('open');
+        form.reset();
+        formView.style.display = 'block';
+        successView.style.display = 'none';
+        anon = true;
+        anonToggle.classList.remove('off');
+        extras.style.display = 'none';
+      }, 300);
+    }
+
+    btn.addEventListener('click', openSheet);
+    backdrop.addEventListener('click', closeSheet);
+    closeBtn.addEventListener('click', closeSheet);
+    doneBtn.addEventListener('click', closeSheet);
+
+    anonToggle.addEventListener('click', function() {
+      anon = !anon;
+      anonToggle.classList.toggle('off', !anon);
+      extras.style.display = anon ? 'none' : 'flex';
+    });
+
+    var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxBRGfOmtQUxyaBGjYVj2mtKinI7qlGm1v921K49TiBDP5RUY9CWK_M-vpLCm2HWJxhuA/exec';
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var data = new FormData(form);
+      var typeRaw = data.get('type') || '';
+      var formType = 'bug';
+      if (typeRaw.toLowerCase().indexOf('feature') !== -1) formType = 'idea';
+      else if (typeRaw.toLowerCase().indexOf('other') !== -1) formType = 'app_suggestion';
+      fetch(SHEETS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          form_type: 'bug_report',
+          subject: 'KIN-019 \u2014 Markdown Download',
+          app: 'KIN-019',
+          type: typeRaw,
+          description: data.get('description') || '',
+          name: anon ? '' : (data.get('name') || '')
+        })
+      }).catch(function() {});
+      formView.style.display = 'none';
+      successView.style.display = 'block';
+    });
+  })();
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"ed08ef5d66614d2b9d413d30457c0ae1","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
