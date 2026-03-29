@@ -361,6 +361,17 @@ When the user asks to create a new tool from the template, use the local scaffol
 
 ---
 
+## **Spec Review Rule**
+
+Before planning, generating, or editing code, review all documents in `/spec` that are relevant to the current tool or request.
+
+- Use the `/spec` folder as the source of truth for program requirements, styling direction, feature scope, and repository conventions beyond this file
+- Check for both general specs and tool-specific specs before making implementation decisions
+- If a spec conflicts with an older pattern in an existing file, follow the spec unless the user explicitly says otherwise
+- When updating a shared pattern, also update the relevant spec document so future work stays aligned
+
+---
+
 ## **Decision Filter**
 
 Before building anything, check:
