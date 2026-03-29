@@ -209,6 +209,413 @@
       gap: 20px;
     }
 
+    .view-switcher {
+      display: inline-grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .view-tab {
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: calc(var(--radius) - 4px);
+      background: transparent;
+      color: var(--text-dim);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .view-tab:hover,
+    .view-tab:focus-visible,
+    .view-tab.is-active {
+      background: var(--surface2);
+      color: var(--text);
+      outline: none;
+    }
+
+    .view-panel {
+      display: grid;
+      gap: 20px;
+    }
+
+    .view-panel[hidden] {
+      display: none;
+    }
+
+    .panel-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section-header {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-sub {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-mid);
+    }
+
+    .primary-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .field-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .field-inline {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .primary-result {
+      display: grid;
+      gap: 10px;
+      justify-items: end;
+      align-content: start;
+      text-align: right;
+    }
+
+    .primary-result-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .primary-result-value {
+      color: #000000;
+      font-size: clamp(34px, 6vw, 60px);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      white-space: nowrap;
+    }
+
+    body.dark .primary-result-value {
+      color: #ffffff;
+    }
+
+    .primary-result-major {
+      display: inline;
+    }
+
+    .primary-result-minor,
+    .primary-result-unit {
+      display: inline;
+      font-size: 0.45em;
+      letter-spacing: -0.01em;
+    }
+
+    .primary-result-minor {
+      margin-left: 1px;
+    }
+
+    .primary-result-unit {
+      margin-left: 4px;
+    }
+
+    .toggle-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+    }
+
+    .toggle-inline-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .toggle-inline-label.is-active {
+      color: var(--text);
+    }
+
+    .toggle-inline-switch {
+      position: relative;
+      width: 28px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .toggle-inline-switch input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .toggle-inline-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: var(--surface2);
+    }
+
+    .toggle-inline-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--text);
+      transition: transform 0.15s ease;
+      pointer-events: none;
+    }
+
+    .toggle-inline-switch input:checked + .toggle-inline-track + .toggle-inline-thumb {
+      transform: translateX(12px);
+    }
+
+    .toggle-inline-switch input:focus-visible + .toggle-inline-track {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .breakdown-grid,
+    .pay-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      display: grid;
+      gap: 8px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .stat-value.is-negative {
+      color: #c24545;
+    }
+
+    .period-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .period-toggle {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: repeat(3, 1fr);
+      min-width: 280px;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--surface2);
+    }
+
+    .period-toggle-indicator {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc((100% - 8px) / 3);
+      border-radius: 999px;
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .period-toggle-button {
+      position: relative;
+      z-index: 1;
+      min-height: 40px;
+      padding: 8px 16px;
+      border: 0;
+      background: transparent;
+      color: var(--text-dim);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .period-toggle-button.is-active {
+      color: var(--text);
+    }
+
+    .period-toggle-button:focus-visible {
+      outline: none;
+      color: var(--text);
+    }
+
+    .graph-shell {
+      display: grid;
+      gap: 16px;
+    }
+
+    .graph-stage {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .graph-axis {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .graph-bars {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: end;
+      min-height: 240px;
+      padding-top: 16px;
+    }
+
+    .graph-bar-group {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .graph-bar-stack {
+      width: 100%;
+      max-width: 180px;
+      height: 220px;
+      display: flex;
+      align-items: end;
+    }
+
+    .graph-bar {
+      position: relative;
+      width: 100%;
+      min-height: 72px;
+      border-radius: 12px 12px 6px 6px;
+      background: var(--accent);
+      overflow: hidden;
+    }
+
+    .graph-bar.is-hourly {
+      background: #8790b8;
+    }
+
+    .graph-bar-highlight {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24%;
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    body.dark .graph-bar-highlight {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .graph-bar-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .graph-bar-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .validation-message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: #f6e7e7;
+      color: #8e2f2f;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    body.dark .panel-card,
+    body.dark .view-switcher {
+      background: #252522;
+      border-color: #2e2e2b;
+    }
+
+    body.dark .view-tab:hover,
+    body.dark .view-tab:focus-visible,
+    body.dark .view-tab.is-active,
+    body.dark .period-toggle,
+    body.dark .stat-card {
+      background: #1c1c1a;
+    }
+
+    body.dark .period-toggle-indicator {
+      background: #252522;
+    }
+
     @media (max-width: 640px) {
       .wrap {
         padding: 44px 16px 64px;
@@ -216,6 +623,38 @@
 
       .tool-header {
         padding-right: 0;
+      }
+
+      .primary-grid,
+      .field-inline,
+      .breakdown-grid,
+      .pay-grid,
+      .graph-stage {
+        grid-template-columns: 1fr;
+      }
+
+      .primary-result {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .period-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .period-toggle {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .graph-axis {
+        writing-mode: horizontal-tb;
+        transform: none;
+      }
+
+      .graph-bars {
+        min-height: 0;
       }
     }
   </style>
@@ -269,7 +708,277 @@
     </header>
 
     <section class="tool-shell" aria-label="Tool layout">
-      <!-- Build the tool-specific UI inside this shell. -->
+      <nav class="view-switcher" aria-label="Calculator view">
+        <button class="view-tab is-active" type="button" data-view-tab="salary-to-hourly">Salary to Hourly</button>
+        <button class="view-tab" type="button" data-view-tab="hourly-to-salary">Hourly to Salary</button>
+      </nav>
+
+      <div class="validation-message" id="validation-message" aria-live="polite"></div>
+
+      <section class="view-panel" id="salary-to-hourly-view" data-view-panel="salary-to-hourly" aria-label="Salary to Hourly view">
+        <section class="panel-card" aria-labelledby="salary-hourly-primary-title">
+          <div class="section-header">
+            <div class="section-label">Primary</div>
+            <h2 class="section-title" id="salary-hourly-primary-title">Salary to Hourly</h2>
+            <p class="section-sub">Estimate what a salaried role is effectively worth per hour based on workload and paid time off.</p>
+          </div>
+
+          <div class="primary-grid">
+            <div class="field-stack">
+              <div class="field-group">
+                <label class="field-label" for="annual-salary">Annual salary</label>
+                <input id="annual-salary" type="number" inputmode="decimal" min="0" step="1000" placeholder="65000">
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="salary-hours-per-week">Average hours worked per week</label>
+                <input id="salary-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40">
+              </div>
+
+              <div class="field-inline">
+                <div class="field-group">
+                  <label class="field-label" for="vacation-amount">Vacation amount</label>
+                  <input id="vacation-amount" type="number" inputmode="decimal" min="0" step="0.5" placeholder="10">
+                </div>
+
+                <div class="field-group">
+                  <span class="field-label">Unit</span>
+                  <label class="toggle-inline" for="vacation-unit-toggle">
+                    <span class="toggle-inline-label is-active">Days</span>
+                    <span class="toggle-inline-switch">
+                      <input id="vacation-unit-toggle" type="checkbox" aria-label="Toggle vacation unit between days and weeks">
+                      <span class="toggle-inline-track" aria-hidden="true"></span>
+                      <span class="toggle-inline-thumb" aria-hidden="true"></span>
+                    </span>
+                    <span class="toggle-inline-label">Weeks</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="primary-result" aria-live="polite">
+              <div class="primary-result-label">Hourly Equivalent</div>
+              <div class="primary-result-value" id="salary-hourly-main-result">
+                <span class="primary-result-major">$31</span><span class="primary-result-minor">.25</span><span class="primary-result-unit">/hr</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="salary-hourly-breakdown-title">
+          <div class="section-header">
+            <div class="section-label">Breakdown</div>
+            <h2 class="section-title" id="salary-hourly-breakdown-title">What shapes the hourly equivalent</h2>
+          </div>
+
+          <div class="breakdown-grid">
+            <article class="stat-card">
+              <div class="stat-label">Base Hourly Rate</div>
+              <div class="stat-value" id="salary-hourly-base-rate">$31.25</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Value of Paid Vacation</div>
+              <div class="stat-value is-negative" id="salary-hourly-vacation-value">-$2,500</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Value of Overtime When Hourly</div>
+              <div class="stat-value" id="salary-hourly-overtime-value">$0</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="salary-hourly-pay-title">
+          <div class="period-row">
+            <div class="section-header">
+              <div class="section-label">Pay Breakdown</div>
+              <h2 class="section-title" id="salary-hourly-pay-title">Compare common pay periods</h2>
+            </div>
+
+            <div class="period-toggle" aria-label="Pay period">
+              <div class="period-toggle-indicator" aria-hidden="true"></div>
+              <button class="period-toggle-button is-active" type="button" data-period="yearly">Yearly</button>
+              <button class="period-toggle-button" type="button" data-period="monthly">Monthly</button>
+              <button class="period-toggle-button" type="button" data-period="weekly">Weekly</button>
+            </div>
+          </div>
+
+          <div class="pay-grid">
+            <article class="stat-card">
+              <div class="stat-label">Total Pay</div>
+              <div class="stat-value" id="salary-hourly-total-pay">$65,000</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Overtime Value</div>
+              <div class="stat-value" id="salary-hourly-period-overtime">$0</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Current Period</div>
+              <div class="stat-value" id="salary-hourly-period-label">Yearly</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="salary-hourly-graph-title">
+          <div class="section-header">
+            <div class="section-label">Graph</div>
+            <h2 class="section-title" id="salary-hourly-graph-title">Salary and hourly annual comparison</h2>
+          </div>
+
+          <div class="graph-shell">
+            <div class="graph-stage">
+              <div class="graph-axis">Annual money earned</div>
+              <div class="graph-bars">
+                <article class="graph-bar-group">
+                  <div class="graph-bar-stack">
+                    <div class="graph-bar">
+                      <div class="graph-bar-highlight" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                  <div class="graph-bar-value" id="salary-graph-salary-value">$65,000</div>
+                  <div class="graph-bar-label">Salary</div>
+                </article>
+                <article class="graph-bar-group">
+                  <div class="graph-bar-stack">
+                    <div class="graph-bar is-hourly">
+                      <div class="graph-bar-highlight" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                  <div class="graph-bar-value" id="salary-graph-hourly-value">$65,000</div>
+                  <div class="graph-bar-label">Hourly</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="view-panel" id="hourly-to-salary-view" data-view-panel="hourly-to-salary" aria-label="Hourly to Salary view" hidden>
+        <section class="panel-card" aria-labelledby="hourly-salary-primary-title">
+          <div class="section-header">
+            <div class="section-label">Primary</div>
+            <h2 class="section-title" id="hourly-salary-primary-title">Hourly to Salary</h2>
+            <p class="section-sub">Estimate what an hourly job annualizes to, including overtime when it applies.</p>
+          </div>
+
+          <div class="primary-grid">
+            <div class="field-stack">
+              <div class="field-group">
+                <label class="field-label" for="hourly-rate">Hourly rate</label>
+                <input id="hourly-rate" type="number" inputmode="decimal" min="0" step="0.25" placeholder="25">
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="hourly-hours-per-week">Average hours worked per week</label>
+                <input id="hourly-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40">
+              </div>
+
+              <div class="field-group">
+                <span class="field-label">Overtime</span>
+                <label class="toggle-inline" for="overtime-toggle">
+                  <span class="toggle-inline-label is-active">Off</span>
+                  <span class="toggle-inline-switch">
+                    <input id="overtime-toggle" type="checkbox" aria-label="Toggle overtime on or off">
+                    <span class="toggle-inline-track" aria-hidden="true"></span>
+                    <span class="toggle-inline-thumb" aria-hidden="true"></span>
+                  </span>
+                  <span class="toggle-inline-label">On</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="primary-result" aria-live="polite">
+              <div class="primary-result-label">Salary Equivalent</div>
+              <div class="primary-result-value" id="hourly-salary-main-result">
+                <span class="primary-result-major">$52,000</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="hourly-salary-breakdown-title">
+          <div class="section-header">
+            <div class="section-label">Breakdown</div>
+            <h2 class="section-title" id="hourly-salary-breakdown-title">What shapes the salary equivalent</h2>
+          </div>
+
+          <div class="breakdown-grid">
+            <article class="stat-card">
+              <div class="stat-label">Base Salary Equivalent</div>
+              <div class="stat-value" id="hourly-salary-base-rate">$52,000</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Overtime Value</div>
+              <div class="stat-value" id="hourly-salary-overtime-value">$0</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Effective Salary Equivalent</div>
+              <div class="stat-value" id="hourly-salary-effective-value">$52,000</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="hourly-salary-pay-title">
+          <div class="period-row">
+            <div class="section-header">
+              <div class="section-label">Pay Breakdown</div>
+              <h2 class="section-title" id="hourly-salary-pay-title">Compare common pay periods</h2>
+            </div>
+
+            <div class="period-toggle" aria-label="Pay period">
+              <div class="period-toggle-indicator" aria-hidden="true"></div>
+              <button class="period-toggle-button is-active" type="button" data-period="yearly">Yearly</button>
+              <button class="period-toggle-button" type="button" data-period="monthly">Monthly</button>
+              <button class="period-toggle-button" type="button" data-period="weekly">Weekly</button>
+            </div>
+          </div>
+
+          <div class="pay-grid">
+            <article class="stat-card">
+              <div class="stat-label">Total Pay</div>
+              <div class="stat-value" id="hourly-salary-total-pay">$52,000</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Base Pay Portion</div>
+              <div class="stat-value" id="hourly-salary-base-pay">$52,000</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-label">Overtime Portion</div>
+              <div class="stat-value" id="hourly-salary-period-overtime">$0</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel-card" aria-labelledby="hourly-salary-graph-title">
+          <div class="section-header">
+            <div class="section-label">Graph</div>
+            <h2 class="section-title" id="hourly-salary-graph-title">Hourly and salary annual comparison</h2>
+          </div>
+
+          <div class="graph-shell">
+            <div class="graph-stage">
+              <div class="graph-axis">Annual money earned</div>
+              <div class="graph-bars">
+                <article class="graph-bar-group">
+                  <div class="graph-bar-stack">
+                    <div class="graph-bar"></div>
+                  </div>
+                  <div class="graph-bar-value" id="hourly-graph-salary-value">$52,000</div>
+                  <div class="graph-bar-label">Salary</div>
+                </article>
+                <article class="graph-bar-group">
+                  <div class="graph-bar-stack">
+                    <div class="graph-bar is-hourly">
+                      <div class="graph-bar-highlight" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                  <div class="graph-bar-value" id="hourly-graph-hourly-value">$52,000</div>
+                  <div class="graph-bar-label">Hourly</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
     </section>
   </main>
 
@@ -327,11 +1036,97 @@
       elements.button.addEventListener("click", toggleTheme);
     }
 
-    // Cache tool-specific DOM elements here when starting a new utility.
-    function getElements() {}
+    // Cache tool-specific DOM elements so the calculator logic can reuse them.
+    function getElements() {
+      const salaryToHourlyView = document.getElementById("salary-to-hourly-view");
+      const hourlyToSalaryView = document.getElementById("hourly-to-salary-view");
+
+      return {
+        validationMessage: document.getElementById("validation-message"),
+        viewTabs: Array.from(document.querySelectorAll("[data-view-tab]")),
+        viewPanels: Array.from(document.querySelectorAll("[data-view-panel]")),
+        views: {
+          salaryToHourly: salaryToHourlyView,
+          hourlyToSalary: hourlyToSalaryView
+        },
+        salaryToHourly: {
+          root: salaryToHourlyView,
+          annualSalaryInput: document.getElementById("annual-salary"),
+          hoursPerWeekInput: document.getElementById("salary-hours-per-week"),
+          vacationAmountInput: document.getElementById("vacation-amount"),
+          vacationUnitToggle: document.getElementById("vacation-unit-toggle"),
+          vacationUnitLabels: salaryToHourlyView
+            ? Array.from(salaryToHourlyView.querySelectorAll(".toggle-inline-label"))
+            : [],
+          periodButtons: salaryToHourlyView
+            ? Array.from(salaryToHourlyView.querySelectorAll("[data-period]"))
+            : [],
+          mainResult: document.getElementById("salary-hourly-main-result"),
+          baseRate: document.getElementById("salary-hourly-base-rate"),
+          vacationValue: document.getElementById("salary-hourly-vacation-value"),
+          overtimeValue: document.getElementById("salary-hourly-overtime-value"),
+          totalPay: document.getElementById("salary-hourly-total-pay"),
+          periodOvertime: document.getElementById("salary-hourly-period-overtime"),
+          periodLabel: document.getElementById("salary-hourly-period-label"),
+          graphSalaryValue: document.getElementById("salary-graph-salary-value"),
+          graphHourlyValue: document.getElementById("salary-graph-hourly-value")
+        },
+        hourlyToSalary: {
+          root: hourlyToSalaryView,
+          hourlyRateInput: document.getElementById("hourly-rate"),
+          hoursPerWeekInput: document.getElementById("hourly-hours-per-week"),
+          overtimeToggle: document.getElementById("overtime-toggle"),
+          overtimeLabels: hourlyToSalaryView
+            ? Array.from(hourlyToSalaryView.querySelectorAll(".toggle-inline-label"))
+            : [],
+          periodButtons: hourlyToSalaryView
+            ? Array.from(hourlyToSalaryView.querySelectorAll("[data-period]"))
+            : [],
+          mainResult: document.getElementById("hourly-salary-main-result"),
+          baseRate: document.getElementById("hourly-salary-base-rate"),
+          overtimeValue: document.getElementById("hourly-salary-overtime-value"),
+          effectiveValue: document.getElementById("hourly-salary-effective-value"),
+          totalPay: document.getElementById("hourly-salary-total-pay"),
+          basePay: document.getElementById("hourly-salary-base-pay"),
+          periodOvertime: document.getElementById("hourly-salary-period-overtime"),
+          graphSalaryValue: document.getElementById("hourly-graph-salary-value"),
+          graphHourlyValue: document.getElementById("hourly-graph-hourly-value")
+        }
+      };
+    }
+
+    // Return the currently active pay period for the requested view.
+    function getSelectedPayPeriod(viewRoot) {
+      const activeButton = viewRoot.querySelector(".period-toggle-button.is-active");
+      return activeButton ? activeButton.dataset.period : "yearly";
+    }
 
     // Read the current tool state here and return a normalized options object.
-    function getOptions() {}
+    function getOptions() {
+      const elements = getElements();
+      const activeViewTab = elements.viewTabs.find((tab) => tab.classList.contains("is-active"));
+      const activeView = activeViewTab ? activeViewTab.dataset.viewTab : "salary-to-hourly";
+      const vacationUnit = elements.salaryToHourly.vacationUnitToggle.checked ? "weeks" : "days";
+
+      return {
+        activeView,
+        payPeriod: {
+          salaryToHourly: getSelectedPayPeriod(elements.salaryToHourly.root),
+          hourlyToSalary: getSelectedPayPeriod(elements.hourlyToSalary.root)
+        },
+        salaryToHourly: {
+          annualSalary: Number.parseFloat(elements.salaryToHourly.annualSalaryInput.value) || 0,
+          hoursPerWeek: Number.parseFloat(elements.salaryToHourly.hoursPerWeekInput.value) || 0,
+          vacationAmount: Number.parseFloat(elements.salaryToHourly.vacationAmountInput.value) || 0,
+          vacationUnit
+        },
+        hourlyToSalary: {
+          hourlyRate: Number.parseFloat(elements.hourlyToSalary.hourlyRateInput.value) || 0,
+          hoursPerWeek: Number.parseFloat(elements.hourlyToSalary.hoursPerWeekInput.value) || 0,
+          overtimeEnabled: elements.hourlyToSalary.overtimeToggle.checked
+        }
+      };
+    }
 
     // Attach tool-specific listeners here so the UI updates immediately.
     function bindEvents() {}
