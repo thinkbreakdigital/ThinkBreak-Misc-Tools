@@ -364,6 +364,75 @@
       box-shadow: var(--shadow-soft);
     }
 
+    .copy-button {
+      min-height: 44px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.15s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .copy-button:hover,
+    .copy-button:focus-visible {
+      background: #f3f2ee;
+      border-color: var(--border-hover);
+      outline: none;
+    }
+
+    .copy-button:active {
+      background: #ffffff;
+      border-color: #b8b5ab;
+      transform: scale(0.985);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .copy-button:disabled {
+      cursor: not-allowed;
+      background: #eceae4;
+      color: #9c9a94;
+      border-color: #dad7cf;
+      opacity: 1;
+      transform: none;
+      box-shadow: none;
+    }
+
+    body.dark .copy-button {
+      background: #252522;
+      border-color: #2e2e2b;
+      color: var(--text);
+    }
+
+    body.dark .copy-button:hover,
+    body.dark .copy-button:focus-visible {
+      background: #30302c;
+      border-color: #4a4a45;
+      outline: none;
+    }
+
+    body.dark .copy-button:active {
+      background: #1a1a18;
+      border-color: #232320;
+      transform: scale(0.985);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    body.dark .copy-button:disabled {
+      background: #1c1c1a;
+      color: #5f5f5a;
+      border-color: #2a2a27;
+    }
+
     @media (min-width: 700px) {
       .controls-row {
         grid-template-columns: 1.15fr 1fr;
@@ -465,7 +534,7 @@
             </label>
 
             <label class="toggle-row" for="strip-punctuation">
-              <span class="toggle-label">Strip punctuation</span>
+              <span class="toggle-label">Strip non-essential punctuation</span>
               <span class="toggle-switch">
                 <input id="strip-punctuation" type="checkbox">
                 <span class="toggle-track" aria-hidden="true"></span>
@@ -496,6 +565,7 @@
           <p class="field-help">The cleaned result will appear here.</p>
         </div>
         <div class="output-card" id="output-text"></div>
+        <button class="copy-button" id="copy-text" type="button" disabled>Copy Text</button>
       </div>
 
     </section>
@@ -519,7 +589,8 @@
         collapseBlankLines: document.getElementById("collapse-blank-lines"),
         stripPunctuation: document.getElementById("strip-punctuation"),
         caseMode: document.getElementById("case-mode"),
-        outputText: document.getElementById("output-text")
+        outputText: document.getElementById("output-text"),
+        copyButton: document.getElementById("copy-text")
       };
     }
 
@@ -565,6 +636,10 @@
       if (elements.caseMode) {
         elements.caseMode.addEventListener("change", updateOutput);
       }
+
+      if (elements.copyButton) {
+        elements.copyButton.addEventListener("click", copyOutput);
+      }
     }
 
     // Run the full cleaning pipeline from raw input to final rendered output.
@@ -574,6 +649,7 @@
       const result = cleanText(options.input, options);
 
       elements.outputText.textContent = result;
+      elements.copyButton.disabled = !result;
     }
 
     // Apply all text cleaning and formatting steps in the correct order and
@@ -587,6 +663,10 @@
 
       if (options.collapseBlankLines) {
         result = collapseBlankLines(result);
+      }
+
+      if (options.stripPunctuation) {
+        result = stripPunctuation(result);
       }
 
       result = applyTransformation(result, options);
@@ -642,29 +722,114 @@
         keptLines.push(line);
       }
 
+      while (keptLines.length > 0 && keptLines.at(-1).trim() === "") {
+        keptLines.pop();
+      }
+
       return keptLines.join("\n");
     }
 
     // Remove punctuation characters that should not survive standardized output
     // when the punctuation cleanup toggle is enabled.
-    function stripPunctuation(text) {}
+    function stripPunctuation(text) {
+      const isLetterOrNumber = (character) => /[\p{L}\p{N}]/u.test(character);
+      const isApprovedSeparator = (character) => character === " "
+        || character === "\t"
+        || character === "\n"
+        || character === "-"
+        || character === "_"
+        || character === ",";
+
+      function getNextRelevantCharacter(startIndex) {
+        for (let index = startIndex; index < text.length; index += 1) {
+          const character = text[index];
+
+          if (isLetterOrNumber(character) || isApprovedSeparator(character)) {
+            return character;
+          }
+        }
+
+        return "";
+      }
+
+      let result = "";
+
+      for (let index = 0; index < text.length; index += 1) {
+        const character = text[index];
+
+        if (isLetterOrNumber(character) || isApprovedSeparator(character)) {
+          result += character;
+          continue;
+        }
+
+        const previousCharacter = result.at(-1) || "";
+        const nextCharacter = getNextRelevantCharacter(index + 1);
+
+        if (isLetterOrNumber(previousCharacter) && isLetterOrNumber(nextCharacter)) {
+          result += " ";
+        }
+      }
+
+      return result;
+    }
 
     // Split the input into word and separator tokens so formatting modes can
     // preserve separators when needed or remove them for identifier formats.
-    function tokenizeText(text) {}
+    function tokenizeText(text) {
+      const tokens = [];
+      let currentValue = "";
+      let currentType = "";
+
+      for (const character of text) {
+        const nextType = isSeparator(character) ? "separator" : "word";
+
+        if (!currentValue) {
+          currentValue = character;
+          currentType = nextType;
+          continue;
+        }
+
+        if (nextType === currentType) {
+          currentValue += character;
+          continue;
+        }
+
+        tokens.push({ type: currentType, value: currentValue });
+        currentValue = character;
+        currentType = nextType;
+      }
+
+      if (currentValue) {
+        tokens.push({ type: currentType, value: currentValue });
+      }
+
+      return tokens;
+    }
 
     // Decide whether a token should be treated as a separator such as a space,
     // dash, underscore, comma, tab, or line break.
-    function isSeparator(token) {}
+    function isSeparator(token) {
+      return token !== "" && /^[ \t\n,_-]+$/.test(token);
+    }
 
     // Route the cleaned text or token list through the selected transformation
     // mode and return the transformed output.
     function applyTransformation(text, options) {
       switch (options.caseMode) {
+        case "sentence":
+          return toSentenceCase(text);
+        case "title":
+          return toTitleCase(text);
         case "lower":
           return text.toLowerCase();
         case "upper":
           return text.toUpperCase();
+        case "camel":
+          return toCamelCase(text);
+        case "pascal":
+          return toPascalCase(text);
+        case "spongebob":
+          return toSpongebobCase(text);
         case "none":
         default:
           return text;
@@ -673,35 +838,141 @@
 
     // Convert text to sentence case using practical sentence boundaries while
     // preserving separator structure where appropriate.
-    function toSentenceCase(text) {}
+    function toSentenceCase(text) {
+      const normalizedText = text.toLowerCase();
+      const isLetter = (character) => /[\p{L}]/u.test(character);
+      let result = "";
+      let shouldCapitalizeNextLetter = true;
+
+      for (const character of normalizedText) {
+        if (isLetter(character) && shouldCapitalizeNextLetter) {
+          result += character.toUpperCase();
+          shouldCapitalizeNextLetter = false;
+          continue;
+        }
+
+        result += character;
+
+        if (character === "." || character === "!" || character === "?" || character === "\n") {
+          shouldCapitalizeNextLetter = true;
+        } else if (isLetter(character)) {
+          shouldCapitalizeNextLetter = false;
+        }
+      }
+
+      return result;
+    }
 
     // Convert each detected word to title case while preserving the original
     // separators exactly where they appeared in the input.
-    function toTitleCase(text) {}
+    function toTitleCase(text) {
+      return tokenizeText(text)
+        .map((token) => token.type === "word"
+          ? capitalizeWord(token.value)
+          : token.value)
+        .join("");
+    }
 
     // Convert separated words into camelCase by removing separators, lowercasing
     // the first word, and capitalizing each following word.
-    function toCamelCase(text) {}
+    function toCamelCase(text) {
+      return text
+        .split("\n")
+        .map((line) => {
+          const words = tokenizeText(line)
+            .filter((token) => token.type === "word")
+            .map((token) => token.value);
+
+          if (words.length === 0) {
+            return "";
+          }
+
+          return words
+            .map((word, index) => index === 0
+              ? normalizeWord(word)
+              : capitalizeWord(word))
+            .join("");
+        })
+        .join("\n");
+    }
 
     // Convert separated words into PascalCase by removing separators and
     // capitalizing each detected word.
-    function toPascalCase(text) {}
+    function toPascalCase(text) {
+      return text
+        .split("\n")
+        .map((line) => tokenizeText(line)
+          .filter((token) => token.type === "word")
+          .map((token) => capitalizeWord(token.value))
+          .join(""))
+        .join("\n");
+    }
 
     // Alternate uppercase and lowercase across letters only while leaving spaces,
     // punctuation, and other separators untouched.
-    function toSpongebobCase(text) {}
+    function toSpongebobCase(text) {
+      const isLetter = (character) => /[\p{L}]/u.test(character);
+      let result = "";
+      let shouldUppercase = false;
+
+      for (const character of text) {
+        if (character === "\n") {
+          result += character;
+          shouldUppercase = false;
+          continue;
+        }
+
+        if (!isLetter(character)) {
+          result += character;
+          continue;
+        }
+
+        result += shouldUppercase
+          ? character.toUpperCase()
+          : character.toLowerCase();
+
+        shouldUppercase = !shouldUppercase;
+      }
+
+      return result;
+    }
 
     // Capitalize the first letter of a word and lowercase the remaining letters
     // so word-level formatting stays consistent across modes.
-    function capitalizeWord(word) {}
+    function capitalizeWord(word) {
+      const normalizedWord = normalizeWord(word);
+
+      if (!normalizedWord) {
+        return "";
+      }
+
+      return normalizedWord.charAt(0).toUpperCase() + normalizedWord.slice(1);
+    }
 
     // Lowercase a word before identifier-style transformations so casing starts
     // from a predictable normalized baseline.
-    function normalizeWord(word) {}
+    function normalizeWord(word) {
+      return word.toLowerCase();
+    }
 
     // Copy the cleaned output to the clipboard when the user presses a copy
     // button, if that control is included in the final UI.
-    function copyOutput() {}
+    async function copyOutput() {
+      const elements = getElements();
+      const value = elements.outputText.textContent;
+
+      if (!value) {
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(value);
+      }
+      catch {
+        elements.outputText.textContent = "Unable to copy text in this browser.";
+        elements.copyButton.disabled = true;
+      }
+    }
 
     // Check the system color scheme so the page can default to the user's device
     // preference when no manual theme selection has been saved yet.

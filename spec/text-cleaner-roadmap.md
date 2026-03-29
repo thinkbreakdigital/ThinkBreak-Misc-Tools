@@ -288,6 +288,7 @@ Recommended approach:
 
 Important:
 - this should preserve single intentional paragraph breaks
+- do not leave a trailing blank line after the final content line
 
 ### 11. Implement `stripPunctuation(text)`
 
@@ -506,6 +507,10 @@ Examples:
 Important:
 - line breaks count as separators
 - punctuation separators are removed in final output
+- process each line independently and preserve line breaks in the final output
+
+Bulk example:
+- `first_file-name\nsecond/file.txt` -> `firstFileName\nsecondFileTxt`
 
 ### 20. Implement `toPascalCase(text)`
 
@@ -522,6 +527,12 @@ Examples:
 - `hello_world-test` -> `HelloWorldTest`
 - `multi line text` -> `MultiLineText`
 
+Important:
+- process each line independently and preserve line breaks in the final output
+
+Bulk example:
+- `first_file-name\nsecond/file.txt` -> `FirstFileName\nSecondFileTxt`
+
 ### 21. Implement `toSpongebobCase(text)`
 
 Purpose:
@@ -531,6 +542,7 @@ Rules:
 - preserve all original characters
 - alternate only when the current character is a letter
 - do not let spaces, punctuation, underscores, dashes, commas, or line breaks advance the alternation pattern
+- reset the alternating pattern after each line break so each new line starts from lowercase again
 
 Recommended approach:
 1. keep a boolean flag like `shouldUppercase`
@@ -543,6 +555,9 @@ Recommended approach:
 
 Example:
 - `hello_world-test` -> `hElLo_wOrLd-TeSt`
+
+Bulk example:
+- `first_line\nsecond_line` -> `fIrSt_lInE\nsEcOnD_lInE`
 
 ### 22. Implement `toSentenceCase(text)`
 
