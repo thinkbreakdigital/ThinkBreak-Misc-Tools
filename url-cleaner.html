@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Url Cleaner</title>
+  <title>URL Cleaner</title>
   <meta name="theme-color" content="#FAFAF7" id="theme-color-meta">
   <style>
     :root {
@@ -198,7 +198,7 @@
     }
 
     textarea {
-      min-height: 240px;
+      min-height: 120px;
       resize: vertical;
       line-height: 1.7;
       tab-size: 2;
@@ -207,6 +207,104 @@
     .tool-shell {
       display: grid;
       gap: 20px;
+    }
+
+    .field-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .output-card {
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-word;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .copy-button {
+      min-height: 44px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.15s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .copy-button:hover,
+    .copy-button:focus-visible {
+      background: #f3f2ee;
+      border-color: var(--border-hover);
+      outline: none;
+    }
+
+    .copy-button:active {
+      background: #ffffff;
+      border-color: #b8b5ab;
+      transform: scale(0.985);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    .copy-button:disabled {
+      cursor: not-allowed;
+      background: #eceae4;
+      color: #9c9a94;
+      border-color: #dad7cf;
+      opacity: 1;
+      transform: none;
+      box-shadow: none;
+    }
+
+    body.dark .output-card,
+    body.dark .copy-button {
+      background: #252522;
+      border-color: #2e2e2b;
+      color: var(--text);
+    }
+
+    body.dark .copy-button:hover,
+    body.dark .copy-button:focus-visible {
+      background: #30302c;
+      border-color: #4a4a45;
+      outline: none;
+    }
+
+    body.dark .copy-button:active {
+      background: #1a1a18;
+      border-color: #232320;
+      transform: scale(0.985);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    body.dark .copy-button:disabled {
+      background: #1c1c1a;
+      color: #5f5f5a;
+      border-color: #2a2a27;
     }
 
     @media (max-width: 640px) {
@@ -264,12 +362,28 @@
   <main class="wrap">
     <header class="tool-header">
       <div class="brand-label">ThinkBreak</div>
-      <h1 class="tool-title">Url Cleaner</h1>
+      <h1 class="tool-title">URL Cleaner</h1>
       <p class="tool-sub">Enter a URL with trackers and IDs to clean it.</p>
     </header>
 
     <section class="tool-shell" aria-label="Tool layout">
-      <!-- Build the tool-specific UI inside this shell. -->
+      <div class="field-stack">
+        <label class="field-label" for="input-url">Input URL</label>
+        <textarea
+          id="input-url"
+          placeholder="Paste a URL or bare domain here..."
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off"
+        ></textarea>
+      </div>
+
+      <div class="field-stack">
+        <div class="field-label">Cleaned URL</div>
+        <div class="output-card" id="output-url" aria-live="polite"></div>
+      </div>
+
+      <button class="copy-button" id="copy-url" type="button" disabled>Copy URL</button>
     </section>
   </main>
 
@@ -327,17 +441,156 @@
       elements.button.addEventListener("click", toggleTheme);
     }
 
-    // Cache tool-specific DOM elements here when starting a new utility.
-    function getElements() {}
+    // Cache the URL cleaner elements so the page can read the current input,
+    // update the cleaned output, and copy the result without repeated lookups.
+    function getElements() {
+      return {
+        body: document.body,
+        themeButton: document.getElementById("theme-btn"),
+        themeColorMeta: document.getElementById("theme-color-meta"),
+        sunIcon: document.getElementById("theme-icon-sun"),
+        moonIcon: document.getElementById("theme-icon-moon"),
+        inputUrl: document.getElementById("input-url"),
+        outputUrl: document.getElementById("output-url"),
+        copyButton: document.getElementById("copy-url")
+      };
+    }
 
-    // Read the current tool state here and return a normalized options object.
-    function getOptions() {}
+    // Return the raw user input in a small predictable object so the cleaner
+    // logic stays separate from the DOM structure.
+    function getInputState() {
+      const elements = getElements();
 
-    // Attach tool-specific listeners here so the UI updates immediately.
-    function bindEvents() {}
+      return {
+        rawUrl: elements.inputUrl.value
+      };
+    }
 
-    // Run the tool's main input-to-output workflow here.
-    function updateOutput() {}
+    // Attach the shared theme button plus the URL cleaner input and copy
+    // events so the page responds immediately as the user types.
+    function bindEvents() {
+      const elements = getElements();
+
+      elements.inputUrl.addEventListener("input", updateOutput);
+      elements.copyButton.addEventListener("click", copyCleanedUrl);
+    }
+
+    // Run the URL cleaning flow and render either the cleaned result or a
+    // simple plain-language message when the input is empty or invalid.
+    function updateOutput() {
+      const elements = getElements();
+      const state = getInputState();
+      const result = cleanUrl(state.rawUrl);
+
+      elements.outputUrl.textContent = result.output;
+      elements.copyButton.disabled = !result.canCopy;
+    }
+
+    // Normalize a pasted value into a safer cleaned URL by trimming whitespace,
+    // accepting bare domains, and removing common tracking parameters.
+    function cleanUrl(input) {
+      const rawValue = input.trim();
+
+      if (!rawValue) {
+        return {
+          output: "",
+          canCopy: false
+        };
+      }
+
+      const candidate = normalizeUrlCandidate(rawValue);
+
+      if (!candidate) {
+        return {
+          output: "Enter a valid URL.",
+          canCopy: false
+        };
+      }
+
+      try {
+        const parsedUrl = new URL(candidate);
+        const cleanedUrl = finalizeUrl(parsedUrl);
+
+        return {
+          output: cleanedUrl,
+          canCopy: true
+        };
+      }
+      catch {
+        return {
+          output: "Enter a valid URL.",
+          canCopy: false
+        };
+      }
+    }
+
+    // Trim wrapping spaces and add https:// to bare domains so normal URLs and
+    // pasted hostnames can use the same parsing flow.
+    function normalizeUrlCandidate(value) {
+      const trimmed = value.trim();
+
+      if (!trimmed) {
+        return "";
+      }
+
+      if (/^[a-z][a-z\d+\-.]*:\/\//i.test(trimmed)) {
+        return trimmed;
+      }
+
+      if (/^(localhost|[\w-]+(\.[\w-]+)+)(:\d+)?([/?#].*)?$/i.test(trimmed)) {
+        return "https://" + trimmed;
+      }
+
+      return trimmed;
+    }
+
+    // Remove common tracking parameters, lowercase the hostname, and return a
+    // clean URL string without a fragment or unnecessary trailing slash.
+    function finalizeUrl(url) {
+      const trackingParamPattern = /^(utm_[\w-]+|fbclid|gclid|dclid|gbraid|wbraid|mc_cid|mc_eid|igshid|mkt_tok|ref_src)$/i;
+      const removableParams = [];
+
+      url.hostname = url.hostname.toLowerCase();
+      url.hash = "";
+
+      url.searchParams.forEach((value, key) => {
+        if (trackingParamPattern.test(key)) {
+          removableParams.push(key);
+        }
+      });
+
+      removableParams.forEach((key) => {
+        url.searchParams.delete(key);
+      });
+
+      if (!url.search) {
+        url.search = "";
+      }
+
+      if (url.pathname.length > 1) {
+        url.pathname = url.pathname.replace(/\/+$/, "");
+      }
+
+      return url.toString();
+    }
+
+    // Copy the current cleaned URL when there is a valid result available.
+    async function copyCleanedUrl() {
+      const elements = getElements();
+      const value = elements.outputUrl.textContent;
+
+      if (!value) {
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(value);
+      }
+      catch {
+        elements.outputUrl.textContent = "Unable to copy URL in this browser.";
+        elements.copyButton.disabled = true;
+      }
+    }
 
     // Initialize the shared theme system and then the tool-specific logic.
     function init() {
