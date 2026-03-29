@@ -49,6 +49,7 @@ Guidelines:
 - Borders should be subtle, not dominant.
 - Accent color should be used sparingly for focus or active states.
 - Disabled or secondary labels should use the dim text token.
+- In dark mode, override text tokens at the theme level instead of hard-coding text colors per element.
 
 ## Shape Rules
 
@@ -83,6 +84,7 @@ Guidelines:
 - Use clear borders, readable padding, and strong focus states.
 - Textareas should be vertically resizable when practical.
 - Focus styling should come from the accent token rather than browser-default blue unless the user requests otherwise.
+- If dark mode needs a different focus border than the light theme accent, define that as an intentional dark-theme override and apply it consistently to all form controls.
 
 ## Toggle Rules
 
@@ -122,6 +124,8 @@ Do not add extra badges, reassurance copy, or feature summaries unless explicitl
 - Dark mode should invert contrast thoughtfully rather than simply reversing colors.
 - Inputs, cards, and controls need their own dark surfaces and border values.
 - Secondary text should remain readable in dark mode without becoming too bright.
+- Prefer softer gray text in dark mode over bright near-white defaults when the UI should feel quieter and less harsh.
+- Set dark-mode text, helper text, and placeholder text through the shared text tokens so titles, labels, and form controls stay in sync.
 
 ## Reusable Class Pattern Guidance
 

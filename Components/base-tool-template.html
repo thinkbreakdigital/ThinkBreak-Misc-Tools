@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Url Cleaner</title>
+  <title>{{TITLE}}</title>
   <meta name="theme-color" content="#FAFAF7" id="theme-color-meta">
   <style>
     :root {
@@ -43,20 +43,23 @@
     }
 
     body.dark {
+      --text: #969696;
+      --text-mid: #969696;
+      --text-dim: #7b7b7b;
       background: #111110;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark .wrap {
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark .brand-label {
-      color: #5c5b54;
+      color: var(--text-dim);
     }
 
     body.dark .tool-title {
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark input,
@@ -64,24 +67,24 @@
     body.dark textarea {
       background: #252522;
       border-color: #2e2e2b;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark input::placeholder,
     body.dark textarea::placeholder {
-      color: #5c5b54;
+      color: var(--text-dim);
     }
 
     body.dark input:focus,
     body.dark select:focus,
     body.dark textarea:focus {
-      border-color: #7eb88a;
+      border-color: #4d4e94;
     }
 
     body.dark #theme-btn {
       background: #1c1c1a;
       border-color: #2e2e2b;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark #theme-btn:hover,
@@ -260,9 +263,9 @@
 
   <main class="wrap">
     <header class="tool-header">
-      <div class="brand-label">thinkbreak</div>
-      <h1 class="tool-title">Url Cleaner</h1>
-      <p class="tool-sub">Enter input and see output immediately.</p>
+      <div class="brand-label">ThinkBreak</div>
+      <h1 class="tool-title">{{TITLE}}</h1>
+      <p class="tool-sub">{{DESCRIPTION}}</p>
     </header>
 
     <section class="tool-shell" aria-label="Tool layout">

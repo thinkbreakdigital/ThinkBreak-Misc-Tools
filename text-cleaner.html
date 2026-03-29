@@ -13,8 +13,8 @@
       --border: #e4e2dc;
       --border-hover: #cccac2;
       --text: #1a1a18;
-      --text-mid: #5c5b56;
-      --text-dim: #9c9a94;
+      --text-mid: #1a1a18;
+      --text-dim: #5c5b56;
       --accent: #2d2e5a;
       --accent-dim: #e8f0eb;
       --radius: 12px;
@@ -43,24 +43,27 @@
     }
 
     body.dark {
+      --text: #969696;
+      --text-mid: #969696;
+      --text-dim: #7b7b7b;
       background: #111110;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark .wrap {
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark .thinkbreak-label,
     body.dark .section-label,
     body.dark .field-help {
-      color: #5c5b54;
+      color: var(--text);
     }
 
     body.dark .thinkbreak-title,
     body.dark .output-card,
     body.dark .control-group {
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark input,
@@ -70,24 +73,24 @@
     body.dark .control-group {
       background: #252522;
       border-color: #2e2e2b;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark input::placeholder,
     body.dark textarea::placeholder {
-      color: #5c5b54;
+      color: var(--text);
     }
 
     body.dark input:focus,
     body.dark select:focus,
     body.dark textarea:focus {
-      border-color: #7eb88a;
+      border-color: #4d4e94;
     }
 
     body.dark #theme-btn {
       background: #1c1c1a;
       border-color: #2e2e2b;
-      color: #f0efe8;
+      color: var(--text);
     }
 
     body.dark #theme-btn:hover,
@@ -317,7 +320,7 @@
     }
 
     body.dark .toggle-label {
-      color: #6e6d67;
+      color: var(--text);
     }
 
     body.dark .toggle-track {
@@ -341,7 +344,7 @@
     }
 
     body.dark .toggle-row:has(input:checked) .toggle-label {
-      color: #f0efe8;
+      color: var(--text);
     }
 
     .toggle-row:has(input:checked) .toggle-label {

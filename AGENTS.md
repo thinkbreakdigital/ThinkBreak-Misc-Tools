@@ -348,6 +348,19 @@ Do not provide partial snippets if the user asked for a full deliverable.
 
 ---
 
+## **Template Scaffold Rule**
+
+When the user asks to create a new tool from the template, use the local scaffold script instead of manually recreating the boilerplate.
+
+- Run `powershell -ExecutionPolicy Bypass -File scripts\new-tool.ps1`
+- Use the user-provided file name when available
+- If the user did not provide a file name, ask only for the file name
+- For requests that only ask to create an `.html` file from the template, only run the scaffold script with the provided file name and do not take additional steps
+- After running the script, only confirm whether the file was successfully created or clearly state why it did not work
+- Apply this same behavior every time the user asks for an `.html` file to be made from the template
+
+---
+
 ## **Decision Filter**
 
 Before building anything, check:
