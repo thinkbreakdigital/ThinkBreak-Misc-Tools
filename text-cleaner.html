@@ -525,7 +525,17 @@
 
     // Return the current UI state, including the pasted text and selected
     // formatting options, in one predictable object.
-    function getOptions() {}
+    function getOptions() {
+      const elements = getElements();
+
+      return {
+        input: elements.inputText.value,
+        trimWhitespace: elements.trimWhitespace.checked,
+        collapseBlankLines: elements.collapseBlankLines.checked,
+        stripPunctuation: elements.stripPunctuation.checked,
+        caseMode: elements.caseMode.value
+      };
+    }
 
     // Attach all input, change, and button listeners so the tool reacts
     // immediately when the user edits text or changes a control.
@@ -535,26 +545,105 @@
       if (elements.themeButton) {
         elements.themeButton.addEventListener("click", toggleTheme);
       }
+
+      if (elements.inputText) {
+        elements.inputText.addEventListener("input", updateOutput);
+      }
+
+      if (elements.trimWhitespace) {
+        elements.trimWhitespace.addEventListener("change", updateOutput);
+      }
+
+      if (elements.collapseBlankLines) {
+        elements.collapseBlankLines.addEventListener("change", updateOutput);
+      }
+
+      if (elements.stripPunctuation) {
+        elements.stripPunctuation.addEventListener("change", updateOutput);
+      }
+
+      if (elements.caseMode) {
+        elements.caseMode.addEventListener("change", updateOutput);
+      }
     }
 
     // Run the full cleaning pipeline from raw input to final rendered output.
-    function updateOutput() {}
+    function updateOutput() {
+      const elements = getElements();
+      const options = getOptions();
+      const result = cleanText(options.input, options);
+
+      elements.outputText.textContent = result;
+    }
 
     // Apply all text cleaning and formatting steps in the correct order and
     // return the finished result as a string.
-    function cleanText(input, options) {}
+    function cleanText(input, options) {
+      let result = normalizeLineBreaks(input);
+
+      if (options.trimWhitespace) {
+        result = normalizeWhitespace(result);
+      }
+
+      if (options.collapseBlankLines) {
+        result = collapseBlankLines(result);
+      }
+
+      result = applyTransformation(result, options);
+      return result;
+    }
 
     // Normalize line endings so Windows, Mac, and Unix pasted text all use the
     // same newline character before other processing begins.
-    function normalizeLineBreaks(text) {}
+    function normalizeLineBreaks(text) {
+      return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    }
 
     // Trim the full input, trim each line, and collapse repeated spaces or tabs
     // so the text becomes more consistent without changing its meaning.
-    function normalizeWhitespace(text) {}
+    function normalizeWhitespace(text) {
+      const trimmedText = text.trim();
+
+      if (!trimmedText) {
+        return "";
+      }
+
+      return trimmedText
+        .split("\n")
+        .map((line) => line.trim().replace(/[ \t]+/g, " "))
+        .join("\n");
+    }
 
     // Reduce multiple empty lines to a cleaner single blank-line rhythm when
     // the related cleanup toggle is enabled.
-    function collapseBlankLines(text) {}
+    function collapseBlankLines(text) {
+      if (!text) {
+        return "";
+      }
+
+      const lines = text.split("\n");
+      const keptLines = [];
+      let previousKeptLineWasBlank = false;
+
+      for (const line of lines) {
+        const isBlankLine = line.trim() === "";
+
+        if (isBlankLine) {
+          if (previousKeptLineWasBlank) {
+            continue;
+          }
+
+          previousKeptLineWasBlank = true;
+          keptLines.push(line);
+          continue;
+        }
+
+        previousKeptLineWasBlank = false;
+        keptLines.push(line);
+      }
+
+      return keptLines.join("\n");
+    }
 
     // Remove punctuation characters that should not survive standardized output
     // when the punctuation cleanup toggle is enabled.
@@ -570,7 +659,17 @@
 
     // Route the cleaned text or token list through the selected transformation
     // mode and return the transformed output.
-    function applyTransformation(text, options) {}
+    function applyTransformation(text, options) {
+      switch (options.caseMode) {
+        case "lower":
+          return text.toLowerCase();
+        case "upper":
+          return text.toUpperCase();
+        case "none":
+        default:
+          return text;
+      }
+    }
 
     // Convert text to sentence case using practical sentence boundaries while
     // preserving separator structure where appropriate.
@@ -645,6 +744,7 @@
     function init() {
       initializeTheme();
       bindEvents();
+      updateOutput();
     }
 
     init();
