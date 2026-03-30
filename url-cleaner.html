@@ -43,47 +43,21 @@
     }
 
     body.dark {
-      --text: #969696;
+      --text: #c4c4c4;
       --text-mid: #969696;
       --text-dim: #7b7b7b;
+      --surface: #252522;
+      --surface2: #1c1c1a;
+      --border: #2e2e2b;
+      --border-hover: #3d3d39;
+      --accent: #4d4e94;
       background: #111110;
       color: var(--text);
     }
 
-    body.dark .wrap {
-      color: var(--text);
-    }
-
-    body.dark .brand-label {
-      color: var(--text-dim);
-    }
-
-    body.dark .tool-title {
-      color: var(--text);
-    }
-
-    body.dark input,
-    body.dark select,
-    body.dark textarea {
-      background: #252522;
-      border-color: #2e2e2b;
-      color: var(--text);
-    }
-
-    body.dark input::placeholder,
-    body.dark textarea::placeholder {
-      color: var(--text-dim);
-    }
-
-    body.dark input:focus,
-    body.dark select:focus,
-    body.dark textarea:focus {
-      border-color: #4d4e94;
-    }
-
     body.dark #theme-btn {
-      background: #1c1c1a;
-      border-color: #2e2e2b;
+      background: var(--surface2);
+      border-color: var(--border);
       color: var(--text);
     }
 
@@ -148,9 +122,6 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-dim);
-    }
-
-    .brand-label {
       margin-bottom: 8px;
     }
 
@@ -282,8 +253,8 @@
 
     body.dark .output-card,
     body.dark .copy-button {
-      background: #252522;
-      border-color: #2e2e2b;
+      background: var(--surface);
+      border-color: var(--border);
       color: var(--text);
     }
 
