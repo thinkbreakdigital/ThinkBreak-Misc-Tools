@@ -1577,47 +1577,44 @@
       renderHourlyToSalaryGraph(graphData);
     }
 
-    // Render placeholder output values until the calculator formulas are wired in.
-    function renderPendingState(options) {
-      if (options.activeView === "salary-to-hourly") {
-        const annualSalary = options.salaryToHourly.annualSalary;
-        const hoursPerWeek = options.salaryToHourly.hoursPerWeek;
-        const hourlyEstimate = annualSalary > 0 && hoursPerWeek > 0
-          ? annualSalary / (hoursPerWeek * 52)
-          : 0;
+    // Render a neutral empty state for the Salary to Hourly view.
+    function renderSalaryToHourlyEmptyState(period) {
+      elements.salaryToHourly.mainResult.innerHTML = formatHourlyResult(0);
+      elements.salaryToHourly.baseRate.textContent = formatCurrency(0, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      elements.salaryToHourly.vacationValue.textContent = formatCurrency(0);
+      elements.salaryToHourly.overtimeValue.textContent = formatCurrency(0);
+      elements.salaryToHourly.totalPay.textContent = formatCurrency(0);
+      elements.salaryToHourly.periodOvertime.textContent = formatCurrency(0);
+      elements.salaryToHourly.periodLabel.textContent =
+        period.charAt(0).toUpperCase() + period.slice(1);
+      elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(0);
+      elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(0);
+      elements.salaryToHourly.graphSalaryBar.style.height = "12%";
+      elements.salaryToHourly.graphHourlyBar.style.height = "12%";
+      elements.salaryToHourly.graphHighlights[0].style.height = "0%";
+      elements.salaryToHourly.graphHighlights[1].style.height = "0%";
+    }
 
-        elements.salaryToHourly.mainResult.innerHTML = formatHourlyResult(hourlyEstimate);
-        elements.salaryToHourly.baseRate.textContent = formatCurrency(hourlyEstimate, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        });
-        elements.salaryToHourly.vacationValue.textContent = formatCurrency(0);
-        elements.salaryToHourly.overtimeValue.textContent = formatCurrency(0);
-        elements.salaryToHourly.totalPay.textContent = formatCurrency(annualSalary);
-        elements.salaryToHourly.periodOvertime.textContent = formatCurrency(0);
-        elements.salaryToHourly.periodLabel.textContent =
-          options.payPeriod.salaryToHourly.charAt(0).toUpperCase() +
-          options.payPeriod.salaryToHourly.slice(1);
-        elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(annualSalary);
-        elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(annualSalary);
-        return;
-      }
-
-      const hourlyRate = options.hourlyToSalary.hourlyRate;
-      const hoursPerWeek = options.hourlyToSalary.hoursPerWeek;
-      const salaryEstimate = hourlyRate > 0 && hoursPerWeek > 0
-        ? hourlyRate * hoursPerWeek * 52
-        : 0;
-
-      elements.hourlyToSalary.mainResult.innerHTML = formatAnnualResult(salaryEstimate);
-      elements.hourlyToSalary.baseRate.textContent = formatCurrency(salaryEstimate);
+    // Render a neutral empty state for the Hourly to Salary view.
+    function renderHourlyToSalaryEmptyState(period) {
+      elements.hourlyToSalary.mainResult.innerHTML = formatAnnualResult(0);
+      elements.hourlyToSalary.baseRate.textContent = formatCurrency(0);
       elements.hourlyToSalary.overtimeValue.textContent = formatCurrency(0);
-      elements.hourlyToSalary.effectiveValue.textContent = formatCurrency(salaryEstimate);
-      elements.hourlyToSalary.totalPay.textContent = formatCurrency(salaryEstimate);
-      elements.hourlyToSalary.basePay.textContent = formatCurrency(salaryEstimate);
+      elements.hourlyToSalary.effectiveValue.textContent = formatCurrency(0);
+      elements.hourlyToSalary.totalPay.textContent = formatCurrency(0);
+      elements.hourlyToSalary.basePay.textContent = formatCurrency(0);
       elements.hourlyToSalary.periodOvertime.textContent = formatCurrency(0);
-      elements.hourlyToSalary.graphSalaryValue.textContent = formatCurrency(salaryEstimate);
-      elements.hourlyToSalary.graphHourlyValue.textContent = formatCurrency(salaryEstimate);
+      elements.hourlyToSalary.graphSalaryValue.textContent = formatCurrency(0);
+      elements.hourlyToSalary.graphHourlyValue.textContent = formatCurrency(0);
+      elements.hourlyToSalary.graphSalaryBar.style.height = "12%";
+      elements.hourlyToSalary.graphHourlyBar.style.height = "12%";
+
+      if (elements.hourlyToSalary.graphHighlights[0]) {
+        elements.hourlyToSalary.graphHighlights[0].style.height = "0%";
+      }
     }
 
     // Attach tool-specific listeners here so the UI updates immediately.
@@ -1699,7 +1696,12 @@
         return;
       }
 
-      renderPendingState(options);
+      if (options.activeView === "salary-to-hourly") {
+        renderSalaryToHourlyEmptyState(options.payPeriod.salaryToHourly);
+        return;
+      }
+
+      renderHourlyToSalaryEmptyState(options.payPeriod.hourlyToSalary);
     }
 
     // Initialize the shared theme system and then the tool-specific logic.
