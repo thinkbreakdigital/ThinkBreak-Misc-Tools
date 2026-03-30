@@ -453,6 +453,7 @@
       border-radius: 999px;
       background: var(--surface);
       box-shadow: var(--shadow-soft);
+      transition: transform 0.22s ease;
     }
 
     .period-toggle-button {
@@ -485,7 +486,7 @@
 
     .graph-stage {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto auto 1fr;
       gap: 16px;
       align-items: end;
     }
@@ -496,6 +497,24 @@
       color: var(--text-dim);
       writing-mode: vertical-rl;
       transform: rotate(180deg);
+    }
+
+    .graph-ticks {
+      height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      min-width: 56px;
+      padding-top: 16px;
+    }
+
+    .graph-tick {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .graph-bars {
@@ -530,7 +549,7 @@
     }
 
     .graph-bar.is-hourly {
-      background: #8790b8;
+      background: #547b62;
     }
 
     .graph-bar-highlight {
@@ -539,11 +558,11 @@
       left: 0;
       right: 0;
       height: 24%;
-      background: rgba(255, 255, 255, 0.28);
+      background: #5b73b0;
     }
 
-    body.dark .graph-bar-highlight {
-      background: rgba(255, 255, 255, 0.18);
+    .graph-bar.is-hourly .graph-bar-highlight {
+      background: #7fa38a;
     }
 
     .graph-bar-label {
@@ -556,6 +575,52 @@
       font-size: 14px;
       font-weight: 700;
       color: var(--text);
+    }
+
+    .graph-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      align-items: center;
+    }
+
+    .graph-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+
+    .graph-legend-swatch {
+      min-width: 56px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .graph-legend-swatch.is-salary {
+      background: var(--accent);
+    }
+
+    .graph-legend-swatch.is-hourly {
+      background: #547b62;
+    }
+
+    .graph-legend-swatch.is-vacation {
+      background: #5b73b0;
+    }
+
+    .graph-legend-swatch.is-overtime {
+      background: #7fa38a;
     }
 
     .validation-message {
@@ -621,6 +686,12 @@
       .graph-axis {
         writing-mode: horizontal-tb;
         transform: none;
+      }
+
+      .graph-ticks {
+        min-width: 0;
+        height: auto;
+        padding-top: 0;
       }
 
       .graph-bars {
@@ -797,6 +868,7 @@
           <div class="graph-shell">
             <div class="graph-stage">
               <div class="graph-axis">Annual money earned</div>
+              <div class="graph-ticks" id="salary-hourly-graph-ticks" aria-hidden="true"></div>
               <div class="graph-bars">
                 <article class="graph-bar-group">
                   <div class="graph-bar-stack">
@@ -816,6 +888,24 @@
                   <div class="graph-bar-value" id="salary-graph-hourly-value">$65,000</div>
                   <div class="graph-bar-label">Hourly</div>
                 </article>
+              </div>
+            </div>
+            <div class="graph-legend" aria-label="Graph legend">
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-salary">Salary</span>
+                <span>Salary Income</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-vacation">Vacation</span>
+                <span>Vacation Value</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-hourly">Hourly</span>
+                <span>Hourly Income</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-overtime">OT</span>
+                <span>Overtime Value</span>
               </div>
             </div>
           </div>
@@ -927,6 +1017,7 @@
           <div class="graph-shell">
             <div class="graph-stage">
               <div class="graph-axis">Annual money earned</div>
+              <div class="graph-ticks" id="hourly-salary-graph-ticks" aria-hidden="true"></div>
               <div class="graph-bars">
                 <article class="graph-bar-group">
                   <div class="graph-bar-stack">
@@ -944,6 +1035,24 @@
                   <div class="graph-bar-value" id="hourly-graph-hourly-value">$52,000</div>
                   <div class="graph-bar-label">Hourly</div>
                 </article>
+              </div>
+            </div>
+            <div class="graph-legend" aria-label="Graph legend">
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-salary">Salary</span>
+                <span>Salary Income</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-vacation">Vacation</span>
+                <span>Vacation Value</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-hourly">Hourly</span>
+                <span>Hourly Income</span>
+              </div>
+              <div class="graph-legend-item">
+                <span class="graph-legend-swatch is-overtime">OT</span>
+                <span>Overtime Value</span>
               </div>
             </div>
           </div>
@@ -1032,6 +1141,7 @@
           periodLabel: document.getElementById("salary-hourly-period-label"),
           graphSalaryValue: document.getElementById("salary-graph-salary-value"),
           graphHourlyValue: document.getElementById("salary-graph-hourly-value"),
+          graphTicks: document.getElementById("salary-hourly-graph-ticks"),
           graphSalaryBar: salaryToHourlyView
             ? salaryToHourlyView.querySelector(".graph-bar:not(.is-hourly)")
             : null,
@@ -1062,6 +1172,7 @@
           periodOvertime: document.getElementById("hourly-salary-period-overtime"),
           graphSalaryValue: document.getElementById("hourly-graph-salary-value"),
           graphHourlyValue: document.getElementById("hourly-graph-hourly-value"),
+          graphTicks: document.getElementById("hourly-salary-graph-ticks"),
           graphSalaryBar: hourlyToSalaryView
             ? hourlyToSalaryView.querySelector(".graph-bar:not(.is-hourly)")
             : null,
@@ -1413,7 +1524,41 @@
 
     // Build a shared max-value scale for the simple comparison graph.
     function buildGraphScale(graphData) {
-      return Math.max(graphData.salaryTotal, graphData.hourlyTotal, 1);
+      const rawMax = Math.max(graphData.salaryTotal, graphData.hourlyTotal, 1);
+      const roughStep = rawMax / 4;
+
+      if (roughStep <= 1000) {
+        return Math.ceil(rawMax / 1000) * 1000;
+      }
+
+      if (roughStep <= 5000) {
+        return Math.ceil(rawMax / 5000) * 5000;
+      }
+
+      if (roughStep <= 10000) {
+        return Math.ceil(rawMax / 10000) * 10000;
+      }
+
+      return Math.ceil(rawMax / 25000) * 25000;
+    }
+
+    // Build evenly spaced graph ticks from zero to the rounded graph maximum.
+    function buildGraphTicks(maxValue) {
+      const steps = 4;
+      const ticks = [];
+
+      for (let index = steps; index >= 0; index -= 1) {
+        ticks.push((maxValue / steps) * index);
+      }
+
+      return ticks;
+    }
+
+    // Render the Y-axis tick labels for the active graph.
+    function renderGraphTicks(container, ticks) {
+      container.innerHTML = ticks
+        .map((tick) => `<div class="graph-tick">${formatCurrency(tick)}</div>`)
+        .join("");
     }
 
     // Convert a graph value into a visible bar height percentage.
@@ -1428,6 +1573,7 @@
     // Render the Salary to Hourly graph using the shared bar markup.
     function renderSalaryToHourlyGraph(graphData) {
       const maxValue = buildGraphScale(graphData);
+      const ticks = buildGraphTicks(maxValue);
       const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
       const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
       const salaryHighlightHeight = graphData.salaryTotal > 0
@@ -1443,6 +1589,7 @@
       elements.salaryToHourly.graphHighlights[1].style.height = `${Math.min(hourlyHighlightHeight, 100)}%`;
       elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(graphData.salaryTotal);
       elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(graphData.hourlyTotal);
+      renderGraphTicks(elements.salaryToHourly.graphTicks, ticks);
     }
 
     // Render the Salary to Hourly outputs from one calculation bundle.
@@ -1559,6 +1706,7 @@
     // Render the Hourly to Salary graph using the shared bar markup.
     function renderHourlyToSalaryGraph(graphData) {
       const maxValue = buildGraphScale(graphData);
+      const ticks = buildGraphTicks(maxValue);
       const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
       const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
       const hourlyHighlightHeight = graphData.hourlyTotal > 0
@@ -1574,6 +1722,7 @@
 
       elements.hourlyToSalary.graphSalaryValue.textContent = formatCurrency(graphData.salaryTotal);
       elements.hourlyToSalary.graphHourlyValue.textContent = formatCurrency(graphData.hourlyTotal);
+      renderGraphTicks(elements.hourlyToSalary.graphTicks, ticks);
     }
 
     // Render the Hourly to Salary outputs from one calculation bundle.
@@ -1611,6 +1760,7 @@
       elements.salaryToHourly.graphHourlyBar.style.height = "12%";
       elements.salaryToHourly.graphHighlights[0].style.height = "0%";
       elements.salaryToHourly.graphHighlights[1].style.height = "0%";
+      renderGraphTicks(elements.salaryToHourly.graphTicks, buildGraphTicks(1000));
     }
 
     // Render a neutral empty state for the Hourly to Salary view.
@@ -1630,6 +1780,8 @@
       if (elements.hourlyToSalary.graphHighlights[0]) {
         elements.hourlyToSalary.graphHighlights[0].style.height = "0%";
       }
+
+      renderGraphTicks(elements.hourlyToSalary.graphTicks, buildGraphTicks(1000));
     }
 
     // Attach tool-specific listeners here so the UI updates immediately.

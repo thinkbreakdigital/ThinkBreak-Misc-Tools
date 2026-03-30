@@ -67,6 +67,7 @@ Use CSS variables for the core theme tokens:
 - `--text-dim`
 - `--accent`
 - `--accent-dim`
+- `--radius`
 
 Guidelines:
 
@@ -115,14 +116,13 @@ Default dark theme values:
 
 ## Shape Rules
 
-- Prefer soft corners over sharp edges.
-- Use one small radius for inputs and one slightly larger radius for cards or grouped sections.
+- Prefer one shared radius token for standard tool surfaces and controls.
+- Use square corners by default unless a tool explicitly needs softer rounding.
 - Use fully rounded shapes only for pills, switches, and circular icon buttons.
 
 Default shape values:
 
-- Small radius: `8px`
-- Card/group radius: `12px`
+- Shared radius token: `0px`
 - Circular controls: `50%`
 - Toggle track radius: `999px`
 
@@ -191,7 +191,7 @@ Default form control values:
 - Minimum height: `44px`
 - Padding: `10px 12px`
 - Border: `1px solid var(--border)`
-- Radius: `var(--radius-sm)` / `8px`
+- Radius: `var(--radius)`
 - Background: `var(--surface2)`
 - Text color: `var(--text)`
 - Focus border color: `var(--accent)`
@@ -216,7 +216,7 @@ Default button values:
 - Minimum height: `44px`
 - Padding: `12px 16px`
 - Border: `1px solid var(--border)`
-- Radius: `var(--radius-sm)` / `8px`
+- Radius: `var(--radius)`
 - Background: `var(--surface)`
 - Text color: `var(--text)`
 - Font weight: `600`
@@ -435,7 +435,7 @@ Default header values:
 Default output values:
 
 - Border: `1px solid var(--border)`
-- Radius: `var(--radius)` / `12px`
+- Radius: `var(--radius)`
 - Background: `var(--surface)`
 - Shadow: `0 10px 30px rgba(26, 26, 24, 0.04)`
 - Preserve whitespace with `white-space: pre-wrap` for text outputs
@@ -492,3 +492,4 @@ Avoid tying reusable styling rules to tool-specific names unless branding is int
 - Avoid dependencies for layout, theming, or component styling.
 - Build reusable primitives first, then layer tool-specific adjustments on top.
 - Remove duplicated selector blocks when a single token-based rule already provides the correct styling behavior.
+- Prefer one shared radius token across standard controls and cards unless the tool has a strong reason to introduce a second radius scale.
