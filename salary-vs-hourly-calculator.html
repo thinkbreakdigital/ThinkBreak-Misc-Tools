@@ -17,8 +17,7 @@
       --text-dim: #9c9a94;
       --accent: #2d2e5a;
       --accent-dim: #e8f0eb;
-      --radius: 12px;
-      --radius-sm: 8px;
+      --radius: 0px;
       --shadow-soft: 0 10px 30px rgba(26, 26, 24, 0.04);
     }
 
@@ -144,7 +143,7 @@
       min-height: 44px;
       padding: 10px 12px;
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius);
       background: var(--surface2);
       color: var(--text);
       font: inherit;
@@ -339,8 +338,10 @@
 
     .toggle-inline-switch {
       position: relative;
-      width: 28px;
-      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      width: 38px;
+      height: 18px;
       flex: 0 0 auto;
     }
 
@@ -353,26 +354,38 @@
     }
 
     .toggle-inline-track {
-      position: absolute;
-      inset: 0;
+      width: 38px;
+      height: 18px;
       border-radius: 999px;
       background: var(--surface2);
+      border: 1px solid var(--border);
+      transition: background 0.18s ease, border-color 0.18s ease;
     }
 
     .toggle-inline-thumb {
       position: absolute;
       top: 2px;
       left: 2px;
-      width: 12px;
-      height: 12px;
+      width: 20px;
+      height: 14px;
       border-radius: 999px;
-      background: var(--text);
-      transition: transform 0.15s ease;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
+      transition: transform 0.18s ease;
       pointer-events: none;
     }
 
     .toggle-inline-switch input:checked + .toggle-inline-track + .toggle-inline-thumb {
-      transform: translateX(12px);
+      transform: translateX(14px);
+    }
+
+    .toggle-inline-switch input.flip-direction:checked + .toggle-inline-track + .toggle-inline-thumb {
+      transform: translateX(0);
+    }
+
+    .toggle-inline-switch input.flip-direction + .toggle-inline-track + .toggle-inline-thumb {
+      transform: translateX(14px);
     }
 
     .toggle-inline-switch input:focus-visible + .toggle-inline-track {
@@ -392,7 +405,7 @@
       gap: 8px;
       padding: 14px 16px;
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius);
       background: var(--surface2);
     }
 
@@ -512,7 +525,6 @@
       position: relative;
       width: 100%;
       min-height: 72px;
-      border-radius: 12px 12px 6px 6px;
       background: var(--accent);
       overflow: hidden;
     }
@@ -549,7 +561,7 @@
     .validation-message {
       display: none;
       padding: 12px 14px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius);
       background: #f6e7e7;
       color: #8e2f2f;
       font-size: 13px;
@@ -685,18 +697,18 @@
             <div class="field-stack">
               <div class="field-group">
                 <label class="field-label" for="annual-salary">Annual salary</label>
-                <input id="annual-salary" type="number" inputmode="decimal" min="0" step="1000" placeholder="65000">
+                <input id="annual-salary" type="number" inputmode="decimal" min="0" step="1000" placeholder="65000" value="60000">
               </div>
 
               <div class="field-group">
                 <label class="field-label" for="salary-hours-per-week">Average hours worked per week</label>
-                <input id="salary-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40">
+                <input id="salary-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
               </div>
 
               <div class="field-inline">
                 <div class="field-group">
                   <label class="field-label" for="vacation-amount">Vacation amount</label>
-                  <input id="vacation-amount" type="number" inputmode="decimal" min="0" step="0.5" placeholder="10">
+                  <input id="vacation-amount" type="number" inputmode="decimal" min="0" step="0.5" placeholder="10" value="10">
                 </div>
 
                 <div class="field-group">
@@ -822,24 +834,24 @@
             <div class="field-stack">
               <div class="field-group">
                 <label class="field-label" for="hourly-rate">Hourly rate</label>
-                <input id="hourly-rate" type="number" inputmode="decimal" min="0" step="0.25" placeholder="25">
+                <input id="hourly-rate" type="number" inputmode="decimal" min="0" step="0.25" placeholder="25" value="25">
               </div>
 
               <div class="field-group">
                 <label class="field-label" for="hourly-hours-per-week">Average hours worked per week</label>
-                <input id="hourly-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40">
+                <input id="hourly-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
               </div>
 
               <div class="field-group">
                 <span class="field-label">Overtime</span>
                 <label class="toggle-inline" for="overtime-toggle">
-                  <span class="toggle-inline-label is-active">Off</span>
+                  <span class="toggle-inline-label is-active">On</span>
                   <span class="toggle-inline-switch">
-                    <input id="overtime-toggle" type="checkbox" aria-label="Toggle overtime on or off">
+                    <input id="overtime-toggle" class="flip-direction" type="checkbox" aria-label="Toggle overtime on or off" checked>
                     <span class="toggle-inline-track" aria-hidden="true"></span>
                     <span class="toggle-inline-thumb" aria-hidden="true"></span>
                   </span>
-                  <span class="toggle-inline-label">On</span>
+                  <span class="toggle-inline-label">Off</span>
                 </label>
               </div>
             </div>
@@ -1118,6 +1130,14 @@
 
       const labels = Array.from(toggle.querySelectorAll(".toggle-inline-label"));
       if (labels.length !== 2) {
+        return;
+      }
+
+      const checkedShowsLeft = toggleInput.id === "overtime-toggle";
+
+      if (checkedShowsLeft) {
+        labels[0].classList.toggle("is-active", toggleInput.checked);
+        labels[1].classList.toggle("is-active", !toggleInput.checked);
         return;
       }
 
