@@ -214,6 +214,13 @@ Write plain, clean JavaScript.
 
 Keep business logic isolated from DOM manipulation whenever practical.
 
+For DOM access:
+
+* prefer one shared cached `elements` object
+* populate DOM references once during startup
+* reuse cached DOM references across theme, event, render, and update logic
+* avoid separate repeated DOM getter helpers when the shared cached object already covers those nodes
+
 ### **Avoid**
 
 * overengineering  
@@ -260,6 +267,8 @@ All tools must support light and dark mode.
 - Maintain accessible contrast in both modes
 - Keep layouts identical across modes
 - Do not hard-code text, background, border, or input colors per element unless necessary
+- In dark mode, prefer overriding shared theme tokens in `body.dark` instead of repeating hard-coded dark colors across many selectors
+- Shared controls should inherit dark mode from the token system whenever practical
 - Every tool should be fully readable and usable in both modes with no extra setup
 
 ## **Accessibility Standards**
@@ -410,6 +419,8 @@ When generating code for this repository:
 * use simple CSS  
 * use plain JavaScript  
 * keep logic modular but lightweight  
+* prefer one cached `elements` object for DOM references  
+* prefer token-driven dark mode over repeated element-specific dark overrides  
 * avoid unnecessary dependencies  
 * avoid backend assumptions  
 * keep outputs complete and ready to use  

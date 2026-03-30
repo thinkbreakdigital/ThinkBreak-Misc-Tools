@@ -75,7 +75,8 @@ Guidelines:
 - Borders should be subtle, not dominant.
 - Accent color should be used sparingly for focus or active states.
 - Disabled or secondary labels should use the dim text token.
-- In dark mode, override text tokens at the theme level instead of hard-coding text colors per element.
+- In dark mode, override shared theme tokens at the theme level instead of hard-coding repeated dark colors per element.
+- Prefer token-driven dark mode over per-element dark overrides whenever the element can inherit from the shared token system.
 
 Default light theme values:
 
@@ -93,6 +94,11 @@ Default light theme values:
 Default dark theme values:
 
 - Page background: `#111110`
+- `--surface: #252522`
+- `--surface2: #1c1c1a`
+- `--border: #2e2e2b`
+- `--border-hover: #3d3d39`
+- `--accent: #4d4e94`
 - Standard dark control/card surface: `#252522`
 - Secondary dark button/theme surface: `#1c1c1a`
 - Standard dark border: `#2e2e2b`
@@ -448,7 +454,9 @@ Default output values:
 - Inputs, cards, and controls need their own dark surfaces and border values.
 - Secondary text should remain readable in dark mode without becoming too bright.
 - Prefer softer gray text in dark mode over bright near-white defaults when the UI should feel quieter and less harsh.
-- Set dark-mode text, helper text, and placeholder text through the shared text tokens so titles, labels, and form controls stay in sync.
+- Set dark-mode text, helper text, placeholder text, surfaces, borders, and focus states through shared tokens so titles, labels, cards, buttons, and form controls stay in sync.
+- Define dark-mode token overrides in `body.dark` for the shared color system first, then only add element-specific dark rules when a component truly cannot inherit the correct values from tokens.
+- When a token-driven rule already covers a component, avoid duplicating the same dark-mode color values in extra selectors.
 
 ## Reusable Class Pattern Guidance
 
@@ -483,3 +491,4 @@ Avoid tying reusable styling rules to tool-specific names unless branding is int
 - Prefer CSS variables over duplicated hard-coded values.
 - Avoid dependencies for layout, theming, or component styling.
 - Build reusable primitives first, then layer tool-specific adjustments on top.
+- Remove duplicated selector blocks when a single token-based rule already provides the correct styling behavior.
