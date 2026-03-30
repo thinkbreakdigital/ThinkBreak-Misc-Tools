@@ -943,6 +943,7 @@
   <script>
     const THEME_DARK = "#111110";
     const THEME_LIGHT = "#FAFAF7";
+    let elements;
 
     // Return the shared theme elements so the theme toggle can update the page.
     function getThemeElements() {
@@ -964,17 +965,17 @@
 
     // Apply the chosen light or dark mode and update icons and theme color.
     function applyTheme(theme) {
-      const elements = getThemeElements();
+      const themeElements = getThemeElements();
       const isDark = theme === "dark";
 
-      elements.body.classList.toggle("dark", isDark);
-      elements.sunIcon.style.display = isDark ? "block" : "none";
-      elements.moonIcon.style.display = isDark ? "none" : "block";
-      elements.button.setAttribute(
+      themeElements.body.classList.toggle("dark", isDark);
+      themeElements.sunIcon.style.display = isDark ? "block" : "none";
+      themeElements.moonIcon.style.display = isDark ? "none" : "block";
+      themeElements.button.setAttribute(
         "aria-label",
         isDark ? "Switch to light mode" : "Switch to dark mode"
       );
-      elements.themeColorMeta.setAttribute(
+      themeElements.themeColorMeta.setAttribute(
         "content",
         isDark ? THEME_DARK : THEME_LIGHT
       );
@@ -988,10 +989,10 @@
 
     // Set the initial theme and attach the shared theme button listener.
     function initializeTheme() {
-      const elements = getThemeElements();
+      const themeElements = getThemeElements();
 
       applyTheme(getPreferredTheme());
-      elements.button.addEventListener("click", toggleTheme);
+      themeElements.button.addEventListener("click", toggleTheme);
     }
 
     // Cache tool-specific DOM elements so the calculator logic can reuse them.
@@ -1106,8 +1107,6 @@
 
     // Show the selected view panel and update the active tab state.
     function renderActiveView(viewName) {
-      const elements = getElements();
-
       elements.viewTabs.forEach((tab) => {
         const isActive = tab.dataset.viewTab === viewName;
         tab.classList.toggle("is-active", isActive);
@@ -1197,14 +1196,12 @@
 
     // Show a short validation message while preserving the rest of the layout.
     function renderValidationMessage(message) {
-      const elements = getElements();
       elements.validationMessage.textContent = message;
       elements.validationMessage.style.display = "block";
     }
 
     // Hide the shared validation message once inputs are valid again.
     function clearValidationMessage() {
-      const elements = getElements();
       elements.validationMessage.textContent = "";
       elements.validationMessage.style.display = "none";
     }
@@ -1415,7 +1412,6 @@
 
     // Render the Salary to Hourly graph using the shared bar markup.
     function renderSalaryToHourlyGraph(graphData) {
-      const elements = getElements();
       const maxValue = buildGraphScale(graphData);
       const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
       const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
@@ -1436,7 +1432,6 @@
 
     // Render the Salary to Hourly outputs from one calculation bundle.
     function renderSalaryToHourlyResults(calculation, period) {
-      const elements = getElements();
       const payBreakdown = getSalaryToHourlyPayBreakdown(calculation, period);
       const graphData = buildSalaryToHourlyGraphData(calculation);
 
@@ -1519,7 +1514,7 @@
           totalPay: effectiveSalaryEquivalent,
           basePay: baseSalaryEquivalent,
           overtimeValue,
-          hourlyAnnualTotal: baseSalaryEquivalent
+          hourlyAnnualTotal: effectiveSalaryEquivalent
         }
       };
     }
@@ -1548,7 +1543,6 @@
 
     // Render the Hourly to Salary graph using the shared bar markup.
     function renderHourlyToSalaryGraph(graphData) {
-      const elements = getElements();
       const maxValue = buildGraphScale(graphData);
       const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
       const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
@@ -1569,7 +1563,6 @@
 
     // Render the Hourly to Salary outputs from one calculation bundle.
     function renderHourlyToSalaryResults(calculation, period) {
-      const elements = getElements();
       const payBreakdown = getHourlyToSalaryPayBreakdown(calculation, period);
       const graphData = buildHourlyToSalaryGraphData(calculation);
 
@@ -1586,8 +1579,6 @@
 
     // Render placeholder output values until the calculator formulas are wired in.
     function renderPendingState(options) {
-      const elements = getElements();
-
       if (options.activeView === "salary-to-hourly") {
         const annualSalary = options.salaryToHourly.annualSalary;
         const hoursPerWeek = options.salaryToHourly.hoursPerWeek;
@@ -1631,7 +1622,6 @@
 
     // Attach tool-specific listeners here so the UI updates immediately.
     function bindEvents() {
-      const elements = getElements();
       const inputs = [
         elements.salaryToHourly.annualSalaryInput,
         elements.salaryToHourly.hoursPerWeekInput,
@@ -1714,6 +1704,7 @@
 
     // Initialize the shared theme system and then the tool-specific logic.
     function init() {
+      elements = getElements();
       initializeTheme();
       bindEvents();
       updateOutput();
