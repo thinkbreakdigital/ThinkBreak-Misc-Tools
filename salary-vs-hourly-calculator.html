@@ -4,21 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Hourly Vs Salary Calc</title>
-  <meta name="theme-color" content="#FAFAF7" id="theme-color-meta">
+  <meta name="theme-color" content="#EBE4C1" id="theme-color-meta">
   <style>
     :root {
-      --bg: #fafaf7;
-      --surface: #ffffff;
-      --surface2: #f3f2ee;
-      --border: #e4e2dc;
-      --border-hover: #cccac2;
-      --text: #1a1a18;
-      --text-mid: #5c5b56;
-      --text-dim: #9c9a94;
-      --accent: #2d2e5a;
-      --accent-dim: #e8f0eb;
+      --bg: #fff8ef;
+      --surface: #fff6ea;
+      --surface2: #f4ebe0;
+      --surface3: #d1c48f;
+      --border: #bcae79;
+      --border-hover: #94855b;
+      --border-strong: #756948;
+      --text: #393836;
+      --text-mid: #5e584d;
+      --text-dim: #81775f;
+      --text-strong: #23211f;
+      --accent: #ff6200;
+      --accent-strong: #d94f00;
+      --accent-dim: #ffd9c3;
+      --accent-alt: #d9a31a;
+      --accent-alt-soft: #f0c85d;
+      --success: #b98a16;
+      --success-soft: #dfb74c;
+      --danger: #b2452d;
+      --danger-soft: #f4d3c4;
+      --inverse: #faf6e7;
+      --stripe-1: #b0336f;
+      --stripe-2: #d14c2f;
+      --stripe-3: #ff6200;
+      --stripe-4: #d9a31a;
+      --stripe-5: #f0c85d;
       --radius: 0px;
-      --shadow-soft: 0 10px 30px rgba(26, 26, 24, 0.04);
+      --shadow-soft: 0 10px 30px rgba(57, 56, 54, 0.08);
     }
 
     * {
@@ -34,7 +50,7 @@
       min-height: 100dvh;
       -webkit-font-smoothing: antialiased;
       padding:
-        env(safe-area-inset-top)
+        0
         env(safe-area-inset-right)
         env(safe-area-inset-bottom)
         env(safe-area-inset-left);
@@ -42,15 +58,33 @@
     }
 
     body.dark {
-      --text: #c4c4c4;
-      --text-mid: #969696;
-      --text-dim: #7b7b7b;
-      --surface: #252522;
-      --surface2: #1c1c1a;
-      --border: #2e2e2b;
-      --border-hover: #3d3d39;
-      --accent: #4d4e94;
-      background: #111110;
+      --bg: #23211f;
+      --surface: #2f2d28;
+      --surface2: #29261f;
+      --surface3: #3f3c36;
+      --border: #554b3c;
+      --border-hover: #e96514;
+      --border-strong: #ff7a26;
+      --text: #cdbfb3;
+      --text-mid: #b1a79c;
+      --text-dim: #827a72;
+      --text-strong: #cdbfb3;
+      --accent: #ff7a26;
+      --accent-strong: #ff9856;
+      --accent-dim: #684430;
+      --accent-alt: #e0b348;
+      --accent-alt-soft: #f1cd76;
+      --success: #d7a83a;
+      --success-soft: #f0ca71;
+      --danger: #ff9a72;
+      --danger-soft: #5a3026;
+      --inverse: #aa5200;
+      --stripe-1: #f1cd76;
+      --stripe-2: #e0b348;
+      --stripe-3: #ff7a26;
+      --stripe-4: #d05a93;
+      --stripe-5: #8e2f68;
+      background: var(--bg);
       color: var(--text);
     }
 
@@ -62,7 +96,7 @@
 
     body.dark #theme-btn:hover,
     body.dark #theme-btn:focus-visible {
-      border-color: #3d3d39;
+      border-color: var(--border-hover);
     }
 
     @keyframes fadeUp {
@@ -80,7 +114,7 @@
     .wrap {
       max-width: 760px;
       margin: 0 auto;
-      padding: 52px 20px 80px;
+      padding: 0 20px 80px;
       animation: fadeUp 0.4s ease-out both;
     }
 
@@ -112,30 +146,71 @@
 
     .tool-header {
       margin-bottom: 36px;
-      padding-right: 56px;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      padding-right: 0;
+      overflow: hidden;
+    }
+
+    .header-stripe {
+      min-height: 52px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      padding-left: max(18px, calc((100vw - 760px) / 2 + 20px));
+      padding-right: max(18px, calc((100vw - 760px) / 2 + 20px));
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(35, 33, 31, 0.18);
+      color: var(--inverse);
+    }
+
+    .header-stripe:last-child {
+      border-bottom: 0;
+    }
+
+    .header-stripe.is-title {
+      min-height: 92px;
+      background: var(--stripe-1);
+    }
+
+    .header-stripe.is-subtitle {
+      background: var(--stripe-2);
+    }
+
+    .header-stripe.is-brand {
+      background: var(--stripe-3);
+    }
+
+    .header-stripe.is-fill-1 {
+      background: var(--stripe-4);
+    }
+
+    .header-stripe.is-fill-2 {
+      background: var(--stripe-5);
     }
 
     .brand-label {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: inherit;
     }
 
     .tool-title {
-      font-size: clamp(28px, 6vw, 38px);
+      font-size: clamp(28px, 5vw, 42px);
       font-weight: 700;
       line-height: 1.08;
-      margin-bottom: 8px;
+      margin: 0;
       letter-spacing: -0.03em;
     }
 
     .tool-sub {
       font-size: 14px;
-      color: var(--text-mid);
+      color: inherit;
       line-height: 1.6;
       max-width: 58ch;
+      margin: 0;
     }
 
     input {
@@ -288,7 +363,7 @@
     }
 
     .primary-result-value {
-      color: #000000;
+      color: var(--text-strong);
       font-size: clamp(34px, 6vw, 60px);
       font-weight: 700;
       line-height: 0.95;
@@ -297,7 +372,7 @@
     }
 
     body.dark .primary-result-value {
-      color: #ffffff;
+      color: var(--text-strong);
     }
 
     .primary-result-major {
@@ -369,7 +444,7 @@
       width: 20px;
       height: 14px;
       border-radius: 999px;
-      background: #ffffff;
+      background: var(--inverse);
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
       transition: transform 0.18s ease;
@@ -423,7 +498,7 @@
     }
 
     .stat-value.is-negative {
-      color: #c24545;
+      color: var(--danger);
     }
 
     .period-row {
@@ -549,7 +624,7 @@
     }
 
     .graph-bar.is-hourly {
-      background: #547b62;
+      background: var(--accent-alt);
     }
 
     .graph-bar-highlight {
@@ -558,11 +633,11 @@
       left: 0;
       right: 0;
       height: 24%;
-      background: #5b73b0;
+      background: var(--accent-strong);
     }
 
     .graph-bar.is-hourly .graph-bar-highlight {
-      background: #7fa38a;
+      background: var(--accent-alt-soft);
     }
 
     .graph-bar-label {
@@ -604,7 +679,7 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: #ffffff;
+      color: var(--inverse);
     }
 
     .graph-legend-swatch.is-salary {
@@ -612,23 +687,23 @@
     }
 
     .graph-legend-swatch.is-hourly {
-      background: #547b62;
+      background: var(--accent-alt);
     }
 
     .graph-legend-swatch.is-vacation {
-      background: #5b73b0;
+      background: var(--accent-strong);
     }
 
     .graph-legend-swatch.is-overtime {
-      background: #7fa38a;
+      background: var(--accent-alt-soft);
     }
 
     .validation-message {
       display: none;
       padding: 12px 14px;
       border-radius: var(--radius);
-      background: #f6e7e7;
-      color: #8e2f2f;
+      background: var(--danger-soft);
+      color: var(--danger);
       font-size: 13px;
       line-height: 1.5;
     }
@@ -653,11 +728,22 @@
 
     @media (max-width: 640px) {
       .wrap {
-        padding: 44px 16px 64px;
+        padding: 0 16px 64px;
       }
 
       .tool-header {
         padding-right: 0;
+      }
+
+      .header-stripe {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .header-stripe.is-title {
+        min-height: 76px;
       }
 
       .primary-grid,
@@ -743,9 +829,17 @@
 
   <main class="wrap">
     <header class="tool-header">
-      <div class="brand-label">ThinkBreak</div>
-      <h1 class="tool-title">Hourly Vs Salary Calc</h1>
-      <p class="tool-sub">A tool that lets you compare hourly wages to annual salaries.</p>
+      <div class="header-stripe is-title">
+        <h1 class="tool-title">Hourly Vs Salary Calc</h1>
+      </div>
+      <div class="header-stripe is-subtitle">
+        <p class="tool-sub">A tool that lets you compare hourly wages to annual salaries.</p>
+      </div>
+      <div class="header-stripe is-brand">
+        <div class="brand-label">ThinkBreak</div>
+      </div>
+      <div class="header-stripe is-fill-1" aria-hidden="true"></div>
+      <div class="header-stripe is-fill-2" aria-hidden="true"></div>
     </header>
 
     <section class="tool-shell" aria-label="Tool layout">
@@ -1062,8 +1156,8 @@
   </main>
 
   <script>
-    const THEME_DARK = "#111110";
-    const THEME_LIGHT = "#FAFAF7";
+    const THEME_DARK = "#393836";
+    const THEME_LIGHT = "#EBE4C1";
     let elements;
 
     // Read the current system preference so the page starts in the expected mode.
