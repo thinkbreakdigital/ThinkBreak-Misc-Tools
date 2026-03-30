@@ -945,17 +945,6 @@
     const THEME_LIGHT = "#FAFAF7";
     let elements;
 
-    // Return the shared theme elements so the theme toggle can update the page.
-    function getThemeElements() {
-      return {
-        body: document.body,
-        button: document.getElementById("theme-btn"),
-        themeColorMeta: document.getElementById("theme-color-meta"),
-        sunIcon: document.getElementById("theme-icon-sun"),
-        moonIcon: document.getElementById("theme-icon-moon")
-      };
-    }
-
     // Read the current system preference so the page starts in the expected mode.
     function getPreferredTheme() {
       return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -965,17 +954,16 @@
 
     // Apply the chosen light or dark mode and update icons and theme color.
     function applyTheme(theme) {
-      const themeElements = getThemeElements();
       const isDark = theme === "dark";
 
-      themeElements.body.classList.toggle("dark", isDark);
-      themeElements.sunIcon.style.display = isDark ? "block" : "none";
-      themeElements.moonIcon.style.display = isDark ? "none" : "block";
-      themeElements.button.setAttribute(
+      elements.body.classList.toggle("dark", isDark);
+      elements.sunIcon.style.display = isDark ? "block" : "none";
+      elements.moonIcon.style.display = isDark ? "none" : "block";
+      elements.themeButton.setAttribute(
         "aria-label",
         isDark ? "Switch to light mode" : "Switch to dark mode"
       );
-      themeElements.themeColorMeta.setAttribute(
+      elements.themeColorMeta.setAttribute(
         "content",
         isDark ? THEME_DARK : THEME_LIGHT
       );
@@ -989,10 +977,8 @@
 
     // Set the initial theme and attach the shared theme button listener.
     function initializeTheme() {
-      const themeElements = getThemeElements();
-
       applyTheme(getPreferredTheme());
-      themeElements.button.addEventListener("click", toggleTheme);
+      elements.themeButton.addEventListener("click", toggleTheme);
     }
 
     // Cache tool-specific DOM elements so the calculator logic can reuse them.
@@ -1001,6 +987,11 @@
       const hourlyToSalaryView = document.getElementById("hourly-to-salary-view");
 
       return {
+        body: document.body,
+        themeButton: document.getElementById("theme-btn"),
+        themeColorMeta: document.getElementById("theme-color-meta"),
+        sunIcon: document.getElementById("theme-icon-sun"),
+        moonIcon: document.getElementById("theme-icon-moon"),
         validationMessage: document.getElementById("validation-message"),
         viewTabs: Array.from(document.querySelectorAll("[data-view-tab]")),
         viewPanels: Array.from(document.querySelectorAll("[data-view-panel]")),
@@ -1287,11 +1278,17 @@
       return Math.max(52 - vacationWeeks, 0);
     }
 
-    // Calculate the base hourly rate before vacation and overtime adjustments.
-    function calculateBaseHourlyRateFromSalary(annualSalary, hoursPerWeek) {
+    // Calculate weighted weekly hours using time-and-a-half treatment for overtime.
+    function calculateWeightedWeeklyHours(hoursPerWeek) {
       const regularHours = Math.min(hoursPerWeek, 40);
       const overtimeHours = Math.max(hoursPerWeek - 40, 0);
-      const weightedAnnualHours = (regularHours + (overtimeHours * 1.5)) * 52;
+
+      return regularHours + (overtimeHours * 1.5);
+    }
+
+    // Calculate the base hourly rate before vacation and overtime adjustments.
+    function calculateBaseHourlyRateFromSalary(annualSalary, hoursPerWeek) {
+      const weightedAnnualHours = calculateWeightedWeeklyHours(hoursPerWeek) * 52;
 
       if (annualSalary <= 0 || weightedAnnualHours <= 0) {
         return 0;
@@ -1329,9 +1326,7 @@
     // Calculate the main Salary to Hourly result from salary, work pattern, and overtime comparison.
     function calculateEstimatedHourlyRate(annualSalary, hoursPerWeek, vacationWeeks) {
       const workingWeeks = calculateAnnualWorkingWeeks(vacationWeeks);
-      const regularHours = Math.min(hoursPerWeek, 40);
-      const overtimeHours = Math.max(hoursPerWeek - 40, 0);
-      const weightedAnnualHours = workingWeeks * (regularHours + (overtimeHours * 1.5));
+      const weightedAnnualHours = workingWeeks * calculateWeightedWeeklyHours(hoursPerWeek);
 
       if (annualSalary <= 0 || weightedAnnualHours <= 0) {
         return 0;
