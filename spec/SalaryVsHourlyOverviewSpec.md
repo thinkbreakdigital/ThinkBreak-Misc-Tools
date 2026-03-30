@@ -691,7 +691,7 @@ Initialize the shared page behavior and then the tool-specific calculator behavi
 
 This should:
 
-1. initialize theme handling already present in the template
+1. initialize theme and gradient handling already present in `Components/base-tool-template.html`
 2. cache or prepare tool DOM references
 3. bind tool event listeners
 4. render the starting view

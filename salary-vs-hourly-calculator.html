@@ -4,38 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Hourly Vs Salary Calc</title>
-  <meta name="theme-color" content="#EBE4C1" id="theme-color-meta">
+  <meta name="theme-color" content="rgba(235, 228, 193, 1)" id="theme-color-meta">
   <style>
     :root {
-      --bg: #fff8ef;
-      --surface: #eedcc4;
-      --surface2: #f4e2ce;
-      --surface3: #d1c48f;
-      --border: #bcae79;
-      --border-hover: #94855b;
-      --border-strong: #756948;
-      --text: #393836;
-      --text-mid: #5e584d;
-      --text-dim: #81775f;
-      --text-strong: #23211f;
-      --accent: #ff7a26;
-      --accent-strong: #ac4200;
-      --accent-dim: #ffd9c3;
-      --accent-alt: #aa16b7;
-      --accent-alt-soft: #6b1773;
-      --success: #b98a16;
-      --success-soft: #dfb74c;
-      --danger: #b2452d;
-      --danger-soft: #f4d3c4;
-      --header-text: #faf6e7;
+      --bg: rgba(255, 248, 239, 1);
+      --surface: rgba(238, 220, 196, 1);
+      --surface2: rgba(244, 226, 206, 1);
+      --surface3: rgba(209, 196, 143, 1);
+      --border: rgba(188, 174, 121, 1);
+      --border-hover: rgba(148, 133, 91, 1);
+      --border-strong: rgba(117, 105, 72, 1);
+      --text: rgba(57, 56, 54, 1);
+      --text-mid: rgba(94, 88, 77, 1);
+      --text-dim: rgba(129, 119, 95, 1);
+      --text-strong: rgba(35, 33, 31, 1);
+      --accent: rgba(255, 122, 38, 1);
+      --accent-strong: rgba(172, 66, 0, 1);
+      --accent-dim: rgba(255, 217, 195, 1);
+      --accent-alt: rgba(170, 22, 183, 1);
+      --accent-alt-soft: rgba(107, 23, 115, 1);
+      --success: rgba(185, 138, 22, 1);
+      --success-soft: rgba(223, 183, 76, 1);
+      --danger: rgba(178, 69, 45, 1);
+      --danger-soft: rgba(244, 211, 196, 1);
+      --header-text: rgba(250, 246, 231, 1);
       --header-row-1: 80px;
       --header-row-2: 60px;
       --header-row-3: 40px;
       --stripe-total-height: 800px;
-      --gradient-anchor-1: #b0336f;
-      --gradient-anchor-2: #ff8000;
-      --gradient-anchor-3: #ffc80041;
+      --gradient-anchor-1: rgba(176, 51, 111, 1);
+      --gradient-anchor-2: rgba(255, 128, 0, 1);
+      --gradient-anchor-3: rgba(255, 200, 0, 0.8);
       --gradient-anchor-4: rgba(203, 176, 0, 0);
+      --gradient-anchor-stop-1: 0;
+      --gradient-anchor-stop-2: 0.18;
+      --gradient-anchor-stop-3: 0.3;
+      --gradient-anchor-stop-4: 1;
+      --stripe-count: 24;
+      --stripe-tail-start-height: 36;
+      --stripe-tail-end-height: 18;
+      --theme-color-light: rgba(235, 228, 193, 1);
+      --theme-color-dark: rgba(57, 56, 54, 1);
       --radius: 0px;
       --shadow-soft: 0 10px 30px rgba(57, 56, 54, 0.08);
     }
@@ -61,26 +70,26 @@
     }
 
     body.dark {
-      --bg: #23211f;
-      --surface: #2f2d28;
-      --surface2: #29261f;
-      --surface3: #3f3c36;
-      --border: #554b3c;
-      --border-hover: #e96514;
-      --border-strong: #ff7a26;
-      --text: #cdbfb3;
-      --text-mid: #b1a79c;
-      --text-dim: #827a72;
-      --text-strong: #cdbfb3;
-      --accent-dim: #684430;
-      --success: #d7a83a;
-      --success-soft: #f0ca71;
-      --danger: #ff9a72;
-      --danger-soft: #5a3026;
-      --header-text: #23211f;
-      --gradient-anchor-1: #cfb700;
-      --gradient-anchor-2: #ea6900f7;
-      --gradient-anchor-3: #5a2a4e5c;
+      --bg: rgba(35, 33, 31, 1);
+      --surface: rgba(47, 45, 40, 1);
+      --surface2: rgba(41, 38, 31, 1);
+      --surface3: rgba(63, 60, 54, 1);
+      --border: rgba(85, 75, 60, 1);
+      --border-hover: rgba(233, 101, 20, 1);
+      --border-strong: rgba(255, 122, 38, 1);
+      --text: rgba(205, 191, 179, 1);
+      --text-mid: rgba(177, 167, 156, 1);
+      --text-dim: rgba(130, 122, 114, 1);
+      --text-strong: rgba(205, 191, 179, 1);
+      --accent-dim: rgba(104, 68, 48, 1);
+      --success: rgba(215, 168, 58, 1);
+      --success-soft: rgba(240, 202, 113, 1);
+      --danger: rgba(255, 154, 114, 1);
+      --danger-soft: rgba(90, 48, 38, 1);
+      --header-text: rgba(35, 33, 31, 1);
+      --gradient-anchor-1: rgba(207, 183, 0, 1);
+      --gradient-anchor-2: rgba(234, 105, 0, 1);
+      --gradient-anchor-3: rgba(90, 42, 78, 0.8);
       --gradient-anchor-4: rgba(35, 31, 34, 0);
       background: var(--bg);
       color: var(--text);
@@ -135,6 +144,8 @@
     .gradient-stripe {
       width: 100%;
       flex: 0 0 auto;
+      height: var(--stripe-height, 0px);
+      background: var(--stripe-color, transparent);
     }
 
     .wrap {
@@ -170,6 +181,18 @@
     #theme-btn:focus-visible {
       border-color: var(--border-hover);
       outline: none;
+    }
+
+    #theme-icon-sun {
+      display: none;
+    }
+
+    body.dark #theme-icon-sun {
+      display: block;
+    }
+
+    body.dark #theme-icon-moon {
+      display: none;
     }
 
     .tool-header {
@@ -459,7 +482,7 @@
       width: 20px;
       height: 14px;
       border-radius: 999px;
-      background: var(--accent-strong);
+      background: var(--accent);
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
       transition: transform 0.18s ease;
@@ -882,7 +905,6 @@
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style="display: none;"
     >
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -1241,15 +1263,28 @@
     </section>
     </main>
   </div>
-
   <script>
-    const THEME_DARK = "#393836";
-    const THEME_LIGHT = "#EBE4C1";
-    const STRIPE_COUNT = 24;
-    const STRIPE_TAIL_START_HEIGHT = 36;
-    const STRIPE_TAIL_END_HEIGHT = 18;
-    const STRIPE_ANCHOR_STOPS = [0, 0.18, 0.30, 1];
     let elements;
+    let resizeFrameId = 0;
+    let stripeNodes = [];
+    const VIEW_NAMES = {
+      SALARY_TO_HOURLY: "salary-to-hourly",
+      HOURLY_TO_SALARY: "hourly-to-salary"
+    };
+    const formatters = {
+      currency0: new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }),
+      currency2: new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })
+    };
 
     function clamp(value, min, max) {
       return Math.min(Math.max(value, min), max);
@@ -1259,25 +1294,8 @@
       return start + ((end - start) * progress);
     }
 
-    function hexToRgba(hex, alpha = 1) {
-      const normalized = hex.replace("#", "");
-      const safeHex = normalized.length === 3
-        ? normalized.split("").map((character) => character + character).join("")
-        : normalized;
-
-      return {
-        r: parseInt(safeHex.slice(0, 2), 16),
-        g: parseInt(safeHex.slice(2, 4), 16),
-        b: parseInt(safeHex.slice(4, 6), 16),
-        a: alpha
-      };
-    }
-
-    function parseColor(color) {
-      if (color.startsWith("#")) {
-        return hexToRgba(color);
-      }
-
+    function parseColor(value) {
+      const color = value.trim();
       const match = color.match(/rgba?\(([^)]+)\)/i);
 
       if (!match) {
@@ -1286,7 +1304,7 @@
 
       const [r, g, b, a = 1] = match[1]
         .split(",")
-        .map((value) => Number.parseFloat(value.trim()));
+        .map((part) => Number.parseFloat(part.trim()));
 
       return { r, g, b, a };
     }
@@ -1306,18 +1324,22 @@
       return `rgba(${Math.round(color.r)}, ${Math.round(color.g)}, ${Math.round(color.b)}, ${color.a.toFixed(3)})`;
     }
 
-    function getTokenValue(variableName) {
-      const bodyValue = document.body
-        ? getComputedStyle(document.body).getPropertyValue(variableName).trim()
-        : "";
+    function getTokenValue(name) {
+      const bodyValue = getComputedStyle(document.body).getPropertyValue(name).trim();
 
       if (bodyValue) {
         return bodyValue;
       }
 
-      return getComputedStyle(document.documentElement)
-        .getPropertyValue(variableName)
-        .trim();
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function getNumberToken(name) {
+      return Number.parseFloat(getTokenValue(name)) || 0;
+    }
+
+    function getStripeCount() {
+      return Math.max(Math.round(getNumberToken("--stripe-count")), 1);
     }
 
     function getStripeAnchors() {
@@ -1326,215 +1348,142 @@
         getTokenValue("--gradient-anchor-2"),
         getTokenValue("--gradient-anchor-3"),
         getTokenValue("--gradient-anchor-4")
+      ].map(parseColor);
+    }
+
+    function getStripeAnchorStops() {
+      return [
+        getNumberToken("--gradient-anchor-stop-1"),
+        getNumberToken("--gradient-anchor-stop-2"),
+        getNumberToken("--gradient-anchor-stop-3"),
+        getNumberToken("--gradient-anchor-stop-4")
       ];
     }
 
-    function getRootPixelValue(variableName) {
-      const value = getTokenValue(variableName);
-
-      return Number.parseFloat(value) || 0;
-    }
-
-    function getStripeTotalHeight() {
-      return getRootPixelValue("--stripe-total-height");
-    }
-
     function getHeaderStripeHeights() {
-      const row1 = getRootPixelValue("--header-row-1");
-      const row2 = getRootPixelValue("--header-row-2");
-      const row3 = getRootPixelValue("--header-row-3");
-
-      return [row1, row2, row3, row3, row3];
+      return [
+        getNumberToken("--header-row-1"),
+        getNumberToken("--header-row-2"),
+        getNumberToken("--header-row-3"),
+        getNumberToken("--header-row-3"),
+        getNumberToken("--header-row-3")
+      ];
     }
 
     function buildStripeHeights() {
-      const leadHeights = getHeaderStripeHeights();
-      const tailCount = STRIPE_COUNT - leadHeights.length;
-      const totalHeight = getStripeTotalHeight();
-      const usedHeight = leadHeights.reduce((total, height) => total + height, 0);
+      const stripeCount = getStripeCount();
+      const leadHeights = getHeaderStripeHeights().slice(0, stripeCount);
+      const tailCount = Math.max(stripeCount - leadHeights.length, 0);
+      const totalHeight = getNumberToken("--stripe-total-height");
+      const usedHeight = leadHeights.reduce((sum, height) => sum + height, 0);
       const remainingHeight = Math.max(totalHeight - usedHeight, tailCount);
+      const tailStartHeight = getNumberToken("--stripe-tail-start-height");
+      const tailEndHeight = getNumberToken("--stripe-tail-end-height");
       const rawTailHeights = Array.from({ length: tailCount }, (_, index) => {
         const progress = tailCount <= 1 ? 0 : index / (tailCount - 1);
-        return interpolateNumber(STRIPE_TAIL_START_HEIGHT, STRIPE_TAIL_END_HEIGHT, progress);
+        return interpolateNumber(tailStartHeight, tailEndHeight, progress);
       });
-      const rawTailTotal = rawTailHeights.reduce((total, height) => total + height, 0) || 1;
+      const rawTailTotal = rawTailHeights.reduce((sum, height) => sum + height, 0) || 1;
       const scaledTailHeights = rawTailHeights.map((height) => height * (remainingHeight / rawTailTotal));
       const roundedTailHeights = scaledTailHeights.map((height) => Math.round(height));
-      const tailDifference = remainingHeight
-        - roundedTailHeights.reduce((total, height) => total + height, 0);
+      const difference = remainingHeight - roundedTailHeights.reduce((sum, height) => sum + height, 0);
 
       if (roundedTailHeights.length > 0) {
-        roundedTailHeights[roundedTailHeights.length - 1] += tailDifference;
+        roundedTailHeights[roundedTailHeights.length - 1] += difference;
       }
 
       return [...leadHeights, ...roundedTailHeights];
     }
 
-    function getStripeColor(theme, stripeIndex) {
-      const parsedAnchors = getStripeAnchors().map(parseColor);
-      const progress = STRIPE_COUNT <= 1 ? 0 : stripeIndex / (STRIPE_COUNT - 1);
-      let segmentIndex = STRIPE_ANCHOR_STOPS.length - 2;
+    function getStripeColor(index, stripeCount, anchorStops, anchors) {
+      const progress = stripeCount <= 1 ? 0 : index / (stripeCount - 1);
+      let segmentIndex = anchorStops.length - 2;
 
-      for (let index = 0; index < STRIPE_ANCHOR_STOPS.length - 1; index += 1) {
-        if (progress <= STRIPE_ANCHOR_STOPS[index + 1]) {
-          segmentIndex = index;
+      for (let stopIndex = 0; stopIndex < anchorStops.length - 1; stopIndex += 1) {
+        if (progress <= anchorStops[stopIndex + 1]) {
+          segmentIndex = stopIndex;
           break;
         }
       }
 
-      const segmentStart = STRIPE_ANCHOR_STOPS[segmentIndex];
-      const segmentEnd = STRIPE_ANCHOR_STOPS[segmentIndex + 1];
-      const segmentRange = segmentEnd - segmentStart || 1;
-      const localProgress = (progress - segmentStart) / segmentRange;
+      const segmentStart = anchorStops[segmentIndex];
+      const segmentEnd = anchorStops[segmentIndex + 1];
+      const localProgress = (progress - segmentStart) / (segmentEnd - segmentStart || 1);
 
       return formatRgba(
-        interpolateColor(parsedAnchors[segmentIndex], parsedAnchors[segmentIndex + 1], localProgress)
+        interpolateColor(anchors[segmentIndex], anchors[segmentIndex + 1], localProgress)
       );
     }
 
-    function renderStripeBackground(theme) {
+    function ensureStripeNodes(count) {
+      if (stripeNodes.length === count) {
+        return;
+      }
+
+      elements.stripeBackground.innerHTML = "";
+      stripeNodes = Array.from({ length: count }, () => {
+        const stripe = document.createElement("div");
+        stripe.className = "gradient-stripe";
+        elements.stripeBackground.appendChild(stripe);
+        return stripe;
+      });
+    }
+
+    function renderStripeBackground() {
       const stripeHeights = buildStripeHeights();
+      const stripeCount = stripeHeights.length;
+      const anchorStops = getStripeAnchorStops();
+      const anchors = getStripeAnchors();
+      ensureStripeNodes(stripeCount);
 
-      elements.stripeBackground.innerHTML = stripeHeights
-        .map((height, index) => (
-          `<div class="gradient-stripe" style="height:${height}px;background:${getStripeColor(theme, index)};"></div>`
-        ))
-        .join("");
+      stripeNodes.forEach((stripe, index) => {
+        stripe.style.setProperty("--stripe-height", `${stripeHeights[index]}px`);
+        stripe.style.setProperty("--stripe-color", getStripeColor(index, stripeCount, anchorStops, anchors));
+      });
     }
 
-    // Read the current system preference so the page starts in the expected mode.
     function getPreferredTheme() {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 
-    // Apply the chosen light or dark mode and update icons and theme color.
+    function getThemeColorToken(theme) {
+      return theme === "dark"
+        ? getTokenValue("--theme-color-dark")
+        : getTokenValue("--theme-color-light");
+    }
+
     function applyTheme(theme) {
       const isDark = theme === "dark";
 
       elements.body.classList.toggle("dark", isDark);
-      elements.sunIcon.style.display = isDark ? "block" : "none";
-      elements.moonIcon.style.display = isDark ? "none" : "block";
-      elements.themeButton.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light mode" : "Switch to dark mode"
-      );
-      elements.themeColorMeta.setAttribute(
-        "content",
-        isDark ? THEME_DARK : THEME_LIGHT
-      );
-      renderStripeBackground(theme);
+      elements.themeButton.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+      elements.themeColorMeta.setAttribute("content", getThemeColorToken(theme));
+      renderStripeBackground();
     }
 
-    // Swap between light and dark mode for the current session.
     function toggleTheme() {
-      const nextTheme = document.body.classList.contains("dark") ? "light" : "dark";
-      applyTheme(nextTheme);
+      applyTheme(elements.body.classList.contains("dark") ? "light" : "dark");
     }
 
-    // Set the initial theme and attach the shared theme button listener.
-    function initializeTheme() {
-      applyTheme(getPreferredTheme());
-      elements.themeButton.addEventListener("click", toggleTheme);
+    function queueStripeRender() {
+      if (resizeFrameId) {
+        cancelAnimationFrame(resizeFrameId);
+      }
+
+      resizeFrameId = requestAnimationFrame(() => {
+        resizeFrameId = 0;
+        renderStripeBackground();
+      });
     }
 
-    // Cache tool-specific DOM elements so the calculator logic can reuse them.
-    function getElements() {
-      const salaryToHourlyView = document.getElementById("salary-to-hourly-view");
-      const hourlyToSalaryView = document.getElementById("hourly-to-salary-view");
-
-      return {
-        body: document.body,
-        stripeBackground: document.getElementById("stripe-background"),
-        themeButton: document.getElementById("theme-btn"),
-        themeColorMeta: document.getElementById("theme-color-meta"),
-        sunIcon: document.getElementById("theme-icon-sun"),
-        moonIcon: document.getElementById("theme-icon-moon"),
-        validationMessage: document.getElementById("validation-message"),
-        viewTabs: Array.from(document.querySelectorAll("[data-view-tab]")),
-        viewPanels: Array.from(document.querySelectorAll("[data-view-panel]")),
-        views: {
-          salaryToHourly: salaryToHourlyView,
-          hourlyToSalary: hourlyToSalaryView
-        },
-        salaryToHourly: {
-          root: salaryToHourlyView,
-          annualSalaryInput: document.getElementById("annual-salary"),
-          hoursPerWeekInput: document.getElementById("salary-hours-per-week"),
-          vacationAmountInput: document.getElementById("vacation-amount"),
-          vacationUnitToggle: document.getElementById("vacation-unit-toggle"),
-          vacationUnitLabels: salaryToHourlyView
-            ? Array.from(salaryToHourlyView.querySelectorAll(".toggle-inline-label"))
-            : [],
-          periodButtons: salaryToHourlyView
-            ? Array.from(salaryToHourlyView.querySelectorAll("[data-period]"))
-            : [],
-          mainResult: document.getElementById("salary-hourly-main-result"),
-          baseRate: document.getElementById("salary-hourly-base-rate"),
-          vacationValue: document.getElementById("salary-hourly-vacation-value"),
-          overtimeValue: document.getElementById("salary-hourly-overtime-value"),
-          totalPay: document.getElementById("salary-hourly-total-pay"),
-          periodOvertime: document.getElementById("salary-hourly-period-overtime"),
-          graphSalaryValue: document.getElementById("salary-graph-salary-value"),
-          graphHourlyValue: document.getElementById("salary-graph-hourly-value"),
-          graphTicks: document.getElementById("salary-hourly-graph-ticks"),
-          graphSalaryBar: salaryToHourlyView
-            ? salaryToHourlyView.querySelector(".graph-bar:not(.is-hourly)")
-            : null,
-          graphHourlyBar: salaryToHourlyView
-            ? salaryToHourlyView.querySelector(".graph-bar.is-hourly")
-            : null,
-          graphHighlights: salaryToHourlyView
-            ? Array.from(salaryToHourlyView.querySelectorAll(".graph-bar-highlight"))
-            : []
-        },
-        hourlyToSalary: {
-          root: hourlyToSalaryView,
-          hourlyRateInput: document.getElementById("hourly-rate"),
-          hoursPerWeekInput: document.getElementById("hourly-hours-per-week"),
-          overtimeToggle: document.getElementById("overtime-toggle"),
-          overtimeLabels: hourlyToSalaryView
-            ? Array.from(hourlyToSalaryView.querySelectorAll(".toggle-inline-label"))
-            : [],
-          periodButtons: hourlyToSalaryView
-            ? Array.from(hourlyToSalaryView.querySelectorAll("[data-period]"))
-            : [],
-          mainResult: document.getElementById("hourly-salary-main-result"),
-          baseRate: document.getElementById("hourly-salary-base-rate"),
-          overtimeValue: document.getElementById("hourly-salary-overtime-value"),
-          effectiveValue: document.getElementById("hourly-salary-effective-value"),
-          totalPay: document.getElementById("hourly-salary-total-pay"),
-          basePay: document.getElementById("hourly-salary-base-pay"),
-          periodOvertime: document.getElementById("hourly-salary-period-overtime"),
-          graphSalaryValue: document.getElementById("hourly-graph-salary-value"),
-          graphHourlyValue: document.getElementById("hourly-graph-hourly-value"),
-          graphTicks: document.getElementById("hourly-salary-graph-ticks"),
-          graphSalaryBar: hourlyToSalaryView
-            ? hourlyToSalaryView.querySelector(".graph-bar:not(.is-hourly)")
-            : null,
-          graphHourlyBar: hourlyToSalaryView
-            ? hourlyToSalaryView.querySelector(".graph-bar.is-hourly")
-            : null,
-          graphHighlights: hourlyToSalaryView
-            ? Array.from(hourlyToSalaryView.querySelectorAll(".graph-bar-highlight"))
-            : []
-        }
-      };
-    }
-
-    // Return the currently active pay period for the requested view.
     function getSelectedPayPeriod(viewRoot) {
       const activeButton = viewRoot.querySelector(".period-toggle-button.is-active");
       return activeButton ? activeButton.dataset.period : "yearly";
     }
 
-    // Read the current tool state here and return a normalized options object.
     function getOptions() {
-      const elements = getElements();
       const activeViewTab = elements.viewTabs.find((tab) => tab.classList.contains("is-active"));
-      const activeView = activeViewTab ? activeViewTab.dataset.viewTab : "salary-to-hourly";
-      const vacationUnit = elements.salaryToHourly.vacationUnitToggle.checked ? "weeks" : "days";
+      const activeView = activeViewTab ? activeViewTab.dataset.viewTab : VIEW_NAMES.SALARY_TO_HOURLY;
 
       return {
         activeView,
@@ -1546,7 +1495,7 @@
           annualSalary: Number.parseFloat(elements.salaryToHourly.annualSalaryInput.value) || 0,
           hoursPerWeek: Number.parseFloat(elements.salaryToHourly.hoursPerWeekInput.value) || 0,
           vacationAmount: Number.parseFloat(elements.salaryToHourly.vacationAmountInput.value) || 0,
-          vacationUnit
+          vacationUnit: elements.salaryToHourly.vacationUnitToggle.checked ? "weeks" : "days"
         },
         hourlyToSalary: {
           hourlyRate: Number.parseFloat(elements.hourlyToSalary.hourlyRateInput.value) || 0,
@@ -1556,7 +1505,6 @@
       };
     }
 
-    // Show the selected view panel and update the active tab state.
     function renderActiveView(viewName) {
       elements.viewTabs.forEach((tab) => {
         const isActive = tab.dataset.viewTab === viewName;
@@ -1569,7 +1517,6 @@
       });
     }
 
-    // Update one compact two-option toggle so the selected label uses the stronger text color.
     function renderBinaryToggleLabels(toggleInput) {
       const toggle = toggleInput.closest(".toggle-inline");
       if (!toggle) {
@@ -1581,9 +1528,7 @@
         return;
       }
 
-      const checkedShowsLeft = toggleInput.id === "overtime-toggle";
-
-      if (checkedShowsLeft) {
+      if (toggleInput.id === "overtime-toggle") {
         labels[0].classList.toggle("is-active", toggleInput.checked);
         labels[1].classList.toggle("is-active", !toggleInput.checked);
         return;
@@ -1593,7 +1538,6 @@
       labels[1].classList.toggle("is-active", toggleInput.checked);
     }
 
-    // Move the active state across one pay-period selector.
     function setActivePayPeriod(button) {
       const toggle = button.closest(".period-toggle");
       if (!toggle) {
@@ -1605,8 +1549,9 @@
       const activeIndex = buttons.indexOf(button);
 
       buttons.forEach((item) => {
-        item.classList.toggle("is-active", item === button);
-        item.setAttribute("aria-pressed", String(item === button));
+        const isActive = item === button;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-pressed", String(isActive));
       });
 
       if (indicator && activeIndex >= 0) {
@@ -1614,28 +1559,16 @@
       }
     }
 
-    // Change the active page view between the supported V1 calculator modes.
     function switchView(viewName) {
       renderActiveView(viewName);
       updateOutput();
     }
 
-    // Format a numeric value as US currency for display throughout the tool.
-    function formatCurrency(value, options = {}) {
-      const {
-        minimumFractionDigits = 0,
-        maximumFractionDigits = 0
-      } = options;
-
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits,
-        maximumFractionDigits
-      }).format(Number.isFinite(value) ? value : 0);
+    function formatCurrency(value, digits = 0) {
+      const safeValue = Number.isFinite(value) ? value : 0;
+      return digits === 2 ? formatters.currency2.format(safeValue) : formatters.currency0.format(safeValue);
     }
 
-    // Format the large hourly-equivalent display with smaller cents and unit text.
     function formatHourlyResult(value) {
       const safeValue = Number.isFinite(value) ? value : 0;
       const fixed = safeValue.toFixed(2);
@@ -1648,68 +1581,48 @@
       ].join("");
     }
 
-    // Format the large annual salary-equivalent display.
     function formatAnnualResult(value) {
       return `<span class="primary-result-major">${formatCurrency(value)}</span>`;
     }
 
-    // Show a short validation message while preserving the rest of the layout.
     function renderValidationMessage(message) {
       elements.validationMessage.textContent = message;
       elements.validationMessage.style.display = "block";
     }
 
-    // Hide the shared validation message once inputs are valid again.
     function clearValidationMessage() {
       elements.validationMessage.textContent = "";
       elements.validationMessage.style.display = "none";
     }
 
-    // Validate the currently active view inputs before calculations run.
     function validateOptions(options) {
-      if (options.activeView === "salary-to-hourly") {
+      if (options.activeView === VIEW_NAMES.SALARY_TO_HOURLY) {
         if (options.salaryToHourly.annualSalary <= 0) {
-          return {
-            isValid: false,
-            message: "Enter an annual salary greater than 0."
-          };
+          return { isValid: false, message: "Enter an annual salary greater than 0." };
         }
 
         if (options.salaryToHourly.hoursPerWeek <= 0) {
-          return {
-            isValid: false,
-            message: "Enter average hours worked per week greater than 0."
-          };
+          return { isValid: false, message: "Enter average hours worked per week greater than 0." };
         }
 
         if (options.salaryToHourly.vacationAmount < 0) {
-          return {
-            isValid: false,
-            message: "Vacation amount cannot be negative."
-          };
+          return { isValid: false, message: "Vacation amount cannot be negative." };
         }
 
         return { isValid: true, message: "" };
       }
 
       if (options.hourlyToSalary.hourlyRate <= 0) {
-        return {
-          isValid: false,
-          message: "Enter an hourly rate greater than 0."
-        };
+        return { isValid: false, message: "Enter an hourly rate greater than 0." };
       }
 
       if (options.hourlyToSalary.hoursPerWeek <= 0) {
-        return {
-          isValid: false,
-          message: "Enter average hours worked per week greater than 0."
-        };
+        return { isValid: false, message: "Enter average hours worked per week greater than 0." };
       }
 
       return { isValid: true, message: "" };
     }
 
-    // Return the annual-to-period divisor for pay breakdown sections.
     function getPayPeriodDivisor(period) {
       if (period === "monthly") {
         return 12;
@@ -1722,17 +1635,17 @@
       return 1;
     }
 
-    // Extract just the Salary to Hourly inputs from the shared tool state.
-    function getSalaryToHourlyInputs(options) {
-      return {
-        annualSalary: options.salaryToHourly.annualSalary,
-        hoursPerWeek: options.salaryToHourly.hoursPerWeek,
-        vacationAmount: options.salaryToHourly.vacationAmount,
-        vacationUnit: options.salaryToHourly.vacationUnit
-      };
+    function buildPayBreakdown(annualTotals, period) {
+      const divisor = getPayPeriodDivisor(period);
+      const payBreakdown = { period };
+
+      Object.entries(annualTotals).forEach(([key, value]) => {
+        payBreakdown[key] = value / divisor;
+      });
+
+      return payBreakdown;
     }
 
-    // Normalize vacation input into weeks so the page only uses one representation.
     function convertVacationToWeeks(vacationAmount, vacationUnit) {
       if (vacationUnit === "weeks") {
         return vacationAmount;
@@ -1741,12 +1654,10 @@
       return vacationAmount / 5;
     }
 
-    // Calculate how many weeks are actually worked in a year after paid vacation.
     function calculateAnnualWorkingWeeks(vacationWeeks) {
       return Math.max(52 - vacationWeeks, 0);
     }
 
-    // Calculate weighted weekly hours using time-and-a-half treatment for overtime.
     function calculateWeightedWeeklyHours(hoursPerWeek) {
       const regularHours = Math.min(hoursPerWeek, 40);
       const overtimeHours = Math.max(hoursPerWeek - 40, 0);
@@ -1754,7 +1665,6 @@
       return regularHours + (overtimeHours * 1.5);
     }
 
-    // Calculate the base hourly rate before vacation and overtime adjustments.
     function calculateBaseHourlyRateFromSalary(annualSalary, hoursPerWeek) {
       const weightedAnnualHours = calculateWeightedWeeklyHours(hoursPerWeek) * 52;
 
@@ -1765,7 +1675,6 @@
       return annualSalary / weightedAnnualHours;
     }
 
-    // Calculate the annual share of salary attributable to paid vacation.
     function calculatePaidVacationValue(annualSalary, vacationWeeks) {
       if (annualSalary <= 0 || vacationWeeks <= 0) {
         return 0;
@@ -1774,7 +1683,17 @@
       return annualSalary * (vacationWeeks / 52);
     }
 
-    // Calculate the extra annual value that an hourly model would gain from overtime.
+    function calculateEstimatedHourlyRate(annualSalary, hoursPerWeek, vacationWeeks) {
+      const workingWeeks = calculateAnnualWorkingWeeks(vacationWeeks);
+      const weightedAnnualHours = workingWeeks * calculateWeightedWeeklyHours(hoursPerWeek);
+
+      if (annualSalary <= 0 || weightedAnnualHours <= 0) {
+        return 0;
+      }
+
+      return annualSalary / weightedAnnualHours;
+    }
+
     function calculateHourlyOvertimeValueFromSalaryComparison(annualSalary, hoursPerWeek, vacationWeeks) {
       if (annualSalary <= 0 || hoursPerWeek <= 40) {
         return 0;
@@ -1791,20 +1710,7 @@
       return overtimeHours * equivalentHourlyRate * 0.5 * workingWeeks;
     }
 
-    // Calculate the main Salary to Hourly result from salary, work pattern, and overtime comparison.
-    function calculateEstimatedHourlyRate(annualSalary, hoursPerWeek, vacationWeeks) {
-      const workingWeeks = calculateAnnualWorkingWeeks(vacationWeeks);
-      const weightedAnnualHours = workingWeeks * calculateWeightedWeeklyHours(hoursPerWeek);
-
-      if (annualSalary <= 0 || weightedAnnualHours <= 0) {
-        return 0;
-      }
-
-      return annualSalary / weightedAnnualHours;
-    }
-
-    // Build the complete Salary to Hourly calculation object used throughout the view.
-    function buildSalaryToHourlyBreakdown(inputs) {
+    function buildSalaryToHourlyCalculation(inputs, payPeriod) {
       const vacationWeeks = convertVacationToWeeks(inputs.vacationAmount, inputs.vacationUnit);
       const workingWeeks = calculateAnnualWorkingWeeks(vacationWeeks);
       const baseHourlyRate = calculateBaseHourlyRateFromSalary(inputs.annualSalary, inputs.hoursPerWeek);
@@ -1819,129 +1725,32 @@
         inputs.hoursPerWeek,
         vacationWeeks
       );
-      const hourlyComparisonAnnualTotal = inputs.annualSalary;
 
       return {
-        annualSalary: inputs.annualSalary,
-        hoursPerWeek: inputs.hoursPerWeek,
-        vacationWeeks,
-        workingWeeks,
-        estimatedHourlyRate,
-        baseHourlyRate,
-        paidVacationValue,
-        overtimeValue,
-        annualTotals: {
+        view: VIEW_NAMES.SALARY_TO_HOURLY,
+        mainResult: estimatedHourlyRate,
+        breakdown: {
+          baseRate: baseHourlyRate,
+          vacationValue: paidVacationValue,
+          overtimeValue
+        },
+        payBreakdown: buildPayBreakdown({
           totalPay: inputs.annualSalary,
-          overtimeValue,
-          hourlyComparisonAnnualTotal
+          overtimeValue
+        }, payPeriod),
+        graph: {
+          totalA: inputs.annualSalary,
+          totalB: inputs.annualSalary,
+          highlightA: paidVacationValue,
+          highlightB: overtimeValue
+        },
+        meta: {
+          workingWeeks,
+          vacationWeeks
         }
       };
     }
 
-    // Convert annual Salary to Hourly values into the selected pay period.
-    function getSalaryToHourlyPayBreakdown(calculation, period) {
-      const divisor = getPayPeriodDivisor(period);
-
-      return {
-        period,
-        totalPay: calculation.annualTotals.totalPay / divisor,
-        overtimeValue: calculation.annualTotals.overtimeValue / divisor
-      };
-    }
-
-    // Build the graph-ready annual values for the Salary to Hourly view.
-    function buildSalaryToHourlyGraphData(calculation) {
-      return {
-        salaryTotal: calculation.annualSalary,
-        salaryHighlight: calculation.paidVacationValue,
-        hourlyTotal: calculation.annualTotals.hourlyComparisonAnnualTotal,
-        hourlyHighlight: calculation.overtimeValue
-      };
-    }
-
-    // Build a shared max-value scale for the simple comparison graph.
-    function buildGraphScale(graphData) {
-      return Math.max(Math.round(Math.max(graphData.salaryTotal, graphData.hourlyTotal)), 1);
-    }
-
-    // Build evenly spaced graph ticks from zero to the rounded graph maximum.
-    function buildGraphTicks(maxValue) {
-      const steps = 4;
-      const ticks = [];
-
-      for (let index = steps; index >= 0; index -= 1) {
-        ticks.push((maxValue / steps) * index);
-      }
-
-      return ticks;
-    }
-
-    // Render the Y-axis tick labels for the active graph.
-    function renderGraphTicks(container, ticks) {
-      container.innerHTML = ticks
-        .map((tick) => `<div class="graph-tick">${formatCurrency(tick)}</div>`)
-        .join("");
-    }
-
-    // Convert a graph value into a visible bar height percentage.
-    function getBarHeight(value, maxValue) {
-      if (maxValue <= 0) {
-        return 0;
-      }
-
-      return Math.max((value / maxValue) * 100, 12);
-    }
-
-    // Render the Salary to Hourly graph using the shared bar markup.
-    function renderSalaryToHourlyGraph(graphData) {
-      const maxValue = buildGraphScale(graphData);
-      const ticks = buildGraphTicks(maxValue);
-      const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
-      const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
-      const salaryHighlightHeight = graphData.salaryTotal > 0
-        ? (graphData.salaryHighlight / graphData.salaryTotal) * 100
-        : 0;
-      const hourlyHighlightHeight = graphData.hourlyTotal > 0
-        ? (graphData.hourlyHighlight / graphData.hourlyTotal) * 100
-        : 0;
-
-      elements.salaryToHourly.graphSalaryBar.style.height = `${salaryHeight}%`;
-      elements.salaryToHourly.graphHourlyBar.style.height = `${hourlyHeight}%`;
-      elements.salaryToHourly.graphHighlights[0].style.height = `${Math.min(salaryHighlightHeight, 100)}%`;
-      elements.salaryToHourly.graphHighlights[1].style.height = `${Math.min(hourlyHighlightHeight, 100)}%`;
-      elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(graphData.salaryTotal);
-      elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(graphData.hourlyTotal);
-      renderGraphTicks(elements.salaryToHourly.graphTicks, ticks);
-    }
-
-    // Render the Salary to Hourly outputs from one calculation bundle.
-    function renderSalaryToHourlyResults(calculation, period) {
-      const payBreakdown = getSalaryToHourlyPayBreakdown(calculation, period);
-      const graphData = buildSalaryToHourlyGraphData(calculation);
-
-      elements.salaryToHourly.mainResult.innerHTML = formatHourlyResult(calculation.estimatedHourlyRate);
-      elements.salaryToHourly.baseRate.textContent = formatCurrency(calculation.baseHourlyRate, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      elements.salaryToHourly.vacationValue.textContent = formatCurrency(calculation.paidVacationValue);
-      elements.salaryToHourly.overtimeValue.textContent = formatCurrency(calculation.overtimeValue);
-      elements.salaryToHourly.totalPay.textContent = formatCurrency(payBreakdown.totalPay);
-      elements.salaryToHourly.periodOvertime.textContent = formatCurrency(payBreakdown.overtimeValue);
-
-      renderSalaryToHourlyGraph(graphData);
-    }
-
-    // Extract just the Hourly to Salary inputs from the shared tool state.
-    function getHourlyToSalaryInputs(options) {
-      return {
-        hourlyRate: options.hourlyToSalary.hourlyRate,
-        hoursPerWeek: options.hourlyToSalary.hoursPerWeek,
-        overtimeEnabled: options.hourlyToSalary.overtimeEnabled
-      };
-    }
-
-    // Calculate straight annualized pay without any overtime premium.
     function calculateBaseSalaryEquivalent(hourlyRate, hoursPerWeek) {
       if (hourlyRate <= 0 || hoursPerWeek <= 0) {
         return 0;
@@ -1950,7 +1759,6 @@
       return hourlyRate * hoursPerWeek * 52;
     }
 
-    // Calculate the annual overtime premium above straight-time pay.
     function calculateAnnualOvertimeValue(hourlyRate, hoursPerWeek, overtimeEnabled) {
       if (!overtimeEnabled || hourlyRate <= 0 || hoursPerWeek <= 40) {
         return 0;
@@ -1960,7 +1768,6 @@
       return overtimeHours * hourlyRate * 0.5 * 52;
     }
 
-    // Calculate the final salary-equivalent annual total after overtime.
     function calculateEffectiveSalaryEquivalent(hourlyRate, hoursPerWeek, overtimeEnabled) {
       const baseSalaryEquivalent = calculateBaseSalaryEquivalent(hourlyRate, hoursPerWeek);
       const overtimeValue = calculateAnnualOvertimeValue(hourlyRate, hoursPerWeek, overtimeEnabled);
@@ -1968,12 +1775,8 @@
       return baseSalaryEquivalent + overtimeValue;
     }
 
-    // Build the complete Hourly to Salary calculation object used throughout the view.
-    function buildHourlyToSalaryBreakdown(inputs) {
-      const baseSalaryEquivalent = calculateBaseSalaryEquivalent(
-        inputs.hourlyRate,
-        inputs.hoursPerWeek
-      );
+    function buildHourlyToSalaryCalculation(inputs, payPeriod) {
+      const baseSalaryEquivalent = calculateBaseSalaryEquivalent(inputs.hourlyRate, inputs.hoursPerWeek);
       const overtimeValue = calculateAnnualOvertimeValue(
         inputs.hourlyRate,
         inputs.hoursPerWeek,
@@ -1986,123 +1789,252 @@
       );
 
       return {
-        hourlyRate: inputs.hourlyRate,
-        hoursPerWeek: inputs.hoursPerWeek,
-        overtimeEnabled: inputs.overtimeEnabled,
-        baseSalaryEquivalent,
-        overtimeValue,
-        effectiveSalaryEquivalent,
-        annualTotals: {
+        view: VIEW_NAMES.HOURLY_TO_SALARY,
+        mainResult: effectiveSalaryEquivalent,
+        breakdown: {
+          baseRate: baseSalaryEquivalent,
+          overtimeValue,
+          effectiveValue: effectiveSalaryEquivalent
+        },
+        payBreakdown: buildPayBreakdown({
           totalPay: effectiveSalaryEquivalent,
           basePay: baseSalaryEquivalent,
-          overtimeValue,
-          hourlyAnnualTotal: effectiveSalaryEquivalent
+          overtimeValue
+        }, payPeriod),
+        graph: {
+          totalA: effectiveSalaryEquivalent,
+          totalB: effectiveSalaryEquivalent,
+          highlightA: 0,
+          highlightB: overtimeValue
         }
       };
     }
 
-    // Convert annual Hourly to Salary values into the selected pay period.
-    function getHourlyToSalaryPayBreakdown(calculation, period) {
-      const divisor = getPayPeriodDivisor(period);
+    function buildCalculation(viewName, options) {
+      if (viewName === VIEW_NAMES.SALARY_TO_HOURLY) {
+        return buildSalaryToHourlyCalculation(options.salaryToHourly, options.payPeriod.salaryToHourly);
+      }
 
-      return {
-        period,
-        totalPay: calculation.annualTotals.totalPay / divisor,
-        basePay: calculation.annualTotals.basePay / divisor,
-        overtimeValue: calculation.annualTotals.overtimeValue / divisor
-      };
+      return buildHourlyToSalaryCalculation(options.hourlyToSalary, options.payPeriod.hourlyToSalary);
     }
 
-    // Build the graph-ready annual values for the Hourly to Salary view.
-    function buildHourlyToSalaryGraphData(calculation) {
-      return {
-        salaryTotal: calculation.effectiveSalaryEquivalent,
-        salaryHighlight: 0,
-        hourlyTotal: calculation.annualTotals.hourlyAnnualTotal,
-        hourlyHighlight: calculation.overtimeValue
-      };
+    function buildGraphScale(graphData) {
+      return Math.max(Math.round(Math.max(graphData.totalA, graphData.totalB)), 1);
     }
 
-    // Render the Hourly to Salary graph using the shared bar markup.
-    function renderHourlyToSalaryGraph(graphData) {
-      const maxValue = buildGraphScale(graphData);
+    function buildGraphTicks(maxValue) {
+      const steps = 4;
+      const ticks = [];
+
+      for (let index = steps; index >= 0; index -= 1) {
+        ticks.push((maxValue / steps) * index);
+      }
+
+      return ticks;
+    }
+
+    function renderGraphTicks(container, ticks) {
+      container.innerHTML = ticks
+        .map((tick) => `<div class="graph-tick">${formatCurrency(tick)}</div>`)
+        .join("");
+    }
+
+    function getBarHeight(value, maxValue) {
+      if (maxValue <= 0) {
+        return 0;
+      }
+
+      return Math.max((value / maxValue) * 100, 12);
+    }
+
+    function renderGraph(graphData, graphElements) {
+      const maxValue = graphData.scaleMax || buildGraphScale(graphData);
       const ticks = buildGraphTicks(maxValue);
-      const salaryHeight = getBarHeight(graphData.salaryTotal, maxValue);
-      const hourlyHeight = getBarHeight(graphData.hourlyTotal, maxValue);
-      const hourlyHighlightHeight = graphData.hourlyTotal > 0
-        ? (graphData.hourlyHighlight / graphData.hourlyTotal) * 100
-        : 0;
+      const totalAHeight = getBarHeight(graphData.totalA, maxValue);
+      const totalBHeight = getBarHeight(graphData.totalB, maxValue);
+      const highlightAHeight = graphData.totalA > 0 ? (graphData.highlightA / graphData.totalA) * 100 : 0;
+      const highlightBHeight = graphData.totalB > 0 ? (graphData.highlightB / graphData.totalB) * 100 : 0;
 
-      elements.hourlyToSalary.graphSalaryBar.style.height = `${salaryHeight}%`;
-      elements.hourlyToSalary.graphHourlyBar.style.height = `${hourlyHeight}%`;
+      graphElements.barA.style.height = `${totalAHeight}%`;
+      graphElements.barB.style.height = `${totalBHeight}%`;
 
-      if (elements.hourlyToSalary.graphHighlights[0]) {
-        elements.hourlyToSalary.graphHighlights[0].style.height = `${Math.min(hourlyHighlightHeight, 100)}%`;
+      if (graphElements.highlightA) {
+        graphElements.highlightA.style.height = `${Math.min(highlightAHeight, 100)}%`;
       }
 
-      elements.hourlyToSalary.graphSalaryValue.textContent = formatCurrency(graphData.salaryTotal);
-      elements.hourlyToSalary.graphHourlyValue.textContent = formatCurrency(graphData.hourlyTotal);
-      renderGraphTicks(elements.hourlyToSalary.graphTicks, ticks);
+      if (graphElements.highlightB) {
+        graphElements.highlightB.style.height = `${Math.min(highlightBHeight, 100)}%`;
+      }
+
+      graphElements.valueA.textContent = formatCurrency(graphData.totalA);
+      graphElements.valueB.textContent = formatCurrency(graphData.totalB);
+      renderGraphTicks(graphElements.ticks, ticks);
     }
 
-    // Render the Hourly to Salary outputs from one calculation bundle.
-    function renderHourlyToSalaryResults(calculation, period) {
-      const payBreakdown = getHourlyToSalaryPayBreakdown(calculation, period);
-      const graphData = buildHourlyToSalaryGraphData(calculation);
+    function renderSalaryToHourlyResults(calculation) {
+      elements.salaryToHourly.mainResult.innerHTML = formatHourlyResult(calculation.mainResult);
+      elements.salaryToHourly.baseRate.textContent = formatCurrency(calculation.breakdown.baseRate, 2);
+      elements.salaryToHourly.vacationValue.textContent = formatCurrency(calculation.breakdown.vacationValue);
+      elements.salaryToHourly.overtimeValue.textContent = formatCurrency(calculation.breakdown.overtimeValue);
+      elements.salaryToHourly.totalPay.textContent = formatCurrency(calculation.payBreakdown.totalPay);
+      elements.salaryToHourly.periodOvertime.textContent = formatCurrency(calculation.payBreakdown.overtimeValue);
 
-      elements.hourlyToSalary.mainResult.innerHTML = formatAnnualResult(calculation.effectiveSalaryEquivalent);
-      elements.hourlyToSalary.baseRate.textContent = formatCurrency(calculation.baseSalaryEquivalent);
-      elements.hourlyToSalary.overtimeValue.textContent = formatCurrency(calculation.overtimeValue);
-      elements.hourlyToSalary.effectiveValue.textContent = formatCurrency(calculation.effectiveSalaryEquivalent);
-      elements.hourlyToSalary.totalPay.textContent = formatCurrency(payBreakdown.totalPay);
-      elements.hourlyToSalary.basePay.textContent = formatCurrency(payBreakdown.basePay);
-      elements.hourlyToSalary.periodOvertime.textContent = formatCurrency(payBreakdown.overtimeValue);
-
-      renderHourlyToSalaryGraph(graphData);
-    }
-
-    // Render a neutral empty state for the Salary to Hourly view.
-    function renderSalaryToHourlyEmptyState(period) {
-      elements.salaryToHourly.mainResult.innerHTML = formatHourlyResult(0);
-      elements.salaryToHourly.baseRate.textContent = formatCurrency(0, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+      renderGraph(calculation.graph, {
+        ticks: elements.salaryToHourly.graphTicks,
+        barA: elements.salaryToHourly.graphSalaryBar,
+        barB: elements.salaryToHourly.graphHourlyBar,
+        highlightA: elements.salaryToHourly.graphHighlights[0],
+        highlightB: elements.salaryToHourly.graphHighlights[1],
+        valueA: elements.salaryToHourly.graphSalaryValue,
+        valueB: elements.salaryToHourly.graphHourlyValue
       });
-      elements.salaryToHourly.vacationValue.textContent = formatCurrency(0);
-      elements.salaryToHourly.overtimeValue.textContent = formatCurrency(0);
-      elements.salaryToHourly.totalPay.textContent = formatCurrency(0);
-      elements.salaryToHourly.periodOvertime.textContent = formatCurrency(0);
-      elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(0);
-      elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(0);
-      elements.salaryToHourly.graphSalaryBar.style.height = "12%";
-      elements.salaryToHourly.graphHourlyBar.style.height = "12%";
-      elements.salaryToHourly.graphHighlights[0].style.height = "0%";
-      elements.salaryToHourly.graphHighlights[1].style.height = "0%";
-      renderGraphTicks(elements.salaryToHourly.graphTicks, buildGraphTicks(1000));
     }
 
-    // Render a neutral empty state for the Hourly to Salary view.
-    function renderHourlyToSalaryEmptyState(period) {
-      elements.hourlyToSalary.mainResult.innerHTML = formatAnnualResult(0);
-      elements.hourlyToSalary.baseRate.textContent = formatCurrency(0);
-      elements.hourlyToSalary.overtimeValue.textContent = formatCurrency(0);
-      elements.hourlyToSalary.effectiveValue.textContent = formatCurrency(0);
-      elements.hourlyToSalary.totalPay.textContent = formatCurrency(0);
-      elements.hourlyToSalary.basePay.textContent = formatCurrency(0);
-      elements.hourlyToSalary.periodOvertime.textContent = formatCurrency(0);
-      elements.hourlyToSalary.graphSalaryValue.textContent = formatCurrency(0);
-      elements.hourlyToSalary.graphHourlyValue.textContent = formatCurrency(0);
-      elements.hourlyToSalary.graphSalaryBar.style.height = "12%";
-      elements.hourlyToSalary.graphHourlyBar.style.height = "12%";
+    function renderHourlyToSalaryResults(calculation) {
+      elements.hourlyToSalary.mainResult.innerHTML = formatAnnualResult(calculation.mainResult);
+      elements.hourlyToSalary.baseRate.textContent = formatCurrency(calculation.breakdown.baseRate);
+      elements.hourlyToSalary.overtimeValue.textContent = formatCurrency(calculation.breakdown.overtimeValue);
+      elements.hourlyToSalary.effectiveValue.textContent = formatCurrency(calculation.breakdown.effectiveValue);
+      elements.hourlyToSalary.totalPay.textContent = formatCurrency(calculation.payBreakdown.totalPay);
+      elements.hourlyToSalary.basePay.textContent = formatCurrency(calculation.payBreakdown.basePay);
+      elements.hourlyToSalary.periodOvertime.textContent = formatCurrency(calculation.payBreakdown.overtimeValue);
 
-      if (elements.hourlyToSalary.graphHighlights[0]) {
-        elements.hourlyToSalary.graphHighlights[0].style.height = "0%";
+      renderGraph(calculation.graph, {
+        ticks: elements.hourlyToSalary.graphTicks,
+        barA: elements.hourlyToSalary.graphSalaryBar,
+        barB: elements.hourlyToSalary.graphHourlyBar,
+        highlightA: null,
+        highlightB: elements.hourlyToSalary.graphHighlights[0],
+        valueA: elements.hourlyToSalary.graphSalaryValue,
+        valueB: elements.hourlyToSalary.graphHourlyValue
+      });
+    }
+
+    function renderSalaryToHourlyEmptyState() {
+      renderSalaryToHourlyResults({
+        mainResult: 0,
+        breakdown: {
+          baseRate: 0,
+          vacationValue: 0,
+          overtimeValue: 0
+        },
+        payBreakdown: {
+          totalPay: 0,
+          overtimeValue: 0
+        },
+        graph: {
+          totalA: 0,
+          totalB: 0,
+          highlightA: 0,
+          highlightB: 0,
+          scaleMax: 1000
+        }
+      });
+    }
+
+    function renderHourlyToSalaryEmptyState() {
+      renderHourlyToSalaryResults({
+        mainResult: 0,
+        breakdown: {
+          baseRate: 0,
+          overtimeValue: 0,
+          effectiveValue: 0
+        },
+        payBreakdown: {
+          totalPay: 0,
+          basePay: 0,
+          overtimeValue: 0
+        },
+        graph: {
+          totalA: 0,
+          totalB: 0,
+          highlightA: 0,
+          highlightB: 0,
+          scaleMax: 1000
+        }
+      });
+    }
+
+    function renderView(viewName, calculation) {
+      if (viewName === VIEW_NAMES.SALARY_TO_HOURLY) {
+        renderSalaryToHourlyResults(calculation);
+        return;
       }
 
-      renderGraphTicks(elements.hourlyToSalary.graphTicks, buildGraphTicks(1000));
+      renderHourlyToSalaryResults(calculation);
     }
 
-    // Attach tool-specific listeners here so the UI updates immediately.
+    function getElements() {
+      const salaryToHourlyView = document.getElementById("salary-to-hourly-view");
+      const hourlyToSalaryView = document.getElementById("hourly-to-salary-view");
+
+      return {
+        body: document.body,
+        stripeBackground: document.getElementById("stripe-background"),
+        themeButton: document.getElementById("theme-btn"),
+        themeColorMeta: document.getElementById("theme-color-meta"),
+        validationMessage: document.getElementById("validation-message"),
+        viewTabs: Array.from(document.querySelectorAll("[data-view-tab]")),
+        viewPanels: Array.from(document.querySelectorAll("[data-view-panel]")),
+        salaryToHourly: {
+          root: salaryToHourlyView,
+          annualSalaryInput: document.getElementById("annual-salary"),
+          hoursPerWeekInput: document.getElementById("salary-hours-per-week"),
+          vacationAmountInput: document.getElementById("vacation-amount"),
+          vacationUnitToggle: document.getElementById("vacation-unit-toggle"),
+          periodButtons: salaryToHourlyView
+            ? Array.from(salaryToHourlyView.querySelectorAll("[data-period]"))
+            : [],
+          mainResult: document.getElementById("salary-hourly-main-result"),
+          baseRate: document.getElementById("salary-hourly-base-rate"),
+          vacationValue: document.getElementById("salary-hourly-vacation-value"),
+          overtimeValue: document.getElementById("salary-hourly-overtime-value"),
+          totalPay: document.getElementById("salary-hourly-total-pay"),
+          periodOvertime: document.getElementById("salary-hourly-period-overtime"),
+          graphTicks: document.getElementById("salary-hourly-graph-ticks"),
+          graphSalaryValue: document.getElementById("salary-graph-salary-value"),
+          graphHourlyValue: document.getElementById("salary-graph-hourly-value"),
+          graphSalaryBar: salaryToHourlyView
+            ? salaryToHourlyView.querySelector(".graph-bar:not(.is-hourly)")
+            : null,
+          graphHourlyBar: salaryToHourlyView
+            ? salaryToHourlyView.querySelector(".graph-bar.is-hourly")
+            : null,
+          graphHighlights: salaryToHourlyView
+            ? Array.from(salaryToHourlyView.querySelectorAll(".graph-bar-highlight"))
+            : []
+        },
+        hourlyToSalary: {
+          root: hourlyToSalaryView,
+          hourlyRateInput: document.getElementById("hourly-rate"),
+          hoursPerWeekInput: document.getElementById("hourly-hours-per-week"),
+          overtimeToggle: document.getElementById("overtime-toggle"),
+          periodButtons: hourlyToSalaryView
+            ? Array.from(hourlyToSalaryView.querySelectorAll("[data-period]"))
+            : [],
+          mainResult: document.getElementById("hourly-salary-main-result"),
+          baseRate: document.getElementById("hourly-salary-base-rate"),
+          overtimeValue: document.getElementById("hourly-salary-overtime-value"),
+          effectiveValue: document.getElementById("hourly-salary-effective-value"),
+          totalPay: document.getElementById("hourly-salary-total-pay"),
+          basePay: document.getElementById("hourly-salary-base-pay"),
+          periodOvertime: document.getElementById("hourly-salary-period-overtime"),
+          graphTicks: document.getElementById("hourly-salary-graph-ticks"),
+          graphSalaryValue: document.getElementById("hourly-graph-salary-value"),
+          graphHourlyValue: document.getElementById("hourly-graph-hourly-value"),
+          graphSalaryBar: hourlyToSalaryView
+            ? hourlyToSalaryView.querySelector(".graph-bar:not(.is-hourly)")
+            : null,
+          graphHourlyBar: hourlyToSalaryView
+            ? hourlyToSalaryView.querySelector(".graph-bar.is-hourly")
+            : null,
+          graphHighlights: hourlyToSalaryView
+            ? Array.from(hourlyToSalaryView.querySelectorAll(".graph-bar-highlight"))
+            : []
+        }
+      };
+    }
+
     function bindEvents() {
       const inputs = [
         elements.salaryToHourly.annualSalaryInput,
@@ -2114,6 +2046,9 @@
         elements.hourlyToSalary.overtimeToggle
       ];
 
+      elements.themeButton.addEventListener("click", toggleTheme);
+      window.addEventListener("resize", queueStripeRender);
+
       elements.viewTabs.forEach((tab) => {
         tab.addEventListener("click", () => {
           switchView(tab.dataset.viewTab);
@@ -2122,6 +2057,7 @@
 
       inputs.forEach((input) => {
         const eventName = input.type === "checkbox" ? "change" : "input";
+
         input.addEventListener(eventName, () => {
           if (input.type === "checkbox") {
             renderBinaryToggleLabels(input);
@@ -2152,52 +2088,32 @@
           setActivePayPeriod(button);
         }
       });
-
-      window.addEventListener("resize", () => {
-        const theme = document.body.classList.contains("dark") ? "dark" : "light";
-        renderStripeBackground(theme);
-      });
     }
 
-    // Run the tool's main input-to-output workflow here.
     function updateOutput() {
       const options = getOptions();
       const validation = validateOptions(options);
 
       if (!validation.isValid) {
         renderValidationMessage(validation.message);
-      } else {
-        clearValidationMessage();
-      }
 
-      if (options.activeView === "salary-to-hourly" && validation.isValid) {
-        const salaryInputs = getSalaryToHourlyInputs(options);
-        const salaryCalculation = buildSalaryToHourlyBreakdown(salaryInputs);
+        if (options.activeView === VIEW_NAMES.SALARY_TO_HOURLY) {
+          renderSalaryToHourlyEmptyState();
+          return;
+        }
 
-        renderSalaryToHourlyResults(salaryCalculation, options.payPeriod.salaryToHourly);
+        renderHourlyToSalaryEmptyState();
         return;
       }
 
-      if (options.activeView === "hourly-to-salary" && validation.isValid) {
-        const hourlyInputs = getHourlyToSalaryInputs(options);
-        const hourlyCalculation = buildHourlyToSalaryBreakdown(hourlyInputs);
-
-        renderHourlyToSalaryResults(hourlyCalculation, options.payPeriod.hourlyToSalary);
-        return;
-      }
-
-      if (options.activeView === "salary-to-hourly") {
-        renderSalaryToHourlyEmptyState(options.payPeriod.salaryToHourly);
-        return;
-      }
-
-      renderHourlyToSalaryEmptyState(options.payPeriod.hourlyToSalary);
+      clearValidationMessage();
+      renderView(options.activeView, buildCalculation(options.activeView, options));
     }
 
-    // Initialize the shared theme system and then the tool-specific logic.
     function init() {
       elements = getElements();
-      initializeTheme();
+      applyTheme(getPreferredTheme());
+      renderActiveView(VIEW_NAMES.SALARY_TO_HOURLY);
       bindEvents();
       updateOutput();
     }
