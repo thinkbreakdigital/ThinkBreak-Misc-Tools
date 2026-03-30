@@ -490,6 +490,10 @@
       gap: 12px;
     }
 
+    .pay-grid.two-up {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .stat-card {
       display: grid;
       gap: 8px;
@@ -1021,7 +1025,7 @@
             </div>
           </div>
 
-          <div class="pay-grid">
+          <div class="pay-grid two-up">
             <article class="stat-card">
               <div class="stat-label">Total Pay</div>
               <div class="stat-value" id="salary-hourly-total-pay">$65,000</div>
@@ -1029,10 +1033,6 @@
             <article class="stat-card">
               <div class="stat-label">Overtime Value</div>
               <div class="stat-value" id="salary-hourly-period-overtime">$0</div>
-            </article>
-            <article class="stat-card">
-              <div class="stat-label">Current Period</div>
-              <div class="stat-value" id="salary-hourly-period-label">Yearly</div>
             </article>
           </div>
         </section>
@@ -1476,7 +1476,6 @@
           overtimeValue: document.getElementById("salary-hourly-overtime-value"),
           totalPay: document.getElementById("salary-hourly-total-pay"),
           periodOvertime: document.getElementById("salary-hourly-period-overtime"),
-          periodLabel: document.getElementById("salary-hourly-period-label"),
           graphSalaryValue: document.getElementById("salary-graph-salary-value"),
           graphHourlyValue: document.getElementById("salary-graph-hourly-value"),
           graphTicks: document.getElementById("salary-hourly-graph-ticks"),
@@ -1929,8 +1928,6 @@
       elements.salaryToHourly.overtimeValue.textContent = formatCurrency(calculation.overtimeValue);
       elements.salaryToHourly.totalPay.textContent = formatCurrency(payBreakdown.totalPay);
       elements.salaryToHourly.periodOvertime.textContent = formatCurrency(payBreakdown.overtimeValue);
-      elements.salaryToHourly.periodLabel.textContent =
-        payBreakdown.period.charAt(0).toUpperCase() + payBreakdown.period.slice(1);
 
       renderSalaryToHourlyGraph(graphData);
     }
@@ -2075,8 +2072,6 @@
       elements.salaryToHourly.overtimeValue.textContent = formatCurrency(0);
       elements.salaryToHourly.totalPay.textContent = formatCurrency(0);
       elements.salaryToHourly.periodOvertime.textContent = formatCurrency(0);
-      elements.salaryToHourly.periodLabel.textContent =
-        period.charAt(0).toUpperCase() + period.slice(1);
       elements.salaryToHourly.graphSalaryValue.textContent = formatCurrency(0);
       elements.salaryToHourly.graphHourlyValue.textContent = formatCurrency(0);
       elements.salaryToHourly.graphSalaryBar.style.height = "12%";
