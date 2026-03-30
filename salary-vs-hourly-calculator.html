@@ -8,8 +8,8 @@
   <style>
     :root {
       --bg: #fff8ef;
-      --surface: #fff6ea;
-      --surface2: #f4ebe0;
+      --surface: #eedcc4;
+      --surface2: #f4e2ce;
       --surface3: #d1c48f;
       --border: #bcae79;
       --border-hover: #94855b;
@@ -19,7 +19,7 @@
       --text-dim: #81775f;
       --text-strong: #23211f;
       --accent: #ff6200;
-      --accent-strong: #d94f00;
+      --accent-strong: #b74300;
       --accent-dim: #ffd9c3;
       --accent-alt: #d9a31a;
       --accent-alt-soft: #f0c85d;
@@ -27,12 +27,15 @@
       --success-soft: #dfb74c;
       --danger: #b2452d;
       --danger-soft: #f4d3c4;
-      --inverse: #faf6e7;
-      --stripe-1: #b0336f;
-      --stripe-2: #d14c2f;
-      --stripe-3: #ff6200;
-      --stripe-4: #d9a31a;
-      --stripe-5: #f0c85d;
+      --header-text: #faf6e7;
+      --header-row-1: 80px;
+      --header-row-2: 60px;
+      --header-row-3: 40px;
+      --stripe-total-height: 800px;
+      --gradient-anchor-1: #b0336f;
+      --gradient-anchor-2: #ff8000;
+      --gradient-anchor-3: #ffc80041;
+      --gradient-anchor-4: rgba(203, 176, 0, 0);
       --radius: 0px;
       --shadow-soft: 0 10px 30px rgba(57, 56, 54, 0.08);
     }
@@ -70,20 +73,19 @@
       --text-dim: #827a72;
       --text-strong: #cdbfb3;
       --accent: #ff7a26;
-      --accent-strong: #ff9856;
+      --accent-strong: #ac4200;
       --accent-dim: #684430;
-      --accent-alt: #e0b348;
-      --accent-alt-soft: #f1cd76;
+      --accent-alt: #aa16b7;
+      --accent-alt-soft: #6b1773;
       --success: #d7a83a;
       --success-soft: #f0ca71;
       --danger: #ff9a72;
       --danger-soft: #5a3026;
-      --inverse: #aa5200;
-      --stripe-1: #f1cd76;
-      --stripe-2: #e0b348;
-      --stripe-3: #ff7a26;
-      --stripe-4: #d05a93;
-      --stripe-5: #8e2f68;
+      --header-text: #23211f;
+      --gradient-anchor-1: #ffde25;
+      --gradient-anchor-2: #ff7700e2;
+      --gradient-anchor-3: #5a2a4e5c;
+      --gradient-anchor-4: rgba(35, 31, 34, 0);
       background: var(--bg);
       color: var(--text);
     }
@@ -111,11 +113,41 @@
       }
     }
 
+    .page-shell {
+      position: relative;
+    }
+
+    .gradient-stage {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 100vw;
+      height: var(--stripe-total-height);
+      margin-left: -50vw;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stripe-background {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gradient-stripe {
+      width: 100%;
+      flex: 0 0 auto;
+    }
+
     .wrap {
       max-width: 760px;
       margin: 0 auto;
       padding: 0 20px 80px;
       animation: fadeUp 0.4s ease-out both;
+      position: relative;
+      z-index: 1;
     }
 
     #theme-btn {
@@ -145,48 +177,16 @@
     }
 
     .tool-header {
+      display: grid;
+      grid-template-rows: var(--header-row-1) var(--header-row-2) var(--header-row-3);
       margin-bottom: 36px;
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      padding-right: 0;
-      overflow: hidden;
+      padding-right: 56px;
     }
 
-    .header-stripe {
-      min-height: 52px;
-      padding-top: 14px;
-      padding-bottom: 14px;
-      padding-left: max(18px, calc((100vw - 760px) / 2 + 20px));
-      padding-right: max(18px, calc((100vw - 760px) / 2 + 20px));
+    .header-row {
       display: flex;
       align-items: center;
-      border-bottom: 1px solid rgba(35, 33, 31, 0.18);
-      color: var(--inverse);
-    }
-
-    .header-stripe:last-child {
-      border-bottom: 0;
-    }
-
-    .header-stripe.is-title {
-      min-height: 92px;
-      background: var(--stripe-1);
-    }
-
-    .header-stripe.is-subtitle {
-      background: var(--stripe-2);
-    }
-
-    .header-stripe.is-brand {
-      background: var(--stripe-3);
-    }
-
-    .header-stripe.is-fill-1 {
-      background: var(--stripe-4);
-    }
-
-    .header-stripe.is-fill-2 {
-      background: var(--stripe-5);
+      color: var(--header-text);
     }
 
     .brand-label {
@@ -444,7 +444,7 @@
       width: 20px;
       height: 14px;
       border-radius: 999px;
-      background: var(--inverse);
+      background: var(--accent-strong);
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16);
       transition: transform 0.18s ease;
@@ -727,23 +727,18 @@
     }
 
     @media (max-width: 640px) {
+      :root {
+        --header-row-1: 96px;
+        --header-row-2: 44px;
+        --header-row-3: 44px;
+      }
+
       .wrap {
         padding: 0 16px 64px;
       }
 
       .tool-header {
         padding-right: 0;
-      }
-
-      .header-stripe {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-
-      .header-stripe.is-title {
-        min-height: 76px;
       }
 
       .primary-grid,
@@ -827,19 +822,22 @@
     </svg>
   </button>
 
-  <main class="wrap">
-    <header class="tool-header">
-      <div class="header-stripe is-title">
+  <div class="page-shell">
+    <div class="gradient-stage" aria-hidden="true">
+      <div class="stripe-background" id="stripe-background"></div>
+    </div>
+
+    <main class="wrap">
+      <header class="tool-header">
+      <div class="header-row is-title">
         <h1 class="tool-title">Hourly Vs Salary Calc</h1>
       </div>
-      <div class="header-stripe is-subtitle">
+      <div class="header-row is-subtitle">
         <p class="tool-sub">A tool that lets you compare hourly wages to annual salaries.</p>
       </div>
-      <div class="header-stripe is-brand">
+      <div class="header-row is-brand">
         <div class="brand-label">ThinkBreak</div>
       </div>
-      <div class="header-stripe is-fill-1" aria-hidden="true"></div>
-      <div class="header-stripe is-fill-2" aria-hidden="true"></div>
     </header>
 
     <section class="tool-shell" aria-label="Tool layout">
@@ -1153,12 +1151,168 @@
         </section>
       </section>
     </section>
-  </main>
+    </main>
+  </div>
 
   <script>
     const THEME_DARK = "#393836";
     const THEME_LIGHT = "#EBE4C1";
+    const STRIPE_COUNT = 24;
+    const STRIPE_TAIL_START_HEIGHT = 36;
+    const STRIPE_TAIL_END_HEIGHT = 18;
+    const STRIPE_ANCHOR_STOPS = [0, 0.18, 0.30, 1];
     let elements;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function interpolateNumber(start, end, progress) {
+      return start + ((end - start) * progress);
+    }
+
+    function hexToRgba(hex, alpha = 1) {
+      const normalized = hex.replace("#", "");
+      const safeHex = normalized.length === 3
+        ? normalized.split("").map((character) => character + character).join("")
+        : normalized;
+
+      return {
+        r: parseInt(safeHex.slice(0, 2), 16),
+        g: parseInt(safeHex.slice(2, 4), 16),
+        b: parseInt(safeHex.slice(4, 6), 16),
+        a: alpha
+      };
+    }
+
+    function parseColor(color) {
+      if (color.startsWith("#")) {
+        return hexToRgba(color);
+      }
+
+      const match = color.match(/rgba?\(([^)]+)\)/i);
+
+      if (!match) {
+        return { r: 0, g: 0, b: 0, a: 1 };
+      }
+
+      const [r, g, b, a = 1] = match[1]
+        .split(",")
+        .map((value) => Number.parseFloat(value.trim()));
+
+      return { r, g, b, a };
+    }
+
+    function interpolateColor(startColor, endColor, progress) {
+      const safeProgress = clamp(progress, 0, 1);
+
+      return {
+        r: interpolateNumber(startColor.r, endColor.r, safeProgress),
+        g: interpolateNumber(startColor.g, endColor.g, safeProgress),
+        b: interpolateNumber(startColor.b, endColor.b, safeProgress),
+        a: interpolateNumber(startColor.a, endColor.a, safeProgress)
+      };
+    }
+
+    function formatRgba(color) {
+      return `rgba(${Math.round(color.r)}, ${Math.round(color.g)}, ${Math.round(color.b)}, ${color.a.toFixed(3)})`;
+    }
+
+    function getTokenValue(variableName) {
+      const bodyValue = document.body
+        ? getComputedStyle(document.body).getPropertyValue(variableName).trim()
+        : "";
+
+      if (bodyValue) {
+        return bodyValue;
+      }
+
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(variableName)
+        .trim();
+    }
+
+    function getStripeAnchors() {
+      return [
+        getTokenValue("--gradient-anchor-1"),
+        getTokenValue("--gradient-anchor-2"),
+        getTokenValue("--gradient-anchor-3"),
+        getTokenValue("--gradient-anchor-4")
+      ];
+    }
+
+    function getRootPixelValue(variableName) {
+      const value = getTokenValue(variableName);
+
+      return Number.parseFloat(value) || 0;
+    }
+
+    function getStripeTotalHeight() {
+      return getRootPixelValue("--stripe-total-height");
+    }
+
+    function getHeaderStripeHeights() {
+      const row1 = getRootPixelValue("--header-row-1");
+      const row2 = getRootPixelValue("--header-row-2");
+      const row3 = getRootPixelValue("--header-row-3");
+
+      return [row1, row2, row3, row3, row3];
+    }
+
+    function buildStripeHeights() {
+      const leadHeights = getHeaderStripeHeights();
+      const tailCount = STRIPE_COUNT - leadHeights.length;
+      const totalHeight = getStripeTotalHeight();
+      const usedHeight = leadHeights.reduce((total, height) => total + height, 0);
+      const remainingHeight = Math.max(totalHeight - usedHeight, tailCount);
+      const rawTailHeights = Array.from({ length: tailCount }, (_, index) => {
+        const progress = tailCount <= 1 ? 0 : index / (tailCount - 1);
+        return interpolateNumber(STRIPE_TAIL_START_HEIGHT, STRIPE_TAIL_END_HEIGHT, progress);
+      });
+      const rawTailTotal = rawTailHeights.reduce((total, height) => total + height, 0) || 1;
+      const scaledTailHeights = rawTailHeights.map((height) => height * (remainingHeight / rawTailTotal));
+      const roundedTailHeights = scaledTailHeights.map((height) => Math.round(height));
+      const tailDifference = remainingHeight
+        - roundedTailHeights.reduce((total, height) => total + height, 0);
+
+      if (roundedTailHeights.length > 0) {
+        roundedTailHeights[roundedTailHeights.length - 1] += tailDifference;
+      }
+
+      return [...leadHeights, ...roundedTailHeights];
+    }
+
+    function getStripeColor(theme, stripeIndex) {
+      const parsedAnchors = getStripeAnchors().map(parseColor);
+      const progress = STRIPE_COUNT <= 1 ? 0 : stripeIndex / (STRIPE_COUNT - 1);
+      let segmentIndex = STRIPE_ANCHOR_STOPS.length - 2;
+
+      for (let index = 0; index < STRIPE_ANCHOR_STOPS.length - 1; index += 1) {
+        if (progress <= STRIPE_ANCHOR_STOPS[index + 1]) {
+          segmentIndex = index;
+          break;
+        }
+      }
+
+      const segmentStart = STRIPE_ANCHOR_STOPS[segmentIndex];
+      const segmentEnd = STRIPE_ANCHOR_STOPS[segmentIndex + 1];
+      const segmentRange = segmentEnd - segmentStart || 1;
+      const localProgress = (progress - segmentStart) / segmentRange;
+
+      return formatRgba(
+        interpolateColor(parsedAnchors[segmentIndex], parsedAnchors[segmentIndex + 1], localProgress)
+      );
+    }
+
+    function renderStripeBackground(theme) {
+      const stripeHeights = buildStripeHeights();
+
+      elements.stripeBackground.innerHTML = stripeHeights
+        .map((height, index) => (
+          `<div class="gradient-stripe" style="height:${height}px;background:${getStripeColor(theme, index)};"></div>`
+        ))
+        .join("");
+    }
 
     // Read the current system preference so the page starts in the expected mode.
     function getPreferredTheme() {
@@ -1182,6 +1336,7 @@
         "content",
         isDark ? THEME_DARK : THEME_LIGHT
       );
+      renderStripeBackground(theme);
     }
 
     // Swap between light and dark mode for the current session.
@@ -1203,6 +1358,7 @@
 
       return {
         body: document.body,
+        stripeBackground: document.getElementById("stripe-background"),
         themeButton: document.getElementById("theme-btn"),
         themeColorMeta: document.getElementById("theme-color-meta"),
         sunIcon: document.getElementById("theme-icon-sun"),
@@ -1927,6 +2083,11 @@
         if (button.classList.contains("is-active")) {
           setActivePayPeriod(button);
         }
+      });
+
+      window.addEventListener("resize", () => {
+        const theme = document.body.classList.contains("dark") ? "dark" : "light";
+        renderStripeBackground(theme);
       });
     }
 
