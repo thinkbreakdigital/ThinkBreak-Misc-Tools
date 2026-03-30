@@ -18,11 +18,11 @@
       --text-mid: #5e584d;
       --text-dim: #81775f;
       --text-strong: #23211f;
-      --accent: #ff6200;
-      --accent-strong: #b74300;
+      --accent: #ff7a26;
+      --accent-strong: #ac4200;
       --accent-dim: #ffd9c3;
-      --accent-alt: #d9a31a;
-      --accent-alt-soft: #f0c85d;
+      --accent-alt: #aa16b7;
+      --accent-alt-soft: #6b1773;
       --success: #b98a16;
       --success-soft: #dfb74c;
       --danger: #b2452d;
@@ -72,18 +72,14 @@
       --text-mid: #b1a79c;
       --text-dim: #827a72;
       --text-strong: #cdbfb3;
-      --accent: #ff7a26;
-      --accent-strong: #ac4200;
       --accent-dim: #684430;
-      --accent-alt: #aa16b7;
-      --accent-alt-soft: #6b1773;
       --success: #d7a83a;
       --success-soft: #f0ca71;
       --danger: #ff9a72;
       --danger-soft: #5a3026;
       --header-text: #23211f;
-      --gradient-anchor-1: #ffde25;
-      --gradient-anchor-2: #ff7700e2;
+      --gradient-anchor-1: #cfb700;
+      --gradient-anchor-2: #ea6900f7;
       --gradient-anchor-3: #5a2a4e5c;
       --gradient-anchor-4: rgba(35, 31, 34, 0);
       background: var(--bg);
@@ -246,7 +242,7 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 4px;
       padding: 4px;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
       box-shadow: var(--shadow-soft);
@@ -284,7 +280,7 @@
 
     .panel-card {
       padding: 16px;
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
       box-shadow: var(--shadow-soft);
@@ -294,6 +290,24 @@
       display: grid;
       gap: 4px;
       margin-bottom: 16px;
+    }
+
+    .primary-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+      align-items: start;
+      gap: 20px;
+    }
+
+    .primary-main {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .primary-copy {
+      display: grid;
+      gap: 4px;
     }
 
     .section-label {
@@ -318,8 +332,8 @@
 
     .primary-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
-      gap: 20px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
       align-items: start;
     }
 
@@ -352,6 +366,7 @@
       justify-items: end;
       align-content: start;
       text-align: right;
+      justify-self: end;
     }
 
     .primary-result-label {
@@ -555,6 +570,8 @@
     }
 
     .graph-shell {
+      --graph-plot-offset-top: 16px;
+      --graph-plot-height: 220px;
       display: grid;
       gap: 16px;
     }
@@ -563,10 +580,15 @@
       display: grid;
       grid-template-columns: auto auto 1fr;
       gap: 16px;
-      align-items: end;
+      align-items: start;
     }
 
     .graph-axis {
+      height: calc(var(--graph-plot-height) + 1px);
+      margin-top: var(--graph-plot-offset-top);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
       font-size: 11px;
       font-weight: 600;
       color: var(--text-dim);
@@ -575,13 +597,13 @@
     }
 
     .graph-ticks {
-      height: 240px;
+      height: calc(var(--graph-plot-height) + 1px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-end;
       min-width: 56px;
-      padding-top: 16px;
+      margin-top: var(--graph-plot-offset-top);
     }
 
     .graph-tick {
@@ -593,15 +615,59 @@
     }
 
     .graph-bars {
+      align-self: end;
+      position: relative;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
       align-items: end;
       min-height: 240px;
       padding-top: 16px;
+      padding-left: 16px;
+    }
+
+    .graph-bars::before {
+      content: "";
+      position: absolute;
+      top: var(--graph-plot-offset-top);
+      right: 0;
+      left: 16px;
+      height: var(--graph-plot-height);
+      background-image:
+        linear-gradient(var(--border), var(--border)),
+        linear-gradient(var(--border), var(--border)),
+        linear-gradient(var(--border), var(--border)),
+        linear-gradient(var(--border), var(--border));
+      background-repeat: no-repeat;
+      background-size:
+        100% 1px,
+        100% 1px,
+        100% 1px,
+        100% 1px;
+      background-position:
+        left top,
+        left 25%,
+        left 50%,
+        left 75%;
+      pointer-events: none;
+    }
+
+    .graph-bars::after {
+      content: "";
+      position: absolute;
+      top: var(--graph-plot-offset-top);
+      right: 0;
+      left: 16px;
+      height: var(--graph-plot-height);
+      border-left: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      box-sizing: border-box;
+      pointer-events: none;
     }
 
     .graph-bar-group {
+      position: relative;
+      z-index: 1;
       display: grid;
       gap: 10px;
       justify-items: center;
@@ -610,7 +676,7 @@
     .graph-bar-stack {
       width: 100%;
       max-width: 180px;
-      height: 220px;
+      height: var(--graph-plot-height);
       display: flex;
       align-items: end;
     }
@@ -657,6 +723,7 @@
       flex-wrap: wrap;
       gap: 10px 14px;
       align-items: center;
+      justify-content: center;
     }
 
     .graph-legend-item {
@@ -679,7 +746,7 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--inverse);
+      color: #ffffff;
     }
 
     .graph-legend-swatch.is-salary {
@@ -741,6 +808,7 @@
         padding-right: 0;
       }
 
+      .primary-card,
       .primary-grid,
       .field-inline,
       .breakdown-grid,
@@ -750,8 +818,24 @@
       }
 
       .primary-result {
+        justify-self: start;
         justify-items: start;
         text-align: left;
+      }
+
+      .primary-result {
+        justify-items: start;
+        text-align: left;
+      }
+
+      .section-header.with-result {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header.with-result .primary-result {
+        grid-column: auto;
+        grid-row: auto;
+        justify-self: start;
       }
 
       .period-row {
@@ -849,51 +933,53 @@
       <div class="validation-message" id="validation-message" aria-live="polite"></div>
 
       <section class="view-panel" id="salary-to-hourly-view" data-view-panel="salary-to-hourly" aria-label="Salary to Hourly view">
-        <section class="panel-card" aria-labelledby="salary-hourly-primary-title">
-          <div class="section-header">
-            <div class="section-label">Primary</div>
-            <h2 class="section-title" id="salary-hourly-primary-title">Salary to Hourly</h2>
-            <p class="section-sub">Estimate what a salaried role is effectively worth per hour based on workload and paid time off.</p>
-          </div>
-
-          <div class="primary-grid">
-            <div class="field-stack">
-              <div class="field-group">
-                <label class="field-label" for="annual-salary">Annual salary</label>
-                <input id="annual-salary" type="number" inputmode="decimal" min="0" step="1000" placeholder="65000" value="60000">
-              </div>
-
-              <div class="field-group">
-                <label class="field-label" for="salary-hours-per-week">Average hours worked per week</label>
-                <input id="salary-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
-              </div>
-
-              <div class="field-inline">
+        <section class="panel-card primary-card" aria-labelledby="salary-hourly-primary-title">
+          <div class="primary-main">
+            <div class="primary-copy">
+              <div class="section-label">Primary</div>
+              <h2 class="section-title" id="salary-hourly-primary-title">Salary to Hourly</h2>
+              <p class="section-sub">Estimate what a salaried role is effectively worth per hour based on workload and paid time off.</p>
+            </div>
+ 
+            <div class="primary-grid">
+              <div class="field-stack">
                 <div class="field-group">
-                  <label class="field-label" for="vacation-amount">Vacation amount</label>
-                  <input id="vacation-amount" type="number" inputmode="decimal" min="0" step="0.5" placeholder="10" value="10">
+                  <label class="field-label" for="annual-salary">Annual salary</label>
+                  <input id="annual-salary" type="number" inputmode="decimal" min="0" step="1000" placeholder="65000" value="60000">
                 </div>
 
                 <div class="field-group">
-                  <span class="field-label">Unit</span>
-                  <label class="toggle-inline" for="vacation-unit-toggle">
-                    <span class="toggle-inline-label is-active">Days</span>
-                    <span class="toggle-inline-switch">
-                      <input id="vacation-unit-toggle" type="checkbox" aria-label="Toggle vacation unit between days and weeks">
-                      <span class="toggle-inline-track" aria-hidden="true"></span>
-                      <span class="toggle-inline-thumb" aria-hidden="true"></span>
-                    </span>
-                    <span class="toggle-inline-label">Weeks</span>
-                  </label>
+                  <label class="field-label" for="salary-hours-per-week">Average hours worked per week</label>
+                  <input id="salary-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
+                </div>
+
+                <div class="field-inline">
+                  <div class="field-group">
+                    <label class="field-label" for="vacation-amount">Vacation amount</label>
+                    <input id="vacation-amount" type="number" inputmode="decimal" min="0" step="0.5" placeholder="10" value="10">
+                  </div>
+
+                  <div class="field-group">
+                    <span class="field-label">Unit</span>
+                    <label class="toggle-inline" for="vacation-unit-toggle">
+                      <span class="toggle-inline-label is-active">Days</span>
+                      <span class="toggle-inline-switch">
+                        <input id="vacation-unit-toggle" type="checkbox" aria-label="Toggle vacation unit between days and weeks">
+                        <span class="toggle-inline-track" aria-hidden="true"></span>
+                        <span class="toggle-inline-thumb" aria-hidden="true"></span>
+                      </span>
+                      <span class="toggle-inline-label">Weeks</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="primary-result" aria-live="polite">
-              <div class="primary-result-label">Hourly Equivalent</div>
-              <div class="primary-result-value" id="salary-hourly-main-result">
-                <span class="primary-result-major">$31</span><span class="primary-result-minor">.25</span><span class="primary-result-unit">/hr</span>
-              </div>
+          <div class="primary-result" aria-live="polite">
+            <div class="primary-result-label">Hourly Equivalent</div>
+            <div class="primary-result-value" id="salary-hourly-main-result">
+              <span class="primary-result-major">$31</span><span class="primary-result-minor">.25</span><span class="primary-result-unit">/hr</span>
             </div>
           </div>
         </section>
@@ -1005,44 +1091,46 @@
       </section>
 
       <section class="view-panel" id="hourly-to-salary-view" data-view-panel="hourly-to-salary" aria-label="Hourly to Salary view" hidden>
-        <section class="panel-card" aria-labelledby="hourly-salary-primary-title">
-          <div class="section-header">
-            <div class="section-label">Primary</div>
-            <h2 class="section-title" id="hourly-salary-primary-title">Hourly to Salary</h2>
-            <p class="section-sub">Estimate what an hourly job annualizes to, including overtime when it applies.</p>
-          </div>
-
-          <div class="primary-grid">
-            <div class="field-stack">
-              <div class="field-group">
-                <label class="field-label" for="hourly-rate">Hourly rate</label>
-                <input id="hourly-rate" type="number" inputmode="decimal" min="0" step="0.25" placeholder="25" value="25">
-              </div>
-
-              <div class="field-group">
-                <label class="field-label" for="hourly-hours-per-week">Average hours worked per week</label>
-                <input id="hourly-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
-              </div>
-
-              <div class="field-group">
-                <span class="field-label">Overtime</span>
-                <label class="toggle-inline" for="overtime-toggle">
-                  <span class="toggle-inline-label is-active">On</span>
-                  <span class="toggle-inline-switch">
-                    <input id="overtime-toggle" class="flip-direction" type="checkbox" aria-label="Toggle overtime on or off" checked>
-                    <span class="toggle-inline-track" aria-hidden="true"></span>
-                    <span class="toggle-inline-thumb" aria-hidden="true"></span>
-                  </span>
-                  <span class="toggle-inline-label">Off</span>
-                </label>
-              </div>
+        <section class="panel-card primary-card" aria-labelledby="hourly-salary-primary-title">
+          <div class="primary-main">
+            <div class="primary-copy">
+              <div class="section-label">Primary</div>
+              <h2 class="section-title" id="hourly-salary-primary-title">Hourly to Salary</h2>
+              <p class="section-sub">Estimate what an hourly job annualizes to, including overtime when it applies.</p>
             </div>
 
-            <div class="primary-result" aria-live="polite">
-              <div class="primary-result-label">Salary Equivalent</div>
-              <div class="primary-result-value" id="hourly-salary-main-result">
-                <span class="primary-result-major">$52,000</span>
+            <div class="primary-grid">
+              <div class="field-stack">
+                <div class="field-group">
+                  <label class="field-label" for="hourly-rate">Hourly rate</label>
+                  <input id="hourly-rate" type="number" inputmode="decimal" min="0" step="0.25" placeholder="25" value="25">
+                </div>
+
+                <div class="field-group">
+                  <label class="field-label" for="hourly-hours-per-week">Average hours worked per week</label>
+                  <input id="hourly-hours-per-week" type="number" inputmode="decimal" min="0" step="0.5" placeholder="40" value="50">
+                </div>
+
+                <div class="field-group">
+                  <span class="field-label">Overtime</span>
+                  <label class="toggle-inline" for="overtime-toggle">
+                    <span class="toggle-inline-label is-active">On</span>
+                    <span class="toggle-inline-switch">
+                      <input id="overtime-toggle" class="flip-direction" type="checkbox" aria-label="Toggle overtime on or off" checked>
+                      <span class="toggle-inline-track" aria-hidden="true"></span>
+                      <span class="toggle-inline-thumb" aria-hidden="true"></span>
+                    </span>
+                    <span class="toggle-inline-label">Off</span>
+                  </label>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <div class="primary-result" aria-live="polite">
+            <div class="primary-result-label">Salary Equivalent</div>
+            <div class="primary-result-value" id="hourly-salary-main-result">
+              <span class="primary-result-major">$52,000</span>
             </div>
           </div>
         </section>
@@ -1774,22 +1862,7 @@
 
     // Build a shared max-value scale for the simple comparison graph.
     function buildGraphScale(graphData) {
-      const rawMax = Math.max(graphData.salaryTotal, graphData.hourlyTotal, 1);
-      const roughStep = rawMax / 4;
-
-      if (roughStep <= 1000) {
-        return Math.ceil(rawMax / 1000) * 1000;
-      }
-
-      if (roughStep <= 5000) {
-        return Math.ceil(rawMax / 5000) * 5000;
-      }
-
-      if (roughStep <= 10000) {
-        return Math.ceil(rawMax / 10000) * 10000;
-      }
-
-      return Math.ceil(rawMax / 25000) * 25000;
+      return Math.max(Math.round(Math.max(graphData.salaryTotal, graphData.hourlyTotal)), 1);
     }
 
     // Build evenly spaced graph ticks from zero to the rounded graph maximum.
